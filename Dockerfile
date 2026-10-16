@@ -24,7 +24,7 @@ RUN npm uninstall --no-save --omit=dev --no-audit --no-fund @anthropic-ai/claude
 FROM runtime-base AS console
 ENV NODE_ENV=production HOME=/var/lib/web-agents WA_DATA_DIR=/var/lib/web-agents/.web-agents \
     WA_HUB_CONFIG=/var/lib/web-agents/hub-config.json WA_ASSISTANT_MODEL_CONFIG=/var/lib/web-agents/assistant-model.json \
-    WA_AUTH_ENABLED=1 WA_HUB_HOST=0.0.0.0 WA_HUB_PORT=8787 WA_WEB_ROOT=/app/web/dist \
+    WA_AUTH_ENABLED=1 WA_INITIAL_ACCOUNT=1 WA_HUB_HOST=0.0.0.0 WA_HUB_PORT=8787 WA_WEB_ROOT=/app/web/dist \
     WA_VEC=0 WA_REDIS_ENABLED=0 WA_MONGO_ENABLED=0
 WORKDIR /app
 COPY --from=console-dependencies /app/server/node_modules ./server/node_modules

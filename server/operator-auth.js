@@ -9,7 +9,14 @@ export const equalSecret=(a,b)=>crypto.timingSafeEqual(Buffer.from(digest(a)),Bu
 const send=(res,status,body,headers={})=>{res.writeHead(status,{'Content-Type':'application/json; charset=utf-8','Cache-Control':'no-store',...headers});res.end(JSON.stringify(body))}
 const read=async req=>{let body='';for await(const c of req){body+=c;if(Buffer.byteLength(body)>8192)throw new Error('请求过大')}try{return JSON.parse(body||'{}')}catch{throw new Error('JSON格式错误')}}
 const random=()=>crypto.randomBytes(32).toString('base64url')
-export function createOperatorAuth({enabled=process.env.WA_AUTH_ENABLED==='1',dir=dataDir(),publicUrl=process.env.WA_PUBLIC_URL||'',now=Date.now}={}){
+const initialPasswordHash=()=>{const salt=crypto.randomBytes(16).toString('hex');return salt+'.'+crypto.scryptSync('admin123',salt,32).toString('hex')}
+export function resetOperatorPassword(dir=dataDir()){
+  const file=path.join(dir,'auth.json'),state=JSON.parse(fs.readFileSync(file,'utf8'))
+  if(state.version!==1||!state.user)throw new Error('管理员尚未初始化')
+  state.passwordHash=initialPasswordHash();state.passwordChangeRequired=true;state.sessions=[];atomicJson(file,state)
+  return state.user
+}
+export function createOperatorAuth({enabled=process.env.WA_AUTH_ENABLED==='1',initialAccount=process.env.WA_INITIAL_ACCOUNT==='1',dir=dataDir(),publicUrl=process.env.WA_PUBLIC_URL||'',now=Date.now}={}){
   if(!enabled)return{enabled:false,authorize:()=>({ok:true,role:'admin'}),handle:async(req,res)=>{
     if(req.url.split('?')[0]!=='/api/auth/status')return false
     send(res,200,{enabled:false,authenticated:true});return true
@@ -18,7 +25,12 @@ export function createOperatorAuth({enabled=process.env.WA_AUTH_ENABLED==='1',di
   fs.mkdirSync(dir,{recursive:true,mode:0o700})
   let state
   try{state=JSON.parse(fs.readFileSync(file,'utf8'));if(state.version!==1)throw new Error('Unsupported authentication state')}
-  catch(e){if(e.code!=='ENOENT')throw e;const setupToken=random();state={version:1,setupHash:digest(setupToken),sessions:[]};fs.writeFileSync(setupFile,setupToken+'\n',{mode:0o600});atomicJson(file,state)}
+  catch(e){
+    if(e.code!=='ENOENT')throw e
+    if(initialAccount)state={version:1,user:'admin',passwordHash:initialPasswordHash(),passwordChangeRequired:true,sessions:[]}
+    else{const setupToken=random();state={version:1,setupHash:digest(setupToken),sessions:[]};fs.writeFileSync(setupFile,setupToken+'\n',{mode:0o600})}
+    atomicJson(file,state)
+  }
   let mcpToken
   try{mcpToken=fs.readFileSync(mcpFile,'utf8').trim()}catch(e){if(e.code!=='ENOENT')throw e;mcpToken=random();fs.writeFileSync(mcpFile,mcpToken+'\n',{mode:0o600})}
   const save=()=>atomicJson(file,state),attempts=new Map();let hashing=0
@@ -42,6 +54,7 @@ export function createOperatorAuth({enabled=process.env.WA_AUTH_ENABLED==='1',di
     const token=cookieToken(req)
     if(!token||!state.sessions.some(s=>s.hash===digest(token)&&s.expires>now()))return{ok:false,status:401,error:'请先登录'}
     if(!originOK(req))return{ok:false,status:403,error:'拒绝跨站请求'}
+    if(state.passwordChangeRequired&&!['/api/auth/status','/api/auth/password','/api/auth/logout'].includes(p))return{ok:false,status:403,error:'请先修改初始密码'}
     return{ok:true,role:'admin',user:state.user}
   }
   const throttle=req=>{
@@ -55,7 +68,7 @@ export function createOperatorAuth({enabled=process.env.WA_AUTH_ENABLED==='1',di
   return{enabled:true,setupFile,mcpFile,authorize,async handle(req,res){
     const p=new URL(req.url,'http://local').pathname
     if(p==='/api/auth/status'&&req.method==='GET'){
-      const a=authorize(req);send(res,200,{enabled:true,setupRequired:!state.user,authenticated:a.ok&&a.role==='admin',...(a.ok?{user:state.user}:{} )});return true
+      const a=authorize(req);send(res,200,{enabled:true,setupRequired:!state.user,initialAccount:!!state.passwordChangeRequired&&state.user==='admin',authenticated:a.ok&&a.role==='admin',...(a.ok?{user:state.user,passwordChangeRequired:!!state.passwordChangeRequired}:{} )});return true
     }
     if(!['/api/auth/setup','/api/auth/login','/api/auth/logout','/api/auth/password'].includes(p))return false
     if(req.method!=='POST'){send(res,405,{error:'只允许POST'});return true}
@@ -81,14 +94,17 @@ export function createOperatorAuth({enabled=process.env.WA_AUTH_ENABLED==='1',di
         if(typeof body.oldPassword!=='string'||body.oldPassword.length>256||!passwordOK(body.password)){send(res,400,{error:'请输入原密码和至少12字符的新密码'});return true}
         const salt=state.passwordHash.split('.')[0]
         if(!equalSecret(await hash(body.oldPassword,salt),state.passwordHash)){send(res,403,{error:'原密码错误'});return true}
-        state.passwordHash=await hash(body.password);state.sessions=[];save();send(res,200,{ok:true},{'Set-Cookie':cookie('',req,0)});return true
+        const nextHash=await hash(body.password)
+        // Do not let a concurrent password change overwrite a newer credential.
+        if(state.passwordHash.split('.')[0]!==salt){send(res,409,{error:'密码已更新，请重新登录'});return true}
+        state.passwordHash=nextHash;state.passwordChangeRequired=false;state.sessions=[];save();send(res,200,{ok:true},{'Set-Cookie':cookie('',req,0)});return true
       }
       if(typeof body.password!=='string'||body.password.length>256){send(res,401,{error:'用户名或密码错误'});return true}
       const salt=state.passwordHash?.split('.')[0]||'unconfigured'
       const expected=state.passwordHash,actual=await hash(body.password,salt)
       if(!state.user||expected!==state.passwordHash||body.user!==state.user||!equalSecret(actual,expected)){send(res,401,{error:'用户名或密码错误'});return true}
       const token=random();state.sessions=state.sessions.filter(s=>s.expires>now()).slice(-15);state.sessions.push({hash:digest(token),expires:now()+30*86400000});save()
-      send(res,200,{ok:true,user:state.user},{'Set-Cookie':cookie(token,req)});return true
+      send(res,200,{ok:true,user:state.user,passwordChangeRequired:!!state.passwordChangeRequired},{'Set-Cookie':cookie(token,req)});return true
     }catch(e){send(res,400,{error:e.message==='登录服务繁忙，请稍后重试'?e.message:'请求无效，请检查输入'});return true}
   }}
 }

@@ -9,7 +9,7 @@ const response=(body:unknown,status=200)=>new Response(JSON.stringify(body),{sta
 it('a failed authentication service keeps project UI inaccessible and offers retry',async()=>{
  vi.stubGlobal('IS_REACT_ACT_ENVIRONMENT',true);vi.stubGlobal('fetch',vi.fn(async()=>{throw new Error('offline')}))
  const host=document.createElement('div'),root=createRoot(host)
- try{await act(async()=>root.render(<AuthGate><p>private projects</p></AuthGate>));expect(host.textContent).not.toContain('private projects');expect(host.textContent).toContain('连接控制台失败');expect(host.querySelector('button')?.textContent).toBe('重试连接')}
+ try{await act(async()=>root.render(<AuthGate><p>private projects</p></AuthGate>));expect(host.textContent).not.toContain('private projects');expect(host.textContent).toContain('连接控制台失败');expect(Array.from(host.querySelectorAll('button')).some(b=>b.textContent==='重试连接')).toBe(true)}
  finally{await act(async()=>root.unmount());vi.unstubAllGlobals()}
 })
 it('authenticated project UI closes when an API session expires',async()=>{

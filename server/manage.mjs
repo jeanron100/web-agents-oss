@@ -1,11 +1,14 @@
 import fs from 'node:fs'
 import path from 'node:path'
 import {dataDir,configPath,createConfigStore} from './runtime-config.js'
+import {resetOperatorPassword} from './operator-auth.js'
 const command=process.argv[2]
 if(command==='setup-token'){
   const file=path.join(dataDir(),'setup-token')
   if(!fs.existsSync(file)){console.error('No setup token: already initialized, or console has not started.');process.exitCode=1}
   else process.stdout.write(fs.readFileSync(file,'utf8').trim()+'\n')
+}else if(command==='reset-password'){
+  try{const user=resetOperatorPassword();console.log(`Account ${user}: temporary password reset to admin123. Restart only the console, then sign in and set a new password.`)}catch(e){console.error(e.code==='ENOENT'?'Authentication state not found. Check the console data directory.':e.message);process.exitCode=1}
 }else if(command==='health'){
   const runner=process.argv[3]==='runner',headers={}
   if(runner){const token=process.env.WA_AGENT_TOKEN||(process.env.WA_AGENT_TOKEN_FILE?fs.readFileSync(process.env.WA_AGENT_TOKEN_FILE,'utf8').trim():'');if(token)headers.authorization=`Bearer ${token}`}
@@ -16,4 +19,4 @@ if(command==='setup-token'){
   for(const a of config.agents){try{const r=await fetch(a.url+'/api/agent/info',{headers:a.token?{authorization:`Bearer ${a.token}`}:{},signal:AbortSignal.timeout(6000)});result.nodes.push({id:a.id,enabled:a.enabled,connected:r.ok,status:r.status,...(r.ok?{info:await r.json()}:{})})}catch{result.nodes.push({id:a.id,enabled:a.enabled,connected:false})}}
   console.log(JSON.stringify(result,null,2))
   if(result.nodes.some(n=>n.enabled&&!n.connected))process.exitCode=1
-}else{console.error('Usage: node server/manage.mjs setup-token | health [runner] | doctor');process.exitCode=2}
+}else{console.error('Usage: node server/manage.mjs setup-token | reset-password | health [runner] | doctor');process.exitCode=2}

@@ -30,6 +30,7 @@ services:
       - '${WA_BIND:-127.0.0.1}:${WA_PORT:-5188}:8787'
     environment:
       WA_PUBLIC_URL: ${WA_PUBLIC_URL:-http://localhost:5188}
+      WA_INITIAL_ACCOUNT: ${WA_INITIAL_ACCOUNT:-1}
       WA_MYSQL_HOST: mysql
       WA_MYSQL_DATABASE: web_agents
       WA_MYSQL_USER: web_agents

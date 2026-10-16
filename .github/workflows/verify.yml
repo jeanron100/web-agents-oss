@@ -47,7 +47,7 @@ jobs:
           node-version: 24
       - run: node scripts/verify-release.mjs .
       - run: ./scripts/quickstart.sh --runner
-      - run: docker compose --env-file .compose.env exec -T console node server/manage.mjs setup-token > /tmp/wa-setup-token
+      - run: docker compose --env-file .compose.env exec -T console node server/manage.mjs health
       - uses: actions/setup-node@v4
         with:
           node-version: 24

@@ -53,6 +53,17 @@ function respond(path: string, search: URLSearchParams): Response | null {
     const d = days(n)
     return ok({ days: d, last5h: 1_284_000, last7d: d.slice(-7).reduce((a, x) => a + x.tokens, 0) })
   }
+  if (path === '/api/usage/kimi-limits') return ok({ session: { pct: 28, windowMin: 300, resets: '2 小时后' }, week: { pct: 36, windowMin: 43200, label: 'Monthly', resets: '下月 1 日' }, ts: seed.NOW })
+  if (path === '/api/usage/quota-trend') return ok({ available: true, series: (['codex','kimi','claude'] as const).map((engine,index)=>({
+    id:`demo-${engine}`,engine,windowLabel:engine==='kimi'?'本月':'本周',sourceLabel:'演示账号',
+    points:Array.from({length:240},(_,i)=>({ts:seed.NOW-(239-i)*3*3600_000,pct:Math.round((i%56)*(index+1)*.45)})),
+  })) })
+  if (path === '/api/assistant/progress' || path === '/api/assistant/evidence') {
+    const task={id:'demo-disk',serverId:'node-fra-1',project:'infra-scripts',sessionId:'s-infra',engine:'claude',title:'演示：磁盘空间排查与日志保留策略',context:'检查磁盘空间，不删除业务数据。',request:'检查磁盘空间，不删除业务数据。',result:'演示记录报告：定位到过期压缩日志，设置保留周期并核对释放后的空间。',status:'reported_complete',updatedAt:seed.NOW-3600_000,sourceTruncated:false,causes:['演示原因：归档日志没有配置保留周期。'],lessons:['演示经验：清理前先确认数据归属，清理后核对空间及日志保留策略。'],progress:[{ts:seed.NOW-7200_000,text:'演示：按目录统计占用，确认主要来源为过期压缩日志。'}],actions:['演示：检查日志轮转配置与剩余磁盘空间。'],risks:['全部为虚构数据；不代表任何真实服务器已完成清理。']}
+    if(path.endsWith('/evidence'))return ok({task})
+    const q=search.get('q')||'',match=(!q||/磁盘|日志|空间/.test(q))&&(!search.get('project')||search.get('project')===task.project)&&(!search.get('host')||search.get('host')===task.serverId)
+    return ok({tasks:match?[task]:[],total:match?1:0,answer:match?'演示模式：以下预置任务展示交办、处理结果、原因、风险及来源。未连接真实模型或服务器。':'演示模式仅预置一条磁盘日志排查任务，可尝试提问“磁盘空间怎么解决的”。真实历史检索与问答需自行安装。',updatedAt:seed.NOW,refreshing:false,error:null,projects:[{serverId:task.serverId,project:task.project}],coverage:{retainedTasks:1,durable:{tasks:1},archive:{enabled:true},sources:[]}})
+  }
   if (path === '/api/usage/limits') {
     // 官方订阅额度（5h 窗口 / 本周）——编造
     return ok({ session: { pct: 41, resets: '2 小时后' }, week: { pct: 63, resets: '周四' }, weekSonnet: { pct: 22 }, ts: seed.NOW })

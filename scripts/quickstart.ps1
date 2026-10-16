@@ -80,8 +80,9 @@ try {
     } else {
         Invoke-Docker ($composeArgs + @('up', '-d', '--build', '--wait', '--wait-timeout', '240'))
     }
-    Write-Host 'Console ready. Read the setup token with:'
-    Write-Host 'docker compose --env-file .compose.env exec console node server/manage.mjs setup-token'
+    Write-Host 'Console ready.'
+    Write-Host 'Fresh installations: admin / admin123; set a new password after signing in.'
+    Write-Host 'Existing accounts and passwords are preserved. If WA_INITIAL_ACCOUNT=0, use manage.mjs setup-token.'
     Write-Host 'Open WA_PUBLIC_URL configured in .compose.env (default http://localhost:5188).'
 } catch {
     Write-Error $_ -ErrorAction Continue

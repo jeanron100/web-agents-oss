@@ -10,6 +10,7 @@
 | `WA_DATA_DIR` / `HOME` | 控制台状态 / CLI 与历史目录；容器均挂独立卷 |
 | `WA_PROJECT_ROOT` | 节点项目目录；容器默认 `/workspace` |
 | `WA_AUTH_ENABLED=1` | 内置管理员认证；容器强制开启 |
+| `WA_INITIAL_ACCOUNT=1` | 全新容器安装创建 `admin / admin123` 初始账号，首次强制改密；已有认证状态不覆盖。设为 `0` 改用一次性令牌初始化 |
 | `WA_PUBLIC_URL` | 浏览器实际访问 origin；HTTPS 时启用 Secure cookie；`localhost` 与 `127.0.0.1` 要与访问地址保持一致 |
 | `WA_MYSQL_HOST/PORT/DATABASE/USER/PASSWORD` | 中心历史、任务证据、日统计；启动自动创建所需表 |
 | `WA_AGENT_TOKEN_FILE` | 节点接入密钥文件；配合 `WA_AGENT_REQUIRE_TOKEN=1` |
@@ -73,6 +74,21 @@ node scripts/container-smoke.mjs http://127.0.0.1:5188 \
 ```
 
 仅在全新隔离安装运行；脚本创建测试管理员、验证认证与节点 CRUD、密钥不回显、跨源拒绝，并删除测试节点。首次公开前还需完成：镜像来源/依赖检查、厂商真实任务及权限行为验收、备份恢复、桌面和手机页面检查。实际验证记录在发布评估文档中，不能以启动成功替代真实 CLI 验收。
+
+## 初始账号、改密与恢复
+
+v0.1.0-rc.11 起，全新容器安装提供用户名 **`admin`**、密码 **`admin123`**。首次登录只允许修改密码和退出；后端同时拦截项目数据、设置、执行与终端访问，不依赖页面隐藏。设置至少 12 位的新密码后，初始密码失效、旧登录会话撤销，需重新登录。应在向其他人开放服务前完成设置。原生节点/Hub 默认保留令牌初始化方式。
+
+已有 `auth.json` 的安装不会被此选项覆盖，包括旧版尚未完成的令牌初始化。若希望新安装自行创建管理员，在首次启动前在 `.compose.env` 中设 `WA_INITIAL_ACCOUNT=0`，启动后运行 `docker compose --env-file .compose.env exec console node server/manage.mjs setup-token` 获取令牌，在页面创建自己的账号。
+
+忘记已有密码时，只能由有权限操作安装目录和容器的维护者在终端恢复：
+
+```bash
+docker compose --env-file .compose.env exec console node server/manage.mjs reset-password
+docker compose --env-file .compose.env restart console
+```
+
+恢复保留原用户名，将临时密码重置为 `admin123`，撤销旧会话；重启控制台加载新状态后，必须重新设置密码。只重启控制台，不重建 runner，也不停止远程 CLI。正常改密使用页面“设置 → 账户”。
 
 ## 按版本发布
 

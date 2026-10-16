@@ -34,7 +34,7 @@ export const sessions: Session[] = [
   // ── 运行中（平台会话，可交互）──
   {
     id: 's-acme-api', serverId: 'node-tokyo-1', project: 'acme-api', branch: 'feat/rate-limit',
-    engine: 'claude', model: 'Opus 4.8', mode: 'auto', state: 'running', origin: 'platform',
+    engine: 'codex', model: 'Codex', mode: 'auto', state: 'running', origin: 'platform',
     effort: 'xhigh', cwd: '/data/acme-api', realSessionId: 'a1b2c3d4-1111-2222-3333-444455556666',
     summary: '正在给网关加令牌桶限流，已改 3 个文件…', progress: 62,
     startedAt: NOW - 2.4 * HOUR, lastActiveAt: NOW - 6_000,
@@ -54,7 +54,7 @@ export const sessions: Session[] = [
   // ── 等待输入（助手在提问）──
   {
     id: 's-pipeline', serverId: 'node-tokyo-1', project: 'data-pipeline', branch: 'refactor/sync',
-    engine: 'claude', model: 'Sonnet 4.6', mode: 'default', state: 'waiting_input', origin: 'platform',
+    engine: 'kimi', model: 'Kimi', mode: 'default', state: 'waiting_input', origin: 'platform',
     effort: 'medium', cwd: '/data/data-pipeline',
     summary: '问：两条迁移撞车了，合并还是回滚？',
     startedAt: NOW - 55 * MIN, lastActiveAt: NOW - 7 * MIN,

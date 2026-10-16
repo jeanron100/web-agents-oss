@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>WebAgents · 把多台服务器上的 AI 编码会话，收进一个手机能用的管控台</title>
-<meta name="description" content="自托管的多服务器 AI 编码代理管控台：统一看板、待办审批收件箱、Claude Code 与 Codex 双引擎、终端 ⇄ Web 双向接管、交互式终端。手机优先 PWA。">
+<meta name="description" content="自托管的多服务器 AI 编码代理管控台：Codex、Kimi、Claude，统一看板、审批收件箱、执行历史与项目小助理、只读 MCP 接入。提供容器和 Mac/Windows 启动包。">
 <meta property="og:title" content="WebAgents · 多服务器 AI 编码代理管控台">
 <meta property="og:description" content="AI 在 5 台机器上替你写代码，随时会停下来问「这条 rm -rf 能跑吗」——而你在地铁上。">
 <meta property="og:type" content="website">
@@ -115,7 +115,7 @@
 <div class="hero">
   <div class="wrap hero__grid">
     <div>
-      <span class="badge"><span class="dot" style="background:var(--ok)"></span> <b>自托管</b> · Claude Code + Codex · 手机优先 PWA</span>
+      <span class="badge"><span class="dot" style="background:var(--ok)"></span> <b>开源 · 自托管</b> · Codex + Kimi + Claude</span>
       <h1>AI 在替你写代码。<br>但它<em>随时会停下来问你一句话</em>。</h1>
       <p class="lede">
         你在 5 台服务器上跑着 AI 编码会话。它们会停下来问「这条 <code>rm -rf</code> 能跑吗」——
@@ -124,9 +124,10 @@
       </p>
       <div class="cta">
         <a class="btn btn--pri" href="/demo/">▶ 在线体验（演示数据）</a>
-        <a class="btn btn--ghost" href="#pitfalls">看看踩过哪些坑 ↓</a>
+        <a class="btn btn--ghost" href="https://github.com/jeanron100/web-agents-oss/releases">下载 Mac / Windows / Linux</a>
+        <a class="btn btn--ghost" href="https://github.com/jeanron100/web-agents-oss">GitHub 源码与文档 ↗</a>
       </div>
-      <p class="cta__note">Demo 跑的就是生产代码本身，只是数据源换成了编造的演示数据——它连一个 API 请求都不会发出去。</p>
+      <p class="cta__note">Demo 免登录、使用虚构数据。看板、收件箱与对话操作只改本地状态，不连接真实执行节点；终端和真实模型调用需自行安装使用。</p>
     </div>
     <div class="phone"><img src="/demo-shots/dash.png" alt="WebAgents 看板：5 台服务器的会话一屏尽览" fetchpriority="high" decoding="async"></div>
   </div>
@@ -158,7 +159,7 @@
 <section>
   <div class="wrap">
     <h2>它做什么</h2>
-    <p class="sub">六个能力。每一个都能在上面的 Demo 里点开看。</p>
+    <p class="sub">从多机状态到任务证据。Demo 展示主要界面，真实执行和外部工具接入需自托管。</p>
     <div class="feats">
       <div class="feat">
         <h3><span class="dot" style="background:var(--ok)"></span> 多机统一看板</h3>
@@ -169,21 +170,24 @@
         <p>四类待办统一收口：<b style="color:var(--t1)">审批</b>（危险命令）、<b style="color:var(--t1)">计划</b>（改动前确认）、<b style="color:var(--t1)">提问</b>（AI 在征询）、<b style="color:var(--t1)">验收</b>（回合产生了文件变更）。手机推送直达。</p>
       </div>
       <div class="feat">
-        <h3><span class="dot" style="background:var(--claude)"></span> 双引擎，同一套 UI</h3>
-        <p>Claude Code 与 Codex 并列。两套完全不同的协议（SDK / app-server RPC），在上层收敛成同一个会话模型、同一个审批流。</p>
+        <h3><span class="dot" style="background:var(--codex)"></span> 三种 CLI，统一入口</h3>
+        <p>Codex、Kimi 与 Claude 使用各自账号和会话。统一查看对话与工具事件；具体能力按 CLI 和驱动区分，不承诺三个引擎完全等价。</p>
       </div>
       <div class="feat">
-        <h3><span class="dot" style="background:var(--codex)"></span> 终端 ⇄ Web 双向接管</h3>
-        <p>终端里 <code>claude</code> 起的会话，Web 上<b style="color:var(--t1)">只读追踪 + 一键接管</b>；Web 上起的会话，也能<code>释放到终端</code>继续用 <code>--resume</code> 接。同一份会话，两端都能拿。</p>
+        <h3><span class="dot" style="background:var(--codex)"></span> 即时补充与后续任务排队</h3>
+        <p>Codex 运行中可即时追加条件，也能把独立的新任务排队。浏览器查看原生会话，并按引擎和写者状态恢复，避免同时启动两个写者。</p>
       </div>
       <div class="feat">
         <h3><span class="dot" style="background:var(--accent)"></span> 交互式终端</h3>
-        <p>浏览器里的真 PTY（tmux 支撑 + 手写 WebSocket + xterm.js）。<b style="color:var(--t1)">跨 agent 重启持久</b>——部署完回来，你的 vim 还开着。</p>
+        <p>Web 终端、文件查看与图片预览，方便核对任务产物。原生 Linux 与容器有不同生命周期：重建 runner 会停止其内部进程，保留卷后再恢复会话。</p>
       </div>
       <div class="feat">
         <h3><span class="dot" style="background:var(--err)"></span> 出了事查得清</h3>
-        <p>跨服务器执行历史（按<b style="color:var(--t1)">回合</b>组织，不是一行行日志）、agent 重启事件簿（带「当时被杀掉了哪些会话」）、数据层健康看板。</p>
+        <p>执行历史与项目小助理，围绕交办、进展、处理方法和风险查找证据。保留来源与历史覆盖提示，便于追溯和复盘；不把缺失证据当成任务已完成。</p>
       </div>
+      <div class="feat"><h3><span class="dot" style="background:var(--codex)"></span> 额度与用量看清楚</h3><p>查看订阅窗口与重置时间、历史使用率、每日 Token 趋势和项目消耗。额度与 Token 分开统计，问答模型保留实际模型、用量和兼容告警。</p></div>
+      <div class="feat"><h3><span class="dot" style="background:#a78bfa"></span> 只读 MCP 接入</h3><p>8 个工具向可信助理提供纳管节点、待办、会话和任务证据查询。外部工具也能了解项目进展，不提供执行与审批权限。</p></div>
+      <div class="feat"><h3><span class="dot" style="background:var(--ok)"></span> 按版本下载使用</h3><p>GitHub Releases 提供 Linux amd64/arm64 镜像和 Mac/Windows Docker Desktop 启动包。默认面向单管理员或可信小团队。</p></div>
     </div>
   </div>
 </section>
@@ -336,17 +340,12 @@
 <section>
   <div class="wrap">
     <h2>怎么跑起来</h2>
-    <p class="sub">一台机做 hub，其余机各放一个 agent。</p>
-    <pre><span class="c"># 1. 主控机：构建前端 + 起 hub</span>
-<span class="k">cd</span> web && npm ci && npm run build
-systemctl enable --now web-agents-hub
-
-<span class="c"># 2. 每台被管服务器：放一个 agent（零依赖，只是几个 .js）</span>
-bash server/deploy-agent.sh root@your-node
-<span class="c">#    ↑ 部署前会先查该机有没有正在跑的会话，有就拒绝——不会把你的活干断</span>
-
-<span class="c"># 3. hub 侧建 SSH 隧道接入（远端不用开任何入站端口）</span>
-systemctl enable --now web-agents-tunnel@your-node</pre>
+    <p class="sub">安装 Docker；Mac/Windows 使用 Docker Desktop。下载对应 ZIP，解压后运行启动入口，或使用下面的命令。</p>
+    <pre>git clone https://github.com/jeanron100/web-agents-oss.git
+cd web-agents-oss
+./scripts/quickstart.sh --runner --pull</pre>
+    <p style="color:var(--t2);margin-top:20px">打开 <code>http://localhost:5188</code>。全新容器安装的初始账户为 <code>admin / admin123</code>，首次登录必须设置至少 12 位的新密码；升级保留已有账户。厂商 CLI 需要使用自己的账号登录。</p>
+    <p style="margin-top:16px"><a href="https://github.com/jeanron100/web-agents-oss/releases">版本下载与校验和</a> · <a href="https://github.com/jeanron100/web-agents-oss/blob/main/docs/public/desktop.md">Mac/Windows 安装说明</a> · <a href="https://github.com/jeanron100/web-agents-oss/blob/main/docs/public/comparison.md">功能亮点与竞品比较</a></p>
   </div>
 </section>
 

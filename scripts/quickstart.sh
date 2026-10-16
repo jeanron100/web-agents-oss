@@ -75,6 +75,6 @@ if [ "$prebuilt" = 1 ]; then
 else
   docker compose --env-file .compose.env "${args[@]}" up -d --build --wait --wait-timeout 240
 fi
-echo 'Console ready. Read the setup token with:'
-echo 'docker compose --env-file .compose.env exec console node server/manage.mjs setup-token'
+echo 'Console ready. Fresh installations: admin / admin123; set a new password after signing in.'
+echo 'Existing accounts and passwords are preserved. If WA_INITIAL_ACCOUNT=0, use manage.mjs setup-token.'
 echo 'Open the WA_PUBLIC_URL configured in .compose.env (default http://localhost:5188).'

@@ -2,6 +2,8 @@
 
 Web Agents controls files, shell commands and AI coding CLIs with the privileges of its execution user. Use it only with trusted administrators. Built-in authentication is a single administrator boundary; there are no tenant, project or command-level permissions for separate users.
 
+Fresh container installations provide `admin / admin123` as a temporary account. The first login is restricted to changing the password or signing out; server-side authorization blocks project access, configuration, execution and terminals until the password is changed. Complete this step on the default loopback listener before exposing the console. Existing credentials are never replaced during upgrade. Set `WA_INITIAL_ACCOUNT=0` before first start to use token-based manual setup instead. Local password recovery resets the temporary password and requires a console restart and another password change; see the operations guide.
+
 Keep the console behind HTTPS, a VPN or an SSH tunnel. Console cookies are HttpOnly and SameSite=Strict; set `WA_PUBLIC_URL` to the actual HTTPS origin. Non-loopback Hub listeners require built-in authentication. Native loopback compatibility mode assumes an authenticated reverse proxy and is not a public deployment mode.
 
 Each execution node should require its own token. Use private networks, TLS or SSH tunnels; tokens on plain HTTP over an untrusted network are exposed. Browser sessions and console tokens are stripped before node forwarding. The node token grants powerful execution capabilities, not read-only access. Restrict its distribution.

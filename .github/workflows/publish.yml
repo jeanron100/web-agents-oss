@@ -150,7 +150,7 @@ jobs:
           docker compose --env-file .compose.env -f compose.yaml -f compose.runner.yaml exec -T runner codex --version
           docker compose --env-file .compose.env -f compose.yaml -f compose.runner.yaml exec -T runner kimi --version
           docker compose --env-file .compose.env -f compose.yaml -f compose.runner.yaml exec -T runner claude --version
-          docker compose --env-file .compose.env exec -T console node server/manage.mjs setup-token > /tmp/wa-setup-token
+          docker compose --env-file .compose.env exec -T console node server/manage.mjs health
       - uses: actions/setup-node@v4
         with:
           node-version: 24

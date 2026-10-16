@@ -4,6 +4,8 @@
 
 当前交付定位：单一管理员或可信小团队，Linux 执行节点。不是面向不可信用户的多租户执行平台。CLI 使用各自厂商账号，订阅、模型和调用权限由厂商决定。
 
+[在线 Demo（虚构数据，免登录）](https://webagents.jeanron100.top/demo/) · [产品介绍](https://webagents.jeanron100.top/demo.html) · [功能与竞品比较](docs/public/comparison.md)
+
 ## 为什么使用 Web Agents
 
 当项目分散在几台服务器、同时使用不同编码 CLI 时，你需要及时知道：哪个项目在运行、哪里等你审批、之前交办的事有没有解决，以及结论依据是什么。Web Agents 把这些入口集中到一个可以在手机和桌面使用的管控台，减少逐台 SSH、逐个终端和逐段聊天记录之间的切换。
@@ -28,13 +30,13 @@
 
 ## 版本下载
 
-当前预发布：**[v0.1.0-rc.10](https://github.com/jeanron100/web-agents-oss/releases/tag/v0.1.0-rc.10)**。所有版本独立保存在 [GitHub Releases](https://github.com/jeanron100/web-agents-oss/releases)，可按版本下载和核对更新说明。
+当前预发布：**[v0.1.0-rc.11](https://github.com/jeanron100/web-agents-oss/releases/tag/v0.1.0-rc.11)**。所有版本独立保存在 [GitHub Releases](https://github.com/jeanron100/web-agents-oss/releases)，可按版本下载和核对更新说明。
 
 | 系统 | 下载 | 解压后启动 |
 |---|---|---|
-| macOS Intel / Apple Silicon | [Mac 安装包](https://github.com/jeanron100/web-agents-oss/releases/download/v0.1.0-rc.10/web-agents-v0.1.0-rc.10-macos.zip) | `start-macos.command` |
-| Windows x64 | [Windows 安装包](https://github.com/jeanron100/web-agents-oss/releases/download/v0.1.0-rc.10/web-agents-v0.1.0-rc.10-windows.zip) | `start-windows.cmd` |
-| Linux amd64 / arm64 | [版本源码包](https://github.com/jeanron100/web-agents-oss/releases/download/v0.1.0-rc.10/web-agents-v0.1.0-rc.10.tar.gz) | `bash scripts/quickstart.sh --runner --pull` |
+| macOS Intel / Apple Silicon | [Mac 安装包](https://github.com/jeanron100/web-agents-oss/releases/download/v0.1.0-rc.11/web-agents-v0.1.0-rc.11-macos.zip) | `start-macos.command` |
+| Windows x64 | [Windows 安装包](https://github.com/jeanron100/web-agents-oss/releases/download/v0.1.0-rc.11/web-agents-v0.1.0-rc.11-windows.zip) | `start-windows.cmd` |
+| Linux amd64 / arm64 | [版本源码包](https://github.com/jeanron100/web-agents-oss/releases/download/v0.1.0-rc.11/web-agents-v0.1.0-rc.11.tar.gz) | `bash scripts/quickstart.sh --runner --pull` |
 
 需先安装并启动 Docker（Mac/Windows 使用 Docker Desktop，Windows 开启 WSL 2 Linux 容器）。Release 附有校验和及按架构区分的镜像包，启动时自动选择引擎架构。`-rc.*` 为预发布，`vX.Y.Z` 为正式版本。
 
@@ -56,13 +58,18 @@ powershell -NoProfile -ExecutionPolicy Bypass -File .\scripts\quickstart.ps1 -Ru
 
 完整平台前提、下载校验和停止/升级方法见 [Mac/Windows 快速交付](docs/public/desktop.md)。
 
-打开 `http://localhost:5188`，获取初始化令牌：
+打开 `http://localhost:5188`。**全新容器安装的初始用户名为 `admin`，初始密码为 `admin123`。** 首次登录后，必须设置至少 12 位的新密码，再重新登录，才能访问项目、终端和设置。升级保留已有账号和密码，不会重置为初始密码。
+
+忘记已有密码时，在安装目录执行：
 
 ```bash
-docker compose --env-file .compose.env exec console node server/manage.mjs setup-token
+docker compose --env-file .compose.env exec console node server/manage.mjs reset-password
+docker compose --env-file .compose.env restart console
 ```
 
-创建管理员后登录。执行容器已自动注册为“本机容器节点”。先在执行容器登录需要使用的 CLI：
+此命令保留原用户名、将临时密码重置为 `admin123` 并撤销旧会话；重启控制台后需重新设密。可在首次启动前设置 `WA_INITIAL_ACCOUNT=0` 使用一次性令牌手动创建管理员，详见 [运维说明](docs/public/operations.md)。
+
+执行容器已自动注册为“本机容器节点”。先在执行容器登录需要使用的 CLI：
 
 ```bash
 docker compose --env-file .compose.env -f compose.yaml -f compose.runner.yaml exec runner codex login --device-auth
