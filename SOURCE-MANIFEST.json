@@ -7,7 +7,7 @@
     },
     {
       "path": ".github/workflows/publish.yml",
-      "sha256": "4a47fb7a008de4015bc2acbc600750b4a979da4c003b9061bb0157233f51725f"
+      "sha256": "3b43493be8f559ed70df2e4bcd5c8124a1432d277ad413399a25765f7187c4d8"
     },
     {
       "path": ".github/workflows/verify.yml",
@@ -23,7 +23,7 @@
     },
     {
       "path": "Dockerfile",
-      "sha256": "b186578fb38811d020edb199a473361acbc01f8f074adb857aad26e2c9461ab4"
+      "sha256": "9a6ad6b2ae682f6efd2da8410a4e99575cc8f46cd628cf42639ebd99d21e343d"
     },
     {
       "path": "LICENSE",
@@ -75,7 +75,7 @@
     },
     {
       "path": "release/version",
-      "sha256": "5ae98699a81167aea6bd88269d0fe2814ece9974d63f67ae59447ac728e35323"
+      "sha256": "47040cf2e38398415586e8975b6c800242fbd6c2dd1744b5106b438fd939c1cc"
     },
     {
       "path": "scripts/backup.sh",

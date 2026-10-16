@@ -57,6 +57,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends git openssh-cli
     # npm's published bundle still carries vulnerable transitive versions; retain npm for project work.
     && node -e 'const fs=require("node:fs"),f="/usr/local/lib/node_modules/npm/package.json",p=JSON.parse(fs.readFileSync(f));delete p.devDependencies;delete p.workspaces;p.dependencies["brace-expansion"]="5.0.11";p.dependencies.undici="6.28.1";fs.writeFileSync(f,JSON.stringify(p))' \
     && npm install --prefix /usr/local/lib/node_modules/npm --ignore-scripts --omit=dev --no-audit --no-fund \
+    && node /usr/local/lib/node_modules/@anthropic-ai/claude-code/install.cjs \
     && npm cache clean --force && rm -rf /home/node/.npm /root/.npm
 ENV KIMI_BIN=/usr/local/bin/kimi
 WORKDIR /app
@@ -67,5 +68,6 @@ COPY server/mcp/ ./server/mcp/
 RUN mkdir -p /workspace /run/web-agents/runner && chown -R node:node /workspace /home/node /run/web-agents/runner
 USER node
 EXPOSE 8788
+RUN codex --version && kimi --version && claude --version
 HEALTHCHECK --interval=15s --timeout=8s --start-period=60s CMD ["node","server/manage.mjs","health","runner"]
 CMD ["node","server/container-entry.mjs","runner"]

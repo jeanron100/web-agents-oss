@@ -67,6 +67,8 @@ jobs:
         with:
           context: .
           target: console
+          cache-from: type=gha,scope=web-agents-console
+          cache-to: type=gha,mode=max,scope=web-agents-console
           push: true
           tags: ghcr.io/${{ env.IMAGE_NAMESPACE }}-console:${{ inputs.version }}
           labels: org.opencontainers.image.source=https://github.com/${{ github.repository }}
@@ -77,6 +79,8 @@ jobs:
         with:
           context: .
           target: runner
+          cache-from: type=gha,scope=web-agents-runner
+          cache-to: type=gha,mode=max,scope=web-agents-runner
           push: true
           tags: ghcr.io/${{ env.IMAGE_NAMESPACE }}-runner:${{ inputs.version }}
           labels: org.opencontainers.image.source=https://github.com/${{ github.repository }}
