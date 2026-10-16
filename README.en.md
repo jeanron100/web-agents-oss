@@ -34,13 +34,13 @@ Agent capabilities differ. Claude inference has not been tested with a vendor ac
 
 ## Download a version
 
-Current prerelease: **[v0.1.0-rc.13](https://github.com/jeanron100/web-agents-oss/releases/tag/v0.1.0-rc.13)**. Previous versions and release notes remain available in [GitHub Releases](https://github.com/jeanron100/web-agents-oss/releases).
+Current prerelease: **[v0.1.0-rc.14](https://github.com/jeanron100/web-agents-oss/releases/tag/v0.1.0-rc.14)**. Previous versions and release notes remain available in [GitHub Releases](https://github.com/jeanron100/web-agents-oss/releases).
 
 | Platform | Download | Start after extracting |
 |---|---|---|
-| macOS Intel / Apple Silicon | [Mac ZIP](https://github.com/jeanron100/web-agents-oss/releases/download/v0.1.0-rc.13/web-agents-v0.1.0-rc.13-macos.zip) | `start-macos.command` |
-| Windows x64 | [Windows ZIP](https://github.com/jeanron100/web-agents-oss/releases/download/v0.1.0-rc.13/web-agents-v0.1.0-rc.13-windows.zip) | `start-windows.cmd` |
-| Linux amd64 / arm64 | [Versioned source archive](https://github.com/jeanron100/web-agents-oss/releases/download/v0.1.0-rc.13/web-agents-v0.1.0-rc.13.tar.gz) | `bash scripts/quickstart.sh --runner --pull` |
+| macOS Intel / Apple Silicon | [Mac ZIP](https://github.com/jeanron100/web-agents-oss/releases/download/v0.1.0-rc.14/web-agents-v0.1.0-rc.14-macos.zip) | `start-macos.command` |
+| Windows x64 | [Windows ZIP](https://github.com/jeanron100/web-agents-oss/releases/download/v0.1.0-rc.14/web-agents-v0.1.0-rc.14-windows.zip) | `start-windows.cmd` |
+| Linux amd64 / arm64 | [Versioned source archive](https://github.com/jeanron100/web-agents-oss/releases/download/v0.1.0-rc.14/web-agents-v0.1.0-rc.14.tar.gz) | `bash scripts/quickstart.sh --runner --pull` |
 
 Install and start Docker first. Mac/Windows use Docker Desktop; Windows requires WSL 2 and Linux containers. Downloads include checksums, with separate image archives for each architecture. Versions ending in `-rc.N` are release candidates; `vX.Y.Z` identifies a stable release.
 

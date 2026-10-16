@@ -35,11 +35,11 @@
     },
     {
       "path": "README.en.md",
-      "sha256": "bf00a5e897f2201eacee24940f39381e1ce15e45a9f1c49c8488e94ec24461ff"
+      "sha256": "4e06a8d548876abe2e2d38aa6c6b3dd06397e32575f086c2949c56e828bb0faa"
     },
     {
       "path": "README.md",
-      "sha256": "45bfb0c6e5abf11d1662812379dd3f4710caa7c19bf6f53dd0ed6e4cfb3a38a0"
+      "sha256": "f8646d48b4e347cf0af15e2bab61c97ba2ce91cac9970d5859adf1e86aaea156"
     },
     {
       "path": "SECURITY.md",
@@ -79,11 +79,11 @@
     },
     {
       "path": "docs/public/en/operations.md",
-      "sha256": "61ec6a2e14a5bbcb4200dcb95ea2f7e9a6bee70327a950b7e04bb9b3282c29fc"
+      "sha256": "61d53bd2dd80efa431ee72e1fc4fb1fbe8b1bf49f3506daba2634691001f6fac"
     },
     {
       "path": "docs/public/en/release-readiness.md",
-      "sha256": "92f69ac970b37091652d103e2a896e9d7afe8f7bd3c1ab775914a9f4be32f94d"
+      "sha256": "b9a53008e5bdbfbe7b20954f511434c8de6a6616218be1027ac99e25369fcaf4"
     },
     {
       "path": "docs/public/en/third-party-notices.md",
@@ -99,11 +99,11 @@
     },
     {
       "path": "docs/public/operations.md",
-      "sha256": "4bac6473873fa79417d5308af69ffa6450525caa7050bdb35a48687723e6a20a"
+      "sha256": "cac40bca5edb53adc5e6fedfc59ab5b89dc28d90855f4a36fd229ee53ebd2b89"
     },
     {
       "path": "docs/public/release-readiness.md",
-      "sha256": "251eef00ad4899c229aa7373fdc4cdfde658e3c1a61cb503ec5faf4305354802"
+      "sha256": "64fdb2dc7936ee490f5bdbfcff4cda5713b886e508876fe6e0da297774161b3f"
     },
     {
       "path": "docs/public/third-party-notices.md",
@@ -115,11 +115,11 @@
     },
     {
       "path": "release/notes.md",
-      "sha256": "7617b3ee5da75ebb4c016127c0f096d1d49f866b9378b1f25a154b2e8f2c7b7d"
+      "sha256": "95b8baeb6f31aec8cd997b6b405d5831a5f8fd48eede339ff0ac23ac7d78c60e"
     },
     {
       "path": "release/version",
-      "sha256": "1f1faa9c2ea8534ec720797426d79d8e291aaf77e7fbe806d1f12907fc79f3ae"
+      "sha256": "acea66c039613a9529c118bdc92d36c094c03fdd1a90b47e684e98ea74e3cb26"
     },
     {
       "path": "scripts/backup.sh",
@@ -831,7 +831,7 @@
     },
     {
       "path": "server/release-version.js",
-      "sha256": "dbba316e9955a61e6e1335f2c3ab5085ec09de54652329170c27c96d04be8102"
+      "sha256": "a2acdfa766ca0c789de1b70413aa3f830989fdc1e04b33e09666578374c86627"
     },
     {
       "path": "server/release-version.test.mjs",
@@ -1131,7 +1131,7 @@
     },
     {
       "path": "web/src/App.tsx",
-      "sha256": "068da3ba982de572f59a05a5ec2b1d4ee9636f69f0fc59641beab55a3b7e1136"
+      "sha256": "0d5cee3bafc39e69c88adb809768746cd941b4a3782d1dc7701fd13d8663e1a1"
     },
     {
       "path": "web/src/components/ActionSheet.tsx",
@@ -1227,7 +1227,7 @@
     },
     {
       "path": "web/src/components/InstallationSettings.tsx",
-      "sha256": "a8d7cd8dad84c7583f46b68325b6b2f71bfba3701623820595616dc0eaf323ce"
+      "sha256": "b560e251357295e5f6aa63d12bfe8bdbab3b642c33babdaafc4dccdec02ef354"
     },
     {
       "path": "web/src/components/Markdown.test.ts",

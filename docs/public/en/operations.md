@@ -24,6 +24,8 @@ Claude/Kimi TUI quota collection requires an authenticated selected source node.
 
 Assistant `analysis.modelCalls` retains planning/synthesis stages, reported resolved model/provider, request IDs, Token counts and compatibility warnings. `metadata.resolved_model` takes precedence over a top-level `model` that may still be `auto`. Missing values remain unknown; ignored parameters are displayed as warnings. Cached polling does not create additional model usage. Raw gateway objects and credentials are not exposed. MCP returns bounded metadata and marks truncation.
 
+The Monitoring navigation item is hidden on desktop and mobile until a monitoring URL is configured. Saving a URL shows it immediately; clearing and saving hides it again.
+
 ## Initial account and password recovery
 
 Starting with v0.1.0-rc.11, fresh container installations provide **username `admin` and temporary password `admin123`**. The first sign-in permits password change or sign-out only. Server-side checks block project data, configuration, execution and terminals until a new password of at least 8 characters is saved. Existing sessions are then revoked; sign in with the new password. Complete this on the default loopback listener before exposing the console.

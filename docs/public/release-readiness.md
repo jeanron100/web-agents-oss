@@ -1,8 +1,8 @@
-# v0.1.0-rc.13 发布验证与后续计划
+# v0.1.0-rc.14 发布验证与后续计划
 
 [简体中文](release-readiness.md) | [English](en/release-readiness.md)
 
-[公开仓库](https://github.com/jeanron100/web-agents-oss) · [候选版与交付附件](https://github.com/jeanron100/web-agents-oss/releases/tag/v0.1.0-rc.13) · [发布工作流](https://github.com/jeanron100/web-agents-oss/actions/workflows/publish.yml)
+[公开仓库](https://github.com/jeanron100/web-agents-oss) · [候选版与交付附件](https://github.com/jeanron100/web-agents-oss/releases/tag/v0.1.0-rc.14) · [发布工作流](https://github.com/jeanron100/web-agents-oss/actions/workflows/publish.yml)
 
 定位为单管理员或可信小团队的 Linux 管控台，容器交付扩展到 Linux amd64/arm64，以及 Docker Desktop 下的 Mac Intel/Apple Silicon 和 Windows x64（WSL 2）。各平台实测范围见 [桌面说明](desktop.md)。现有原生部署可以独立升级控制台，不需要迁入容器。
 
@@ -17,7 +17,7 @@
 | 追溯 | 执行历史、任务证据、可选问答模型和 8 个只读 MCP 工具 |
 | 运维 | 配置外置、持久卷、诊断、备份恢复、依赖清单、镜像摘要和构建证明 |
 
-rc.13 将新密码最低长度调整为 8 个字符，不要求大小写或特殊符号；初始化、首次改密和账户改密采用同一规则。首次改密仍须选择不同于临时密码的新密码，已有账号和数据不变。
+rc.14 将新密码最低长度调整为 8 个字符，不要求大小写或特殊符号；初始化、首次改密和账户改密采用同一规则。首次改密仍须选择不同于临时密码的新密码，已有账号和数据不变。
 
 rc.12 补充中英文 README、7 份英文核心文档及可切换的中英宣传页；登录/初始化/账户改密提供持久化中英文切换。主控制台和 Demo 内部尚未全量英文化，CLI 原文不自动翻译。
 

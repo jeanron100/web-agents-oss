@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { NavLink, Outlet, useLocation } from 'react-router-dom'
 import { IS_DEMO, refreshNow, startHubClient, stopHubClient } from './hub/client'
 import { pendingCount, useAppStore } from './store/store'
@@ -6,8 +6,7 @@ import { ErrorBoundary } from './components/ErrorBoundary'
 import { UpdateNotice } from './components/UpdateNotice'
 import { useOperator } from './components/AuthGate'
 
-// 统一菜单项：手机与桌面同 6 项（看板/收件箱/消耗/终端/监控/设置），布局不同、项目一致
-// 「监控」原名「运维」(AM-260719-102 改名，仅嵌 claude_manager sysops 看板，见 Ops.tsx)
+// 手机和桌面导航保持一致；外部监控仅在已配置页面地址时显示。
 // 注：「服务器」按用户要求不在导航显示（/servers 路由仍在，可直接访问）。
 const mobileTabs = [
   { to: '/', icon: '📊', label: '看板' },
@@ -31,6 +30,7 @@ const desktopNav = [
 
 export default function App() {
   const operator=useOperator()
+  const [monitorConfigured,setMonitorConfigured]=useState(false)
   const count = useAppStore((s) => pendingCount(s.pendingActions))
   const syncStatus = useAppStore((s) => s.syncStatus)
   const lastSyncTs = useAppStore((s) => s.lastSyncTs)
@@ -42,6 +42,25 @@ export default function App() {
   useEffect(() => {
     void startHubClient()
     return () => stopHubClient()
+  }, [])
+
+  useEffect(() => {
+    if (IS_DEMO) return
+    const controller = new AbortController()
+    const timeout = setTimeout(() => controller.abort(), 10000)
+    const configured = (url: unknown) => typeof url === 'string' && url.trim().length > 0
+    const saved = (event: Event) => {
+      // A saved setting takes precedence over any older initial request.
+      controller.abort()
+      setMonitorConfigured(configured((event as CustomEvent<{monitorUrl?: string}>).detail?.monitorUrl))
+    }
+    window.addEventListener('wa-installation-updated', saved)
+    fetch('/api/installation', {signal: controller.signal})
+      .then(r => r.ok ? r.json() : null)
+      .then(config => { if (!controller.signal.aborted && config) setMonitorConfigured(configured(config.monitorUrl)) })
+      .catch(() => { /* Optional integrations stay hidden until configuration is available. */ })
+      .finally(() => clearTimeout(timeout))
+    return () => { controller.abort(); clearTimeout(timeout); window.removeEventListener('wa-installation-updated', saved) }
   }, [])
 
   // 隐藏项目名单：**服务端为权威**（agent 靠 hub 下发的这份名单决定扫不扫）。
@@ -131,7 +150,7 @@ export default function App() {
       )}
       <nav className="sidenav">
         <div className="sidenav__brand">⌘ Agent 管控台</div>
-        {desktopNav.map((item) => (
+        {desktopNav.filter(item => item.to !== '/ops' || monitorConfigured).map((item) => (
           <NavLink key={item.to} to={item.to} end={item.to === '/'} className={({ isActive }) => `sidenav__item ${isActive ? 'active' : ''}`}>
             <span>{item.icon}</span>
             <span>{item.label}</span>
@@ -148,7 +167,7 @@ export default function App() {
       </main>
 
       <nav className="tabbar">
-        {mobileTabs.map((item) => (
+        {mobileTabs.filter(item => item.to !== '/ops' || monitorConfigured).map((item) => (
           <NavLink key={item.to} to={item.to} end={item.to === '/'} className={({ isActive }) => `tabbar__item ${isActive ? 'active' : ''}`}>
             <span className="tabbar__icon">
               {item.icon}
