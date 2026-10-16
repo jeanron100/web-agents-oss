@@ -1,0 +1,27 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "Self-hosted multi-node coding agent console",
+  "main": "agent.js",
+  "scripts": {
+    "start": "node hub.js",
+    "agent": "node agent.js",
+    "test": "node --test --test-concurrency=2 *.test.mjs mcp/*.test.mjs"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@anthropic-ai/claude-agent-sdk": "^0.3.172",
+    "@modelcontextprotocol/sdk": "^1.29.0",
+    "mongodb": "^7.5.0",
+    "mysql2": "^3.22.5",
+    "redis": "^6.1.0",
+    "web-push": "^3.6.7",
+    "ws": "^8.22.0"
+  },
+  "engines": {
+    "node": ">=24"
+  },
+  "type": "module"
+}

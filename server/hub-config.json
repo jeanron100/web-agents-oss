@@ -1,0 +1,10 @@
+{
+  "agents": [],
+  "retiredAgents": [],
+  "quota": {
+    "groups": [],
+    "historyAliases": {},
+    "preferredSources": {}
+  },
+  "integrations": {}
+}

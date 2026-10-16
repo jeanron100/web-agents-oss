@@ -1,0 +1,45 @@
+name: web-agents
+services:
+  mysql:
+    image: mysql:8.4
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: web_agents
+      MYSQL_USER: web_agents
+      MYSQL_PASSWORD: ${WA_DB_PASSWORD:?Run ./scripts/quickstart.sh first}
+      MYSQL_ROOT_PASSWORD: ${WA_DB_ROOT_PASSWORD:?Run ./scripts/quickstart.sh first}
+    volumes:
+      - mysql-data:/var/lib/mysql
+    healthcheck:
+      test: [CMD-SHELL, 'mysqladmin ping -h 127.0.0.1 --silent']
+      interval: 5s
+      timeout: 5s
+      retries: 30
+    mem_limit: 768m
+  console:
+    image: ${WA_CONSOLE_IMAGE:-web-agents-console:local}
+    build:
+      context: .
+      target: console
+    init: true
+    restart: unless-stopped
+    depends_on:
+      mysql:
+        condition: service_healthy
+    ports:
+      - '${WA_BIND:-127.0.0.1}:${WA_PORT:-5188}:8787'
+    environment:
+      WA_PUBLIC_URL: ${WA_PUBLIC_URL:-http://localhost:5188}
+      WA_MYSQL_HOST: mysql
+      WA_MYSQL_DATABASE: web_agents
+      WA_MYSQL_USER: web_agents
+      WA_MYSQL_PASSWORD: ${WA_DB_PASSWORD}
+    volumes:
+      - console-data:/var/lib/web-agents
+    mem_limit: 768m
+    pids_limit: 256
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+volumes:
+  mysql-data:
+  console-data:

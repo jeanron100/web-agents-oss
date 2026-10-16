@@ -1,0 +1,6 @@
+{
+  "format": 1,
+  "policy": "scripts/export-public.mjs is the executable allowlist. Create a new public repository from its output, never from this private Git history.",
+  "include": ["runtime source and tests", "web source and demo fixtures", "docs/public", "container delivery", "CI workflows", "license and contribution policy"],
+  "exclude": [".git", "private operational docs", "production deployment scripts and templates", "server/.env", "private rosters", "CLI credentials", "MCP client configs", "logs", "runtime volumes", "node_modules", "browser recordings"]
+}

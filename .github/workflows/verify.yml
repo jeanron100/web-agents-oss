@@ -1,0 +1,38 @@
+name: Verify
+on: [push, pull_request]
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: |
+            server/package-lock.json
+            web/package-lock.json
+      - run: npm ci && npm test
+        working-directory: server
+      - run: npm audit --omit=dev --audit-level=high
+        working-directory: server
+      - run: npm ci && npm test && npm run build
+        working-directory: web
+      - run: npm audit --audit-level=high
+        working-directory: web
+      - run: node scripts/scan-secrets.mjs .
+  containers:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: ./scripts/quickstart.sh --runner
+      - run: docker compose --env-file .compose.env exec -T console node server/manage.mjs setup-token > /tmp/wa-setup-token
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - run: node scripts/container-smoke.mjs http://127.0.0.1:5188 /tmp/wa-setup-token
+      - run: docker compose --env-file .compose.env exec -T console node server/manage.mjs doctor
+      - if: failure()
+        run: docker compose --env-file .compose.env -f compose.yaml -f compose.runner.yaml logs --tail 100
+      - if: always()
+        run: docker compose --env-file .compose.env -f compose.yaml -f compose.runner.yaml down -v

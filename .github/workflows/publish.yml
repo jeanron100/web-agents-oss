@@ -1,0 +1,102 @@
+name: Publish versioned images
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Explicit release tag, for example v0.1.0'
+        required: true
+permissions:
+  contents: read
+  packages: write
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.version }}
+      - name: Validate immutable release input
+        env:
+          RELEASE_VERSION: ${{ inputs.version }}
+        run: |
+          [[ "$RELEASE_VERSION" =~ ^v[0-9]+\.[0-9]+\.[0-9]+(-[a-zA-Z0-9.-]+)?$ ]]
+          test "$(cat release/version)" = "$RELEASE_VERSION"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - run: npm ci && npm test && npm audit --omit=dev --audit-level=high
+        working-directory: server
+      - run: npm ci && npm test && npm run build && npm audit --audit-level=high
+        working-directory: web
+      - run: node scripts/scan-secrets.mjs .
+      - name: Generate dependency inventories
+        run: |
+          mkdir -p release-inventories
+          (cd server && npm sbom --omit=dev --sbom-format cyclonedx) > release-inventories/server.cdx.json
+          (cd web && npm sbom --sbom-format cyclonedx) > release-inventories/web.cdx.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: dependency-inventories
+          path: release-inventories/
+  publish:
+    needs: verify
+    environment: release
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.version }}
+      - name: Validate version
+        env:
+          RELEASE_VERSION: ${{ inputs.version }}
+        run: '[[ "$RELEASE_VERSION" =~ ^v[0-9]+\.[0-9]+\.[0-9]+(-[a-zA-Z0-9.-]+)?$ ]]'
+      - uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Set lowercase image namespace
+        run: echo "IMAGE_NAMESPACE=${GITHUB_REPOSITORY,,}" >> "$GITHUB_ENV"
+      - uses: docker/setup-buildx-action@v3
+      - uses: docker/build-push-action@v6
+        id: console
+        with:
+          context: .
+          target: console
+          push: true
+          tags: ghcr.io/${{ env.IMAGE_NAMESPACE }}-console:${{ inputs.version }}
+          labels: org.opencontainers.image.source=https://github.com/${{ github.repository }}
+          provenance: true
+          sbom: true
+      - uses: docker/build-push-action@v6
+        id: runner
+        with:
+          context: .
+          target: runner
+          push: true
+          tags: ghcr.io/${{ env.IMAGE_NAMESPACE }}-runner:${{ inputs.version }}
+          labels: org.opencontainers.image.source=https://github.com/${{ github.repository }}
+          provenance: true
+          sbom: true
+      - name: Scan console image
+        uses: aquasecurity/trivy-action@0.35.0
+        with:
+          image-ref: ghcr.io/${{ env.IMAGE_NAMESPACE }}-console@${{ steps.console.outputs.digest }}
+          severity: HIGH,CRITICAL
+          ignore-unfixed: true
+          exit-code: '1'
+      - name: Scan runner image
+        uses: aquasecurity/trivy-action@0.35.0
+        with:
+          image-ref: ghcr.io/${{ env.IMAGE_NAMESPACE }}-runner@${{ steps.runner.outputs.digest }}
+          severity: HIGH,CRITICAL
+          ignore-unfixed: true
+          exit-code: '1'
+      - name: Record immutable images
+        run: |
+          mkdir -p image-inventories
+          printf '%s\n' 'ghcr.io/${{ env.IMAGE_NAMESPACE }}-console@${{ steps.console.outputs.digest }}' 'ghcr.io/${{ env.IMAGE_NAMESPACE }}-runner@${{ steps.runner.outputs.digest }}' > image-inventories/images.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: image-digests
+          path: image-inventories/

@@ -1,0 +1,361 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>WebAgents · 把多台服务器上的 AI 编码会话，收进一个手机能用的管控台</title>
+<meta name="description" content="自托管的多服务器 AI 编码代理管控台：统一看板、待办审批收件箱、Claude Code 与 Codex 双引擎、终端 ⇄ Web 双向接管、交互式终端。手机优先 PWA。">
+<meta property="og:title" content="WebAgents · 多服务器 AI 编码代理管控台">
+<meta property="og:description" content="AI 在 5 台机器上替你写代码，随时会停下来问「这条 rm -rf 能跑吗」——而你在地铁上。">
+<meta property="og:type" content="website">
+<style>
+  :root{
+    --bg:#0b1017; --panel:#111823; --panel-2:#0f151f; --border:#1e2836;
+    --t1:#e6edf6; --t2:#a7b4c6; --t3:#6b7a8f;
+    --claude:#c96442; --codex:#22d3ee; --ok:#4ade80; --warn:#f59e0b; --err:#f87171; --accent:#4f8cff;
+    --maxw:1080px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--bg); color:var(--t1);
+    font:16px/1.7 -apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",system-ui,sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:var(--accent);text-decoration:none}
+  a:hover{text-decoration:underline}
+  code,.mono{font-family:ui-monospace,SFMono-Regular,"SF Mono",Menlo,monospace}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 20px}
+  section{padding:72px 0;border-top:1px solid var(--border)}
+  h2{font-size:26px;letter-spacing:-.01em;margin-bottom:8px}
+  .sub{color:var(--t3);font-size:14.5px;margin-bottom:32px}
+
+  /* ── hero ── */
+  .hero{padding:84px 0 64px;background:
+    radial-gradient(1000px 420px at 15% -10%, rgba(201,100,66,.16), transparent 60%),
+    radial-gradient(800px 380px at 88% 0%, rgba(34,211,238,.10), transparent 60%);}
+  .hero__grid{display:grid;grid-template-columns:1.15fr .85fr;gap:48px;align-items:center}
+  .badge{display:inline-flex;align-items:center;gap:7px;padding:4px 11px;border:1px solid var(--border);
+    border-radius:999px;font-size:12.5px;color:var(--t2);background:var(--panel);margin-bottom:20px}
+  .badge b{color:var(--ok);font-weight:600}
+  h1{font-size:42px;line-height:1.25;letter-spacing:-.02em;margin-bottom:18px;text-wrap:balance}
+  h1 em{font-style:normal;background:linear-gradient(90deg,var(--claude),var(--codex));
+    -webkit-background-clip:text;background-clip:text;color:transparent}
+  .lede{font-size:17px;color:var(--t2);margin-bottom:28px;max-width:52ch}
+  .cta{display:flex;gap:12px;flex-wrap:wrap}
+  .btn{display:inline-flex;align-items:center;gap:8px;padding:11px 20px;border-radius:10px;
+    font-size:15px;font-weight:600;border:1px solid var(--border);transition:.15s}
+  .btn--pri{background:linear-gradient(135deg,var(--claude),#a34f33);color:#fff;border-color:transparent}
+  .btn--pri:hover{filter:brightness(1.12);text-decoration:none}
+  .btn--ghost{background:var(--panel);color:var(--t1)}
+  .btn--ghost:hover{border-color:var(--t3);text-decoration:none}
+  .cta__note{font-size:12.5px;color:var(--t3);margin-top:12px}
+  .phone{border:8px solid #1a2230;border-radius:28px;overflow:hidden;box-shadow:0 30px 70px rgba(0,0,0,.6);background:#000}
+  .phone img{display:block;width:100%}
+
+  /* ── 痛点 ── */
+  .pain{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+  .pain__item{padding:22px;border:1px solid var(--border);border-radius:12px;background:var(--panel-2)}
+  .pain__n{font-size:12px;color:var(--claude);font-weight:700;letter-spacing:.08em;margin-bottom:8px}
+  .pain__item p{color:var(--t2);font-size:14.5px;line-height:1.75}
+  .pain__item b{color:var(--t1)}
+
+  /* ── 能力卡 ── */
+  .feats{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+  .feat{padding:22px;border:1px solid var(--border);border-radius:12px;background:var(--panel-2)}
+  .feat h3{font-size:15.5px;margin-bottom:8px;display:flex;align-items:center;gap:8px}
+  .feat p{color:var(--t2);font-size:14px;line-height:1.7}
+  .feat code{font-size:12.5px;background:#0a0f16;border:1px solid var(--border);padding:1px 5px;border-radius:4px;color:var(--t2)}
+  .dot{width:8px;height:8px;border-radius:50%;flex:none}
+
+  /* ── 截图带 ── */
+  .shots{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:8px}
+  .shot{border:1px solid var(--border);border-radius:12px;overflow:hidden;background:#000}
+  .shot img{display:block;width:100%}
+  .shot figcaption{padding:10px 12px;font-size:12.5px;color:var(--t3);border-top:1px solid var(--border);background:var(--panel-2)}
+
+  /* ── 架构 ── */
+  .arch{border:1px solid var(--border);border-radius:14px;background:var(--panel-2);padding:28px;overflow-x:auto}
+  .arch svg{display:block;min-width:640px;margin:0 auto}
+  .arch__notes{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:26px}
+  .arch__notes div{font-size:13.5px;color:var(--t2);line-height:1.7}
+  .arch__notes b{color:var(--t1);display:block;margin-bottom:4px}
+
+  /* ── 踩坑（核心差异化）── */
+  .pit{border:1px solid var(--border);border-radius:12px;background:var(--panel-2);overflow:hidden;margin-bottom:14px}
+  .pit__head{display:flex;align-items:baseline;gap:10px;padding:16px 20px;flex-wrap:wrap}
+  .pit__sym{font-weight:650;font-size:15px;color:var(--err)}
+  .pit__tag{font-size:11px;color:var(--t3);border:1px solid var(--border);padding:1px 8px;border-radius:999px;margin-left:auto}
+  .pit__body{padding:0 20px 18px;display:grid;grid-template-columns:1fr 1fr;gap:18px}
+  .pit__body>div{font-size:13.8px;line-height:1.75;color:var(--t2)}
+  .pit__body b{color:var(--t1);display:block;margin-bottom:3px;font-size:12px;letter-spacing:.05em}
+  .pit__body em{font-style:normal;color:var(--ok)}
+
+  /* ── 上手 ── */
+  pre{background:#080c12;border:1px solid var(--border);border-radius:12px;padding:18px 20px;
+    overflow-x:auto;font-size:13.5px;line-height:1.9;color:var(--t2)}
+  pre .c{color:var(--t3)}
+  pre .k{color:var(--codex)}
+
+  footer{padding:44px 0 64px;color:var(--t3);font-size:13.5px;border-top:1px solid var(--border)}
+  footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+
+  @media(max-width:900px){
+    .hero__grid{grid-template-columns:1fr;gap:36px}
+    h1{font-size:32px}
+    .pain,.feats,.shots,.arch__notes,.pit__body{grid-template-columns:1fr}
+    .shots{grid-template-columns:1fr 1fr}
+    section{padding:56px 0}
+  }
+</style>
+</head>
+<body>
+
+<!-- ══════════ HERO ══════════ -->
+<div class="hero">
+  <div class="wrap hero__grid">
+    <div>
+      <span class="badge"><span class="dot" style="background:var(--ok)"></span> <b>自托管</b> · Claude Code + Codex · 手机优先 PWA</span>
+      <h1>AI 在替你写代码。<br>但它<em>随时会停下来问你一句话</em>。</h1>
+      <p class="lede">
+        你在 5 台服务器上跑着 AI 编码会话。它们会停下来问「这条 <code>rm -rf</code> 能跑吗」——
+        而你在地铁上，SSH 不在手边。<br><br>
+        <b style="color:var(--t1)">WebAgents</b> 把这些会话收进一个统一的管控台：一个收件箱、一个「批准 / 拒绝」、一条随时能接管的对话流。
+      </p>
+      <div class="cta">
+        <a class="btn btn--pri" href="/demo/">▶ 在线体验（演示数据）</a>
+        <a class="btn btn--ghost" href="#pitfalls">看看踩过哪些坑 ↓</a>
+      </div>
+      <p class="cta__note">Demo 跑的就是生产代码本身，只是数据源换成了编造的演示数据——它连一个 API 请求都不会发出去。</p>
+    </div>
+    <div class="phone"><img src="/demo-shots/dash.png" alt="WebAgents 看板：5 台服务器的会话一屏尽览" fetchpriority="high" decoding="async"></div>
+  </div>
+</div>
+
+<!-- ══════════ 痛点 ══════════ -->
+<section>
+  <div class="wrap">
+    <h2>为什么需要它</h2>
+    <p class="sub">这不是一个"AI 编程工具"。它是你和一群 AI 之间的<b style="color:var(--t1)">控制面</b>。</p>
+    <div class="pain">
+      <div class="pain__item">
+        <div class="pain__n">01 · 它会卡住等你</div>
+        <p>Claude Code 遇到危险命令会<b>停下来等授权</b>。你不在，它就一直等着。一个会话卡住，后面排的活全停。</p>
+      </div>
+      <div class="pain__item">
+        <div class="pain__n">02 · 你不知道它在哪儿卡住</div>
+        <p>5 台机、十几个项目。哪台在跑？哪个在等你？<b>你得挨个 SSH 上去看</b>——如果你手边有电脑的话。</p>
+      </div>
+      <div class="pain__item">
+        <div class="pain__n">03 · 终端和 Web 是两个世界</div>
+        <p>终端里起的会话，网页上看不到；网页上起的，回到终端接不上。<b>你被绑在某一端。</b></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ 核心能力 ══════════ -->
+<section>
+  <div class="wrap">
+    <h2>它做什么</h2>
+    <p class="sub">六个能力。每一个都能在上面的 Demo 里点开看。</p>
+    <div class="feats">
+      <div class="feat">
+        <h3><span class="dot" style="background:var(--ok)"></span> 多机统一看板</h3>
+        <p>所有服务器的会话一屏尽览。<b style="color:var(--t1)">六态模型</b>：运行中 / 等待审批 / 等待输入 / 空闲 / 已完成 / 出错——一眼看出谁在等你。</p>
+      </div>
+      <div class="feat">
+        <h3><span class="dot" style="background:var(--warn)"></span> 待办收件箱</h3>
+        <p>四类待办统一收口：<b style="color:var(--t1)">审批</b>（危险命令）、<b style="color:var(--t1)">计划</b>（改动前确认）、<b style="color:var(--t1)">提问</b>（AI 在征询）、<b style="color:var(--t1)">验收</b>（回合产生了文件变更）。手机推送直达。</p>
+      </div>
+      <div class="feat">
+        <h3><span class="dot" style="background:var(--claude)"></span> 双引擎，同一套 UI</h3>
+        <p>Claude Code 与 Codex 并列。两套完全不同的协议（SDK / app-server RPC），在上层收敛成同一个会话模型、同一个审批流。</p>
+      </div>
+      <div class="feat">
+        <h3><span class="dot" style="background:var(--codex)"></span> 终端 ⇄ Web 双向接管</h3>
+        <p>终端里 <code>claude</code> 起的会话，Web 上<b style="color:var(--t1)">只读追踪 + 一键接管</b>；Web 上起的会话，也能<code>释放到终端</code>继续用 <code>--resume</code> 接。同一份会话，两端都能拿。</p>
+      </div>
+      <div class="feat">
+        <h3><span class="dot" style="background:var(--accent)"></span> 交互式终端</h3>
+        <p>浏览器里的真 PTY（tmux 支撑 + 手写 WebSocket + xterm.js）。<b style="color:var(--t1)">跨 agent 重启持久</b>——部署完回来，你的 vim 还开着。</p>
+      </div>
+      <div class="feat">
+        <h3><span class="dot" style="background:var(--err)"></span> 出了事查得清</h3>
+        <p>跨服务器执行历史（按<b style="color:var(--t1)">回合</b>组织，不是一行行日志）、agent 重启事件簿（带「当时被杀掉了哪些会话」）、数据层健康看板。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ 截图 ══════════ -->
+<section>
+  <div class="wrap">
+    <h2>长这样</h2>
+    <p class="sub">下面五张全部截自 Demo 站点，你可以自己点进去翻。</p>
+    <div class="shots">
+      <figure class="shot"><img src="/demo-shots/inbox.png" alt="待办收件箱" loading="lazy"><figcaption>收件箱 · 四类待办统一收口</figcaption></figure>
+      <figure class="shot"><img src="/demo-shots/approval.png" alt="审批：危险命令被拦下" loading="lazy"><figcaption>审批 · 危险命令被拦下，附完整上下文</figcaption></figure>
+      <figure class="shot"><img src="/demo-shots/chat.png" alt="对话流：markdown、工具调用、diff、流式" loading="lazy"><figcaption>对话流 · markdown / 工具卡 / diff / 逐字流式</figcaption></figure>
+      <figure class="shot"><img src="/demo-shots/stats.png" alt="消耗：token 与成本" loading="lazy"><figcaption>消耗 · token 与成本，按项目/服务器拆</figcaption></figure>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ 架构 ══════════ -->
+<section>
+  <div class="wrap">
+    <h2>怎么搭的</h2>
+    <p class="sub">一个 hub，N 个 agent。远端<b style="color:var(--t1)">不开任何入站端口</b>。</p>
+    <div class="arch">
+      <svg viewBox="0 0 900 260" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="架构图">
+        <defs>
+          <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+            <path d="M0,0 L10,5 L0,10 z" fill="#3d5570"/>
+          </marker>
+          <style>
+            .bx{fill:#111823;stroke:#243044;stroke-width:1.2;rx:10}
+            .lb{fill:#e6edf6;font:600 13px system-ui;text-anchor:middle}
+            .sm{fill:#6b7a8f;font:11px ui-monospace,monospace;text-anchor:middle}
+            .ln{stroke:#3d5570;stroke-width:1.4;fill:none;marker-end:url(#ar)}
+            .dash{stroke-dasharray:5 4}
+          </style>
+        </defs>
+
+        <rect class="bx" x="20"  y="98"  width="120" height="56"/>
+        <text class="lb" x="80"  y="122">浏览器 PWA</text>
+        <text class="sm" x="80"  y="140">手机 / 桌面</text>
+
+        <rect class="bx" x="185" y="98"  width="120" height="56"/>
+        <text class="lb" x="245" y="122">nginx</text>
+        <text class="sm" x="245" y="140">TLS + 登录网关</text>
+
+        <rect class="bx" x="350" y="98"  width="120" height="56"/>
+        <text class="lb" x="410" y="122">hub</text>
+        <text class="sm" x="410" y="140">只监听 127.0.0.1</text>
+
+        <rect class="bx" x="580" y="18"  width="150" height="50"/>
+        <text class="lb" x="655" y="40">agent · 东京</text>
+        <text class="sm" x="655" y="56">claude / codex / pty</text>
+
+        <rect class="bx" x="580" y="100" width="150" height="50"/>
+        <text class="lb" x="655" y="122">agent · 新加坡</text>
+        <text class="sm" x="655" y="138">claude / codex / pty</text>
+
+        <rect class="bx" x="580" y="182" width="150" height="50"/>
+        <text class="lb" x="655" y="204">agent · 法兰克福</text>
+        <text class="sm" x="655" y="220">claude / codex / pty</text>
+
+        <text class="sm" x="825" y="112" style="text-anchor:start">…N 台</text>
+
+        <path class="ln" d="M142 126 H183"/>
+        <path class="ln" d="M307 126 H348"/>
+        <path class="ln dash" d="M472 122 C 520 122, 530 45,  578 45"/>
+        <path class="ln dash" d="M472 126 H 578"/>
+        <path class="ln dash" d="M472 130 C 520 130, 530 205, 578 205"/>
+        <text class="sm" x="525" y="86" fill="#22d3ee">SSH 隧道</text>
+        <text class="sm" x="525" y="172" fill="#22d3ee">（零入站端口）</text>
+      </svg>
+      <div class="arch__notes">
+        <div><b>结构化事件总线为主</b>agent 扫描 CLI 自己的会话日志（JSONL / rollout），产出结构化事件；终端镜像只做兜底。不是"把终端搬到网页"。</div>
+        <div><b>远端零入站端口</b>agent 只监听 127.0.0.1，靠 hub 主动建立的 SSH 反向隧道接入。远端防火墙一个洞都不用开。</div>
+        <div><b>agent 零依赖</b>纯 Node 原生模块，远端只需放几个 .js 文件 + 一个 systemd unit。没有容器，没有 npm install。</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ 踩过的坑（核心差异化）══════════ -->
+<section id="pitfalls">
+  <div class="wrap">
+    <h2>踩过的坑，和留下的防线</h2>
+    <p class="sub">
+      这一节是我认为这个项目最值得看的部分。<br>
+      不是"我有多少功能"，而是<b style="color:var(--t1)">"它在真实的多机生产环境里坏过哪些次，以及每一次留下了什么"</b>。
+      下面每一条都是线上真实发生过、并且付出过代价的。
+    </p>
+
+    <div class="pit">
+      <div class="pit__head">
+        <span class="pit__sym">对话流永久空白，一直转圈</span>
+        <span class="pit__tag">event loop 饥饿</span>
+      </div>
+      <div class="pit__body">
+        <div><b>根因</b>解析缓存按 mtime 失效，而<b style="display:inline">正在运行的会话每写一行 mtime 就变</b> → 每次都全量重解析。一个 16MB 的长会话扫一遍要 1 秒，而 SSE 每 300ms tick 一次、且不等上一轮跑完 → 同一个文件被 3~4 个全量扫同时碾 → event loop 被埋 → 首帧发不出去。<b style="display:inline">会话一停写就自愈，所以静态环境根本复现不出来。</b></div>
+        <div><b>防线</b><em>增量续扫</em>（append-only ⇒ 只解析新增字节，1000ms → 3ms）+ <em>同文件并发解析合并</em> + <em>SSE tick 不叠加</em>。三道缺一不可。回归测试验「增量 ≡ 冷启全量」，含"正在写入的半行"这个最阴的用例。</div>
+      </div>
+    </div>
+
+    <div class="pit">
+      <div class="pit__head">
+        <span class="pit__sym">界面冻在 15 分钟前，等多久都不刷新</span>
+        <span class="pit__tag">SSE 半死连接</span>
+      </div>
+      <div class="pit__body">
+        <div><b>根因</b>手机休眠 / 切后台 / NAT 超时后，TCP 还开着，但<b style="display:inline">一个字节都不会再来</b>。此时 <code>onerror</code> <b style="display:inline">永不触发</b>、<code>readyState</code> 恒为 <code>OPEN</code> —— 而兜底轮询的判据是「CLOSED 才回退」，那个条件<b style="display:inline">永远等不到</b>。服务端本来有心跳，但发的是 SSE <b style="display:inline">注释行</b> <code>: ping</code> ——浏览器根本不把它暴露给 JS。<b style="display:inline">等于装了心跳，线没接。</b></div>
+        <div><b>防线</b>心跳改成<em>具名事件</em> <code>event: ping</code> + 前端<em>心跳看门狗</em>（会话本该活跃却 45s 无字节 → 主动重建）+ <em><code>visibilitychange</code> 切回前台立刻补拉</em>。看门狗不要求对端配合——"活跃却静默"本身就够，所以对着还没升级的旧 agent 也能自愈。</div>
+      </div>
+    </div>
+
+    <div class="pit">
+      <div class="pit__head">
+        <span class="pit__sym">部署一次，把用户正在跑的会话拦腰杀了</span>
+        <span class="pit__tag">重启 = SIGKILL</span>
+      </div>
+      <div class="pit__body">
+        <div><b>根因</b>平台会话是 agent 的子进程，跑在同一个 cgroup 里。<code>systemctl restart</code> 一下，<b style="display:inline">正在执行的那一回合被拦腰截断</b>——tool_result 已落盘、assistant 的下一回合永远不会来，会话冻在半途，前端把这条悬空的 tool_use 永久渲染成「正在执行 305 秒」。</div>
+        <div><b>防线</b>部署脚本<em>先查目标机的活跃平台会话</em>，有就直接拒绝（除非显式 force）+ 原子落位 + 失败自动回滚。另外 agent 上报 <code>bootId</code>，hub 据此识别重启并记下<em>「当时被杀掉了哪些会话」</em>——那份名单只有重启<b style="display:inline">前那一拍</b>轮询里有，事后再也拿不到。</div>
+      </div>
+    </div>
+
+    <div class="pit">
+      <div class="pit__head">
+        <span class="pit__sym">点了「允许」，审批卡消失后又冒出来，然后再消失</span>
+        <span class="pit__tag">陈旧快照覆盖乐观更新</span>
+      </div>
+      <div class="pit__body">
+        <div><b>根因</b>前端每 3 秒轮询，拿服务端列表<b style="display:inline">整份覆盖</b>本地。只要有一拍快照<b style="display:inline">早于</b>你的点击（请求在途 / hub 还没轮到那台 agent），它带回来的这条仍是 pending —— 于是刚隐藏的卡片被<b style="display:inline">复活</b>。可见时长恰好一个轮询周期。</div>
+        <div><b>防线</b>给刚提交的操作立<em>墓碑</em>（20s TTL）：墓碑期内服务端再报 pending 一律按本地已解决压住。超时后不再压制——万一服务端真的处理失败，卡片会重新出现让你重试，而不是被永久藏起来。回归测试：<b style="display:inline">关掉墓碑即失败</b>。</div>
+      </div>
+    </div>
+
+    <div class="pit">
+      <div class="pit__head">
+        <span class="pit__sym">会话明明空闲，却死活接管不了</span>
+        <span class="pit__tag">文件新 ≠ 有人在写</span>
+      </div>
+      <div class="pit__body">
+        <div><b>根因</b>接管守卫的判据是「JSONL 的 mtime 在 90 秒内 ⇒ 有人在写 ⇒ 拒绝接管」。可 mtime 是<b style="display:inline">任何东西</b>都能碰的：一次 <code>touch</code>、一次 <code>rsync -a</code>、一个备份工具扫过去——会话就被锁死，而用户面前<b style="display:inline">一条出路都没有</b>。</div>
+        <div><b>防线</b>改成<em>必须 /proc 里真有写者</em>：① 有进程显式攥着这个会话（铁证）；② 该项目下有 CLI 进程<b style="display:inline">且</b>文件近期确在动。mtime 降级为佐证，自己不再构成拦截理由。另外把 4xx 的<em>可操作字段原样透传</em>——此前代理层把 409 压成 500 并吃掉了 <code>canForce</code>，导致「强制接管」按钮永不出现。</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ 上手 ══════════ -->
+<section>
+  <div class="wrap">
+    <h2>怎么跑起来</h2>
+    <p class="sub">一台机做 hub，其余机各放一个 agent。</p>
+    <pre><span class="c"># 1. 主控机：构建前端 + 起 hub</span>
+<span class="k">cd</span> web && npm ci && npm run build
+systemctl enable --now web-agents-hub
+
+<span class="c"># 2. 每台被管服务器：放一个 agent（零依赖，只是几个 .js）</span>
+bash server/deploy-agent.sh root@your-node
+<span class="c">#    ↑ 部署前会先查该机有没有正在跑的会话，有就拒绝——不会把你的活干断</span>
+
+<span class="c"># 3. hub 侧建 SSH 隧道接入（远端不用开任何入站端口）</span>
+systemctl enable --now web-agents-tunnel@your-node</pre>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <span>WebAgents · 自托管的多服务器 AI 编码代理管控台</span>
+    <span><a href="/demo/">在线体验 →</a></span>
+  </div>
+</footer>
+
+</body>
+</html>

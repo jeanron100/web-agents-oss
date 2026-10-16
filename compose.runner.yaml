@@ -1,0 +1,31 @@
+services:
+  console:
+    environment:
+      WA_LOCAL_RUNNER_URL: http://runner:8788
+    volumes:
+      - runner-key:/run/web-agents/runner
+  runner:
+    image: ${WA_RUNNER_IMAGE:-web-agents-runner:local}
+    build:
+      context: .
+      target: runner
+    init: true
+    restart: unless-stopped
+    environment:
+      WA_SERVER_ID: local-runner
+      WA_MAX_SESSIONS: '2'
+      # Docker is the explicit isolation boundary, without privileged mode or host mounts.
+      WA_CODEX_EXTERNAL_SANDBOX: '1'
+    volumes:
+      - runner-home:/home/node
+      - runner-workspace:/workspace
+      - runner-key:/run/web-agents/runner:ro
+    mem_limit: 2g
+    cpus: 2
+    pids_limit: 512
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+volumes:
+  runner-key:
+  runner-home:
+  runner-workspace:

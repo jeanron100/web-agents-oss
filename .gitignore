@@ -1,0 +1,26 @@
+dist/
+.env
+node_modules/
+notify-config.json
+push-keys.json
+push-subs.json
+server/.env
+# 项目级 MCP 配置：env 里内联着 agentmail 的账号口令，和 server/.env 同级别——**不入库**
+# （本仓库 push 到 GitHub；凭据一旦进 commit 历史，事故半径是整个协作总线）
+.mcp.json
+# 演示用静态构建产物（1.2MB，可由 npm run build 复现），跟 dist/ 同理不入库
+web/dist-demo/
+server/categories.json
+server/.kb-archive-state.json
+web/tsconfig.tsbuildinfo
+*.bak_preopsclean
+# 项目级 skill 挂载：`.claude/skills/*` 是指向 /data/skillhub 的**绝对路径软链**，
+# 只在 .232 这台机器上成立。入库只会在别的机器上变成一堆断链，且内容其实住在 skillhub 仓库里。
+.claude/skills/
+server/hidden-projects.json
+server/hub-config.private.json
+.codex/
+.kimi-code/
+.compose.env
+.release/
+release-artifacts/
