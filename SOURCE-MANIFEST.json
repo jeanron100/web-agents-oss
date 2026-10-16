@@ -1542,8 +1542,12 @@
       "sha256": "f6bcb1e8ff50d22656d8c9d76ab86d65564cc4adb79fbbdf77535a0dbc50654b"
     },
     {
+      "path": "web/src/pages/NewSession.test.tsx",
+      "sha256": "7a06325e630dfaa2e6540913a5ca3f309e1ddaaa5d898cbd4f3a17b6032d0529"
+    },
+    {
       "path": "web/src/pages/NewSession.tsx",
-      "sha256": "7897825f1b36ff873cdb713efd951c13e794251893de76f21102a1ae12a283ef"
+      "sha256": "2c7ebcbc7ec293ebaffdbf2a3d95daa76a67436ee890fcbdfcc2b35dc8ec961c"
     },
     {
       "path": "web/src/pages/Ops.tsx",

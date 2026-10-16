@@ -33,7 +33,8 @@ export default function NewSession() {
   const [error, setError] = useState('')
 
   useEffect(() => {
-    if (servers.length > 0 && !servers.some(s=>s.id===serverId)) setServerId(servers.find(s=>s.online&&s.id!=='local-runner')?.id ?? servers.find(s=>s.online)?.id ?? servers[0].id)
+    // Honor an explicitly requested node even while the cached server list is stale.
+    if (!serverId && servers.length > 0) setServerId(servers.find(s=>s.online&&s.id!=='local-runner')?.id ?? servers.find(s=>s.online)?.id ?? servers[0].id)
   }, [servers, serverId])
 
   useEffect(() => {
@@ -140,6 +141,7 @@ export default function NewSession() {
             )
           })}
         </div>
+        {serverId&&!selectedServer&&servers.length>0&&<p className="dl-hint">{t('所选节点尚未出现在当前列表，请等待刷新或到设置中检查连接；不会自动改用其他节点。','The requested node is not in the current list yet. Wait for refresh or check its connection in settings; another node will not be substituted.')}</p>}
         {!servers.length&&<p className="dl-hint">{t('还没有执行节点。先在设置中添加远程服务器，再创建会话。','No execution node is configured. Add a remote server in settings first.')} <Link to="/settings?add=remote#servers">{t('连接服务器','Connect a server')}</Link></p>}
         <p className="dl-hint">{t('要管理其他服务器？','Manage another server?')} <Link to="/settings?add=remote#servers">{t('添加远程服务器','Add a remote server')}</Link></p>
         {/* 闸门满是「新建会话超时」最常见的真因。说出来，用户才知道是等一下还是去释放几个会话。 */}
