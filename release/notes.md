@@ -1,4 +1,6 @@
-# Web Agents desktop delivery candidate
+# Web Agents versioned desktop delivery candidate
+
+This candidate adds automatic per-tag GitHub Releases, stable/prerelease classification, published-version protection and direct versioned downloads on the repository homepage. Each version keeps its own packages, source, checksums and image tags.
 
 Run the full Web Agents console on Linux, macOS (Intel / Apple Silicon) and Windows x64 through Docker Desktop Linux containers.
 

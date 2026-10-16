@@ -11,11 +11,11 @@
     },
     {
       "path": ".github/workflows/publish.yml",
-      "sha256": "b5eb02c335269e604290462a650de5fea804404304d7aa4c4a379c98d1306d9f"
+      "sha256": "29826ba29f33d230734b422cce15447f8c8b5476381ec3cc85d0d73bc80ad52e"
     },
     {
       "path": ".github/workflows/verify.yml",
-      "sha256": "28ffe9a1cb45b6d78df1911e9e63c20f8efe3bec883c96426c1fae5747cef5cc"
+      "sha256": "69197633bda41d2d313b88ee0af30ee3230ff0d9d49f7409f8a613f67833cecd"
     },
     {
       "path": ".gitignore",
@@ -35,7 +35,7 @@
     },
     {
       "path": "README.md",
-      "sha256": "12e3322be5faf40522e33f1c455ae0749137cbfc6e6956cd6ad86f66704c2554"
+      "sha256": "92053bd5624aa8cd378b09f21f17baa58fbc36de702c3c64cb00c8ad9beae8a1"
     },
     {
       "path": "SECURITY.md",
@@ -63,11 +63,11 @@
     },
     {
       "path": "docs/public/operations.md",
-      "sha256": "04aa26e1e6eb448091d34d8006e2e299f3f457b3921071e86a15d1883f549c04"
+      "sha256": "009d4c88f0441e352e542ed4dd4a754ac746c76b08fb56be4301bdfd8f83a6e5"
     },
     {
       "path": "docs/public/release-readiness.md",
-      "sha256": "4657fd23a4f90bebdf4b83237ceb895d8ec499158e17e75ee3e32c9f3a713d58"
+      "sha256": "385f5545b7a9ad16ca12c7c46f07386744f3b30df1b065ee654ac219fca01b57"
     },
     {
       "path": "docs/public/third-party-notices.md",
@@ -79,11 +79,11 @@
     },
     {
       "path": "release/notes.md",
-      "sha256": "ed658c7c2cb119fa2a4aaf16b95932e49b7753d30aa3e5fd847ba14abe570112"
+      "sha256": "d0ce21f4360431f71ee336a991b8ac0330ceed07792c588c0055a4b82dca256b"
     },
     {
       "path": "release/version",
-      "sha256": "9adf48350af7ce8582574dfe3d938a0b4f913d3698e26f654e47da510e828aeb"
+      "sha256": "1541323d3d2672edee6fab7c3978be11b7f1baa37cda03aa08d98c6a7318d2f8"
     },
     {
       "path": "scripts/backup.sh",
@@ -95,7 +95,7 @@
     },
     {
       "path": "scripts/export-public.mjs",
-      "sha256": "0f416bc880a275760f1b45a34aa3c096895a6e13df43e6bb3499c90dc0ab309f"
+      "sha256": "dbc2d79ff44bdbf8f2d320e5a051283314f9e40bd5bd6d26d5e7605eaef88005"
     },
     {
       "path": "scripts/package-release.py",
@@ -108,6 +108,14 @@
     {
       "path": "scripts/quickstart.sh",
       "sha256": "367a32a936197e2773db5220dc35ff2828f5ae4c8d27303ffa2cb7cd851a4c65"
+    },
+    {
+      "path": "scripts/release-policy.mjs",
+      "sha256": "74db4fec3c8120d8746dfce3fc9419a627b8d4b69b73cab0c1ff4b8996679a5e"
+    },
+    {
+      "path": "scripts/release-policy.test.mjs",
+      "sha256": "eadfe96a85eae646fefb829c130e0e97e638b10bb2febf0d7d52f9249e782775"
     },
     {
       "path": "scripts/restore.sh",

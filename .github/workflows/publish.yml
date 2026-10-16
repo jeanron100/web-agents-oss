@@ -1,29 +1,45 @@
 name: Publish versioned images
 on:
+  push:
+    tags: ['v*']
   workflow_dispatch:
     inputs:
       version:
         description: 'Explicit release tag, for example v0.1.0'
         required: true
+concurrency:
+  group: release-${{ inputs.version || github.ref_name }}
+  cancel-in-progress: false
 permissions:
   contents: read
   packages: write
 jobs:
   verify:
     runs-on: ubuntu-latest
+    outputs:
+      prerelease: ${{ steps.policy.outputs.prerelease }}
+      latest: ${{ steps.policy.outputs.latest }}
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: ${{ inputs.version }}
-      - name: Validate immutable release input
-        env:
-          RELEASE_VERSION: ${{ inputs.version }}
-        run: |
-          [[ "$RELEASE_VERSION" =~ ^v[0-9]+\.[0-9]+\.[0-9]+(-[a-zA-Z0-9.-]+)?$ ]]
-          test "$(cat release/version)" = "$RELEASE_VERSION"
+          ref: ${{ inputs.version || github.ref_name }}
       - uses: actions/setup-node@v4
         with:
           node-version: 24
+      - name: Validate immutable version tag and release state
+        id: policy
+        env:
+          RELEASE_VERSION: ${{ inputs.version || github.ref_name }}
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          node scripts/release-policy.mjs "$RELEASE_VERSION"
+          test "$(git rev-parse --verify "refs/tags/$RELEASE_VERSION^{commit}")" = "$(git rev-parse HEAD)"
+          gh api --paginate "repos/$GITHUB_REPOSITORY/releases?per_page=100" --jq ".[] | select(.tag_name == \"$RELEASE_VERSION\") | .draft" > /tmp/existing-release-state
+          if grep -qx false /tmp/existing-release-state; then
+            echo 'Refusing to rebuild an already published version. Create a new version tag.' >&2
+            exit 1
+          fi
+      - run: node --test scripts/release-policy.test.mjs
       - run: node scripts/verify-release.mjs . --artifact
       - run: npm ci && npm test && npm audit --omit=dev --audit-level=high
         working-directory: server
@@ -48,7 +64,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: ${{ inputs.version }}
+          ref: ${{ inputs.version || github.ref_name }}
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
@@ -72,7 +88,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: ${{ inputs.version }}
+          ref: ${{ inputs.version || github.ref_name }}
       - uses: docker/login-action@v3
         with:
           registry: ghcr.io
@@ -90,7 +106,7 @@ jobs:
           cache-from: type=gha,scope=web-agents-console-${{ matrix.arch }}
           cache-to: type=gha,mode=max,scope=web-agents-console-${{ matrix.arch }}
           push: true
-          tags: ghcr.io/${{ env.IMAGE_NAMESPACE }}-console:${{ inputs.version }}-${{ matrix.arch }}
+          tags: ghcr.io/${{ env.IMAGE_NAMESPACE }}-console:${{ inputs.version || github.ref_name }}-${{ matrix.arch }}
           labels: org.opencontainers.image.source=https://github.com/${{ github.repository }}
           provenance: true
           sbom: true
@@ -103,7 +119,7 @@ jobs:
           cache-from: type=gha,scope=web-agents-runner-${{ matrix.arch }}
           cache-to: type=gha,mode=max,scope=web-agents-runner-${{ matrix.arch }}
           push: true
-          tags: ghcr.io/${{ env.IMAGE_NAMESPACE }}-runner:${{ inputs.version }}-${{ matrix.arch }}
+          tags: ghcr.io/${{ env.IMAGE_NAMESPACE }}-runner:${{ inputs.version || github.ref_name }}-${{ matrix.arch }}
           labels: org.opencontainers.image.source=https://github.com/${{ github.repository }}
           provenance: true
           sbom: true
@@ -127,8 +143,8 @@ jobs:
           exit-code: '1'
       - name: Initialize actual architecture-specific containers
         env:
-          WA_CONSOLE_IMAGE: ghcr.io/${{ env.IMAGE_NAMESPACE }}-console:${{ inputs.version }}-${{ matrix.arch }}
-          WA_RUNNER_IMAGE: ghcr.io/${{ env.IMAGE_NAMESPACE }}-runner:${{ inputs.version }}-${{ matrix.arch }}
+          WA_CONSOLE_IMAGE: ghcr.io/${{ env.IMAGE_NAMESPACE }}-console:${{ inputs.version || github.ref_name }}-${{ matrix.arch }}
+          WA_RUNNER_IMAGE: ghcr.io/${{ env.IMAGE_NAMESPACE }}-runner:${{ inputs.version || github.ref_name }}-${{ matrix.arch }}
         run: |
           ./scripts/quickstart.sh --runner --pull
           docker compose --env-file .compose.env -f compose.yaml -f compose.runner.yaml exec -T runner codex --version
@@ -141,7 +157,7 @@ jobs:
       - run: node scripts/container-smoke.mjs http://127.0.0.1:5188 /tmp/wa-setup-token
       - name: Record architecture digests and image archive
         env:
-          RELEASE_VERSION: ${{ inputs.version }}
+          RELEASE_VERSION: ${{ inputs.version || github.ref_name }}
           RELEASE_ARCH: ${{ matrix.arch }}
         run: |
           mkdir -p image-inventories
@@ -169,7 +185,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: ${{ inputs.version }}
+          ref: ${{ inputs.version || github.ref_name }}
       - uses: docker/login-action@v3
         with:
           registry: ghcr.io
@@ -189,7 +205,7 @@ jobs:
           path: image-inventories/
       - name: Publish tested multi-platform manifests and fallback tags
         env:
-          RELEASE_VERSION: ${{ inputs.version }}
+          RELEASE_VERSION: ${{ inputs.version || github.ref_name }}
         run: |
           for kind in console runner; do
             image="ghcr.io/$IMAGE_NAMESPACE-$kind"
@@ -198,23 +214,32 @@ jobs:
           done
       - name: Prepare source and desktop bundles
         env:
-          RELEASE_VERSION: ${{ inputs.version }}
+          RELEASE_VERSION: ${{ inputs.version || github.ref_name }}
         run: |
           git archive --format=tar --prefix="web-agents-$RELEASE_VERSION/" HEAD | gzip > "image-inventories/web-agents-$RELEASE_VERSION.tar.gz"
           (cd image-inventories && sha256sum "web-agents-$RELEASE_VERSION.tar.gz" > "web-agents-$RELEASE_VERSION.tar.gz.sha256")
           python3 scripts/package-release.py . image-inventories
-      - name: Stage release assets for final installation acceptance
+      - name: Upload verified version assets
         env:
           GH_TOKEN: ${{ github.token }}
-          RELEASE_VERSION: ${{ inputs.version }}
+          RELEASE_VERSION: ${{ inputs.version || github.ref_name }}
         run: |
           if gh release view "$RELEASE_VERSION" --json isDraft > /tmp/release-state.json 2>/dev/null; then
             node -e 'if(!require("/tmp/release-state.json").isDraft)throw new Error("Refusing to replace a published release")'
           else
             gh release create "$RELEASE_VERSION" --draft --prerelease --title "Web Agents $RELEASE_VERSION" --notes-file release/notes.md
           fi
+          (cd image-inventories && for checksum in *.sha256; do sha256sum --check "$checksum"; done)
           gh release upload "$RELEASE_VERSION" image-inventories/* --clobber
       - uses: actions/upload-artifact@v4
         with:
           name: release-assets
           path: image-inventories/
+      - name: Publish this version after all release gates pass
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_VERSION: ${{ inputs.version || github.ref_name }}
+          IS_PRERELEASE: ${{ needs.verify.outputs.prerelease }}
+          IS_LATEST: ${{ needs.verify.outputs.latest }}
+        run: |
+          gh release edit "$RELEASE_VERSION" --draft=false --prerelease="$IS_PRERELEASE" --latest="$IS_LATEST"

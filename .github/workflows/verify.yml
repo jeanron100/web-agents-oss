@@ -16,6 +16,7 @@ jobs:
             server/package-lock.json
             web/package-lock.json
       - run: node scripts/verify-release.mjs .
+      - run: node --test scripts/release-policy.test.mjs
       - run: npm ci && npm test
         working-directory: server
       - run: npm audit --omit=dev --audit-level=high

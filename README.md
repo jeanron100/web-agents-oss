@@ -4,6 +4,18 @@
 
 当前交付定位：单一管理员或可信小团队，Linux 执行节点。不是面向不可信用户的多租户执行平台。CLI 使用各自厂商账号，订阅、模型和调用权限由厂商决定。
 
+## 版本下载
+
+当前预发布：**[v0.1.0-rc.9](https://github.com/jeanron100/web-agents-oss/releases/tag/v0.1.0-rc.9)**。所有版本独立保存在 [GitHub Releases](https://github.com/jeanron100/web-agents-oss/releases)，可按版本下载和核对更新说明。
+
+| 系统 | 下载 | 解压后启动 |
+|---|---|---|
+| macOS Intel / Apple Silicon | [Mac 安装包](https://github.com/jeanron100/web-agents-oss/releases/download/v0.1.0-rc.9/web-agents-v0.1.0-rc.9-macos.zip) | `start-macos.command` |
+| Windows x64 | [Windows 安装包](https://github.com/jeanron100/web-agents-oss/releases/download/v0.1.0-rc.9/web-agents-v0.1.0-rc.9-windows.zip) | `start-windows.cmd` |
+| Linux amd64 / arm64 | [版本源码包](https://github.com/jeanron100/web-agents-oss/releases/download/v0.1.0-rc.9/web-agents-v0.1.0-rc.9.tar.gz) | `bash scripts/quickstart.sh --runner --pull` |
+
+需先安装并启动 Docker（Mac/Windows 使用 Docker Desktop，Windows 开启 WSL 2 Linux 容器）。Release 附有校验和及按架构区分的镜像包，启动时自动选择引擎架构。`-rc.*` 为预发布，`vX.Y.Z` 为正式版本。
+
 ## 容器快速开始
 
 需要 Docker Engine、Compose v2+。建议至少 4 GB 内存和 12 GB 空闲磁盘。支持 Linux amd64/arm64，以及安装 Docker Desktop 的 macOS（Intel/Apple Silicon）和 Windows（WSL 2 Linux 容器）。容器 runner 使用 Docker 外层隔离，详见安装文档；只用于可信项目。

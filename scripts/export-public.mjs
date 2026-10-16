@@ -9,7 +9,7 @@ names.push('release/version','release/notes.md','start-macos.command','start-win
 const trees=['web/src','web/public','server/repositories','server/mcp','docs/public','.github/workflows']
 const exclude=new Set(['read-status.mjs','deploy-hub-deps.test.mjs','deploy-agent.test.mjs','nightly-restart.test.mjs'])
 for(const n of fs.readdirSync('server'))if(/\.m?js$/.test(n)&&!exclude.has(n))names.push('server/'+n)
-for(const n of ['quickstart.sh','quickstart.ps1','package-release.py','verify-launchers.py','backup.sh','restore.sh','export-public.mjs','scan-secrets.mjs','verify-release.mjs','container-smoke.mjs','verify-first-use.mjs','verify-provider-tasks.mjs'])names.push('scripts/'+n)
+for(const n of ['quickstart.sh','quickstart.ps1','release-policy.mjs','release-policy.test.mjs','package-release.py','verify-launchers.py','backup.sh','restore.sh','export-public.mjs','scan-secrets.mjs','verify-release.mjs','container-smoke.mjs','verify-first-use.mjs','verify-provider-tasks.mjs'])names.push('scripts/'+n)
 const copy=relative=>{const src=path.join(root,relative),dst=path.join(out,relative);if(!fs.existsSync(src))throw new Error('Missing export input: '+relative);if(fs.lstatSync(src).isSymbolicLink())throw new Error('Symlinks are not allowed: '+relative);if(fs.statSync(src).isDirectory()){for(const n of fs.readdirSync(src))copy(relative+'/'+n)}else{fs.mkdirSync(path.dirname(dst),{recursive:true});fs.copyFileSync(src,dst);fs.chmodSync(dst,(/\.(sh|command)$/.test(relative))?0o755:0o644)}}
 for(const n of [...names,...trees])copy(n)
 const files=[]
