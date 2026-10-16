@@ -35,7 +35,7 @@
     },
     {
       "path": "README.md",
-      "sha256": "8d2fbe5a8c1774abd03924b070c9313811b7500d8ba2398fb518ddc5a568c9d2"
+      "sha256": "f58a56cda68d51a275e0841acbd4b419496171a743268bcae55d8a70aa2865ee"
     },
     {
       "path": "SECURITY.md",
@@ -48,6 +48,10 @@
     {
       "path": "compose.yaml",
       "sha256": "a2d2dc73b3ddad42749c8def85214a96853b67a17187d0730f96e5029045ff06"
+    },
+    {
+      "path": "docs/public/comparison.md",
+      "sha256": "b4649ff73ea412532f902678379648765fa56ce1cd9ef369e26d41fe128eb94e"
     },
     {
       "path": "docs/public/desktop.md",
