@@ -1,6 +1,6 @@
-# v0.1.0-rc.9 发布验证与后续计划
+# v0.1.0-rc.10 发布验证与后续计划
 
-[公开仓库](https://github.com/jeanron100/web-agents-oss) · [候选版与交付附件](https://github.com/jeanron100/web-agents-oss/releases/tag/v0.1.0-rc.9) · [发布工作流](https://github.com/jeanron100/web-agents-oss/actions/workflows/publish.yml)
+[公开仓库](https://github.com/jeanron100/web-agents-oss) · [候选版与交付附件](https://github.com/jeanron100/web-agents-oss/releases/tag/v0.1.0-rc.10) · [发布工作流](https://github.com/jeanron100/web-agents-oss/actions/workflows/publish.yml)
 
 定位为单管理员或可信小团队的 Linux 管控台，容器交付扩展到 Linux amd64/arm64，以及 Docker Desktop 下的 Mac Intel/Apple Silicon 和 Windows x64（WSL 2）。各平台实测范围见 [桌面说明](desktop.md)。现有原生部署可以独立升级控制台，不需要迁入容器。
 

@@ -155,6 +155,7 @@ jobs:
         with:
           node-version: 24
       - run: node scripts/container-smoke.mjs http://127.0.0.1:5188 /tmp/wa-setup-token
+      - run: node scripts/verify-assistant-metadata.mjs http://127.0.0.1:5188 /tmp/wa-setup-token.smoke-admin.json
       - name: Record architecture digests and image archive
         env:
           RELEASE_VERSION: ${{ inputs.version || github.ref_name }}

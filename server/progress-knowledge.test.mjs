@@ -341,3 +341,28 @@ test('model transport never includes credentials in errors and rejects malformed
     await assert.rejects(() => bad('answer', {}), /有效结果/)
   } finally { await fs.rm(dir, { recursive: true, force: true }) }
 })
+
+
+test('completed model usage and warnings survive synthesis errors and cached question polling', async () => {
+  for (const malformed of [false, true]) {
+    const dir=await fs.mkdtemp(path.join(os.tmpdir(),'wa-telemetry-')),file=path.join(dir,'model.json')
+    await fs.writeFile(file,JSON.stringify({baseUrl:'https://gateway.example/v1',apiKey:'private-fixture',model:'auto'}))
+    let calls=0
+    const model=createProgressModel({configFile:file,fetchImpl:async()=>{
+      const stage=calls++===0?'plan':'answer'
+      const content=stage==='plan'?JSON.stringify({intent:'history',terms:['隧道']}):malformed?'bad json':JSON.stringify({sections:[{text:'当时记录报告已修复隧道断连。',sources:['T1']}]})
+      return{ok:true,json:async()=>({model:'auto',metadata:{resolved_model:stage+'-actual',warnings:[{parameter:'max_tokens',policy:'IGNORED_WITH_WARNING',detail:'max_tokens was ignored'}]},usage:{prompt_tokens:20,completion_tokens:5,total_tokens:25},choices:[{message:{content}}]})}
+    }})
+    const assistant=createProgressAssistant(config(dir,{repository:repo(tasks),model}))
+    try {
+      await assistant.refresh();let result
+      for(let i=0;i<60;i++){result=await assistant.query({q:'隧道修复情况',questionId:'same-question'});if(['done','error'].includes(result.analysis.status))break;await new Promise(r=>setTimeout(r,2))}
+      assert.equal(result.analysis.status,malformed?'error':'done')
+      assert.equal(result.analysis.modelCalls.length,2);assert.equal(result.analysis.modelCalls[1].actualModel,'answer-actual')
+      assert.equal(result.analysis.modelCalls[1].usage.totalTokens,25);assert.equal(result.analysis.modelCalls[0].warnings[0].policy,'IGNORED_WITH_WARNING')
+      assert(result.tasks.length>0)
+      const again=await assistant.query({q:'隧道修复情况',questionId:'same-question'})
+      assert.equal(calls,2);assert.deepEqual(again.analysis.modelCalls,result.analysis.modelCalls)
+    }finally{await fs.rm(dir,{recursive:true,force:true})}
+  }
+})

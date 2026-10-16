@@ -11,11 +11,11 @@
     },
     {
       "path": ".github/workflows/publish.yml",
-      "sha256": "29826ba29f33d230734b422cce15447f8c8b5476381ec3cc85d0d73bc80ad52e"
+      "sha256": "3e609d290c769edf8d17627cc09506653a3d4c6579535d8a0dc19bd07a9364e3"
     },
     {
       "path": ".github/workflows/verify.yml",
-      "sha256": "69197633bda41d2d313b88ee0af30ee3230ff0d9d49f7409f8a613f67833cecd"
+      "sha256": "fd0d0150734e0ff6ea6bc0bbfe8c3bdda3af0b62f7706fcc0b9228b78afae3a8"
     },
     {
       "path": ".gitignore",
@@ -35,7 +35,7 @@
     },
     {
       "path": "README.md",
-      "sha256": "92053bd5624aa8cd378b09f21f17baa58fbc36de702c3c64cb00c8ad9beae8a1"
+      "sha256": "8d2fbe5a8c1774abd03924b070c9313811b7500d8ba2398fb518ddc5a568c9d2"
     },
     {
       "path": "SECURITY.md",
@@ -63,11 +63,11 @@
     },
     {
       "path": "docs/public/operations.md",
-      "sha256": "009d4c88f0441e352e542ed4dd4a754ac746c76b08fb56be4301bdfd8f83a6e5"
+      "sha256": "2d89d32d011d3edfeafb81a146c94a86602c55c0d86b8b1e215d5319c413f78f"
     },
     {
       "path": "docs/public/release-readiness.md",
-      "sha256": "385f5545b7a9ad16ca12c7c46f07386744f3b30df1b065ee654ac219fca01b57"
+      "sha256": "db84fa7a368619ba53a757d3b6a5dd20420bb28b519ed0cefa021c9162c2d08f"
     },
     {
       "path": "docs/public/third-party-notices.md",
@@ -79,11 +79,11 @@
     },
     {
       "path": "release/notes.md",
-      "sha256": "d0ce21f4360431f71ee336a991b8ac0330ceed07792c588c0055a4b82dca256b"
+      "sha256": "884f71ec2a0f6e47eaf32a001599786b106371aee03bed03eaa70119cf667ee5"
     },
     {
       "path": "release/version",
-      "sha256": "1541323d3d2672edee6fab7c3978be11b7f1baa37cda03aa08d98c6a7318d2f8"
+      "sha256": "42f90a49e9fa83e81c41bb26145690d204e7264a736a079793ac981ef93ed404"
     },
     {
       "path": "scripts/backup.sh",
@@ -91,11 +91,11 @@
     },
     {
       "path": "scripts/container-smoke.mjs",
-      "sha256": "fe9670bf2496006b17f3a8a8d1fbc40325cf7dfd92deeabc0ce02accffa26c3b"
+      "sha256": "324cce983eba28136d402cafb454f052d0889d1aa84e0a9c2f4cc49562cfe623"
     },
     {
       "path": "scripts/export-public.mjs",
-      "sha256": "dbc2d79ff44bdbf8f2d320e5a051283314f9e40bd5bd6d26d5e7605eaef88005"
+      "sha256": "99a50277ed20002ea99adb39741ed2b4637426809b61bfec2d2b0ee30311df7b"
     },
     {
       "path": "scripts/package-release.py",
@@ -126,6 +126,10 @@
       "sha256": "3b90cd023ca74daf83e1805e6ae079e735a99a04abeb486e24446ee110733ab8"
     },
     {
+      "path": "scripts/verify-assistant-metadata.mjs",
+      "sha256": "aea416df1a5d1551cdfd96ae11628500a5f4466e3527f22f08b7d16bbedca607"
+    },
+    {
       "path": "scripts/verify-first-use.mjs",
       "sha256": "c26720599f91a7403eaaa6d247a219c40143a06bb781fe175114874ffb5c2229"
     },
@@ -139,7 +143,7 @@
     },
     {
       "path": "scripts/verify-release.mjs",
-      "sha256": "644b60e57913ef2c6c72d7ac3904bc1945d3338cbb3b9b092faa56084a79daca"
+      "sha256": "c91ead69f80b7977a59fe2ef311406aeba9a42840826d7f50692da32350e6e20"
     },
     {
       "path": "server/agent-bind.test.mjs",
@@ -491,7 +495,7 @@
     },
     {
       "path": "server/hub.js",
-      "sha256": "4d424a5c1f80d8ca6da64e91f0c51e17648b03ddd400c36fd90edb88fb000b18"
+      "sha256": "e85da18028387ea303d33f8afcb0d12ba36186ba9c3c52605be00bcb0f1aa4af"
     },
     {
       "path": "server/import-quota-history.mjs",
@@ -607,7 +611,7 @@
     },
     {
       "path": "server/mcp/progress.test.mjs",
-      "sha256": "57390ed04d2aba3b15a08b28e9c740bb310d822da9c4e6fac27713d793c13e0b"
+      "sha256": "3a03da84b0831fbb175a02dde4d00686b33500b67f3a8dde0ecfc55ade31289c"
     },
     {
       "path": "server/mcp/tool-defs.js",
@@ -615,7 +619,7 @@
     },
     {
       "path": "server/mcp/tools.js",
-      "sha256": "ecaa5557474ec724b4cfe2203480fa67469000c9d4a9305555d733ba3d0509da"
+      "sha256": "677d7d4cf4baec4e4a513a2f545798caea0c7cce5f37d2de6f5da1ef8de39163"
     },
     {
       "path": "server/mcp/tools.test.mjs",
@@ -644,6 +648,14 @@
     {
       "path": "server/memory-admit.test.mjs",
       "sha256": "53dcb299493b0d4f3e84e291f7b84ee958a79c751fdea07533f0819676582ff9"
+    },
+    {
+      "path": "server/model-invocation.js",
+      "sha256": "cf9cbdd25ab204a1158f1eaad5f8d61fbca507442723ea61d0f930db823990cc"
+    },
+    {
+      "path": "server/model-invocation.test.mjs",
+      "sha256": "5a80eee2af6fe52382d816f583f11fe50ac9f15aa28aa62cd4b0ca7af07ecbdd"
     },
     {
       "path": "server/mongo.js",
@@ -699,7 +711,7 @@
     },
     {
       "path": "server/progress-assistant.js",
-      "sha256": "285cb13dc3282e1ae0f39146b098a6cacb3cd93f2e0a99c3a63fd6982b666004"
+      "sha256": "ca2e8c3932ef2e26810abf560e2e2d3f69c74cfe7b66e97dadeb62bb0a89c65b"
     },
     {
       "path": "server/progress-assistant.test.mjs",
@@ -715,7 +727,7 @@
     },
     {
       "path": "server/progress-knowledge.test.mjs",
-      "sha256": "44def63ae930f96688aa76ab53901fe5ef10ae84d3a5bb7ec422f31de4ac4b6b"
+      "sha256": "664f415e95a203fdf074b13bfc900f010256d05116bb9ef03ecf2db9aa61a144"
     },
     {
       "path": "server/progress-live.js",
@@ -723,7 +735,7 @@
     },
     {
       "path": "server/progress-model.js",
-      "sha256": "a5ca66f272bbd6e8256d61ac6b5b1302e577a1e4501b107a7f730203b5de567e"
+      "sha256": "d04e618a23173159d60be23a11d147893d733838608d3725ed1353ae8c8eb84e"
     },
     {
       "path": "server/progress-repository.js",
@@ -780,6 +792,14 @@
     {
       "path": "server/release-management.test.mjs",
       "sha256": "51d13a4c78b5ca423fd3f5dd9569214bd6099302fdce8b2c3930bcf73bd0f98d"
+    },
+    {
+      "path": "server/release-version.js",
+      "sha256": "92cf076f537657edfa9b1ba34a63db5b101fb12b81ddfa14f5017946960090ae"
+    },
+    {
+      "path": "server/release-version.test.mjs",
+      "sha256": "4661830d2c3d079280db548bec66910cb6512b9d4b6e5417dd62a3a369718e82"
     },
     {
       "path": "server/replay-backoff.js",
@@ -1078,6 +1098,10 @@
       "sha256": "efeae567ea2b6ce514889f3f5fb9b4861e433137045fc76361a8974ce4b0b9ae"
     },
     {
+      "path": "web/src/components/AssistantModelCalls.tsx",
+      "sha256": "afff39c21e779ca84dabaec324fdc594e7f5537398e024145591f730a749814b"
+    },
+    {
       "path": "web/src/components/AuthGate.tsx",
       "sha256": "0dd0a399b6612638ede81441cdd575939c663b090f44e64c9db1b2bddbc50b10"
     },
@@ -1179,11 +1203,11 @@
     },
     {
       "path": "web/src/components/ProgressAssistant.test.tsx",
-      "sha256": "c8c60868052863b48cb0f71b206f4bedf46f8819c6572c187b737ce29d245621"
+      "sha256": "c3a83979fdb63a111ff1bc89348d2cdc8a4b1ed166ff84abd68031c0ded8a442"
     },
     {
       "path": "web/src/components/ProgressAssistant.tsx",
-      "sha256": "bf5ff2090e8aba6adc8345e22909a328c3cdb537cbea4af1cd79308b8fc704c4"
+      "sha256": "db2f710f0fe89b55863ca2b01e7cd474a44c5f7906f71908fa9a5e1f9b16f1fb"
     },
     {
       "path": "web/src/components/PullRefresh.tsx",
@@ -1499,7 +1523,7 @@
     },
     {
       "path": "web/src/styles/global.css",
-      "sha256": "30f55cc1488903b43e872d0dc23b9c6e35e02eefe033838430a7ba36395f6716"
+      "sha256": "0f9dd20775ac3d59b7710a0dc5d92a2148441bedfc517de0bece8a8476118add"
     },
     {
       "path": "web/src/styles/layout.test.ts",

@@ -51,3 +51,13 @@ test('progress HTTP client only performs GET, escapes IDs and propagates missing
   await assert.rejects(() => client.getTaskEvidence('a/b?c'), /missing evidence/)
   assert.equal(urls[0], 'http://hub/api/assistant/evidence?id=a%2Fb%3Fc')
 })
+
+
+test('MCP retains bounded actual model, unknown usage and compatibility notices within its total byte budget',async()=>{
+ const calls=['plan','answer'].map(stage=>({stage,observedAt:1,requestedModel:'auto',actualModel:'实际模型'.repeat(100),provider:'网关'.repeat(100),requestId:'r'.repeat(300),usage:{inputTokens:10,outputTokens:null,totalTokens:null,cachedInputTokens:null,cacheCreationTokens:null,reasoningTokens:null},warnings:Array.from({length:8},()=>({parameter:'max_tokens',policy:'IGNORED_WITH_WARNING',detail:'参数已忽略'.repeat(100)}))}))
+ const tools=createTools({getProgress:async()=>({updatedAt:1,total:0,analysis:{status:'error',error:'回答无效，证据保留',modelCalls:calls},answer:'历史记录'.repeat(800),tasks:[]})})
+ const result=await tools.project_progress({question:'情况'})
+ assert(Buffer.byteLength(JSON.stringify(result))<=8192)
+ assert.equal(result.analysis.modelCalls.length,2);assert.equal(result.analysis.modelCalls[0].usage.outputTokens,null)
+ assert.equal(result.analysis.modelCalls[0].warnings[0].parameter,'max_tokens');assert(result.analysis.modelCalls[0].warningsTruncated)
+})

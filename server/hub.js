@@ -1,3 +1,4 @@
+import { RELEASE_VERSION } from './release-version.js'
 // Hub（P1 聚合层）：聚合多台服务器 node-agent 的状态，统一暴露给 Web 前端。
 // 远端 agent 通过 SSH 隧道映射到本机端口（免开入站端口，与设计文档 D4 一致）。
 // 端点：GET /api/state  GET /api/session/:id/events
@@ -1229,7 +1230,7 @@ const server = http.createServer(async (req, res) => {
     const url = new URL(req.url, 'http://localhost')
     if(url.pathname==='/api/health'){
       const ready=!process.env.WA_MYSQL_HOST||db.dbEnabled()
-      return json(res,ready?200:503,{status:ready?'ok':'initializing',version:'0.1.0',authEnabled:operatorAuth.enabled})
+      return json(res,ready?200:503,{status:ready?'ok':'initializing',version:RELEASE_VERSION,releaseTag:`v${RELEASE_VERSION}`,authEnabled:operatorAuth.enabled})
     }
     if(await operatorAuth.handle(req,res))return
     if(url.pathname.startsWith('/api/')){

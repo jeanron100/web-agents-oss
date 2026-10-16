@@ -1,10 +1,11 @@
 import { useEffect, useRef, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { Markdown } from './Markdown'
+import { AssistantModelCalls, type AssistantModelCall } from './AssistantModelCalls'
 
 type Task = { id: string; serverId: string; project: string; sessionId: string; engine: string; title: string; context: string; request: string; result: string; status: string; updatedAt: number; sourceTruncated: boolean; requestMissing?: boolean; detailsPartial?: boolean; sourceKind?: string; archiveProject?: string; causes?: string[]; lessons?: string[]; progress: Array<{ ts: number; text: string }>; actions: string[]; risks: string[] }
 type ImportStatus = { total: number; imported: number; caughtUp?: number; failed: number; limitWarning?: string; error?: string }
-type Result = { tasks: Task[]; total: number; answer: string; queryWindow?: { label: string }; answerSections?: Array<{ text: string; sources: string[] }>; answerSources?: Array<{ id: string; taskId?: string; label: string; observedAt: number }>; analysis?: { status: string; error?: string; observedAt: number }; historyExpanded?: boolean; live?: { observedAt: number; scope: string; serverCount: number; onlineCount: number; runningCount: number; pendingCount: number; note: string; retiredAgents?: Array<{ id: string; retiredAt: string }>; servers: Array<{ id: string; online: boolean; transport: string }>; tunnels?: { scope: string; units: Array<{ unit: string; active: boolean; description: string }>; error?: string } }; updatedAt: number; refreshing: boolean; error: string | null; projects: Array<{ project: string; serverId: string }>; coverage: { retainedTasks: number; durable?: { tasks: number }; knowledgeError?: string; backfill?: ImportStatus; nativeHistory?: ImportStatus; deferredSessions?: number; archive: { enabled: boolean }; sources: Array<{ error?: string; truncated?: boolean }> } }
+type Result = { tasks: Task[]; total: number; answer: string; queryWindow?: { label: string }; answerSections?: Array<{ text: string; sources: string[] }>; answerSources?: Array<{ id: string; taskId?: string; label: string; observedAt: number }>; analysis?: { status: string; error?: string; observedAt: number; modelCalls?: AssistantModelCall[] }; historyExpanded?: boolean; live?: { observedAt: number; scope: string; serverCount: number; onlineCount: number; runningCount: number; pendingCount: number; note: string; retiredAgents?: Array<{ id: string; retiredAt: string }>; servers: Array<{ id: string; online: boolean; transport: string }>; tunnels?: { scope: string; units: Array<{ unit: string; active: boolean; description: string }>; error?: string } }; updatedAt: number; refreshing: boolean; error: string | null; projects: Array<{ project: string; serverId: string }>; coverage: { retainedTasks: number; durable?: { tasks: number }; knowledgeError?: string; backfill?: ImportStatus; nativeHistory?: ImportStatus; deferredSessions?: number; archive: { enabled: boolean }; sources: Array<{ error?: string; truncated?: boolean }> } }
 const status: Record<string, string> = { reported_complete: '记录报告完成', in_progress: '有进展，待闭环', blocked: '存在阻塞', unconfirmed: '结果待确认' }
 const date = (ts: number) => ts ? new Date(ts).toLocaleString('zh-CN', { hour12: false }) : '时间未记录'
 
@@ -85,6 +86,7 @@ export function ProgressAssistant() {
     {error && <p role="alert">{error}，已显示的记录仍保留。</p>}
     {data?.analysis && ['retrieving', 'planning', 'answering'].includes(data.analysis.status) && <p role="status">{data.analysis.status === 'retrieving' ? '正在检索已沉淀的历史记录…' : data.analysis.status === 'planning' ? '正在理解问题，选择相关项目与记录…' : '正在结合执行记录归纳回答…'} 已取得的证据先显示在下方。</p>}
     {data?.analysis?.error && <p role="alert">{data.analysis.error}</p>}
+    <AssistantModelCalls calls={data?.analysis?.modelCalls} />
     {data?.queryWindow && <p className="muted">本次历史检索范围：{data.queryWindow.label}{data.historyExpanded ? '，另补充近90天相关记录' : ''} · 当前状态另行采样</p>}
     {data && <div className="progress-assistant__answer">
       {data.answerSections?.length ? data.answerSections.map((s, i) => {

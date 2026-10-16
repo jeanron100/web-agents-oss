@@ -1,6 +1,7 @@
 // A bounded, read-only model adapter. Endpoint and credentials are operator
 // configuration, never supplied by a question or transcript.
 import fs from 'node:fs/promises'
+import { modelInvocation } from './model-invocation.js'
 
 export function createProgressModel({ configFile = process.env.WA_ASSISTANT_MODEL_CONFIG || '/etc/web-agents/assistant-model.json', fetchImpl = fetch } = {}) {
   let config, loaded = false, changedAt=0
@@ -29,9 +30,18 @@ export function createProgressModel({ configFile = process.env.WA_ASSISTANT_MODE
       })
     } catch { throw new Error('问答模型连接超时，已保留检索证据，可重试') }
     if (!response.ok) throw new Error(`问答模型暂不可用（HTTP ${response.status}），已保留检索证据`)
-    let text = ''
-    try { text = (await response.json()).choices?.[0]?.message?.content || '' } catch { /* handled below */ }
-    try { return JSON.parse(text.replace(/^\s*```(?:json)?\s*/, '').replace(/\s*```\s*$/, '')) }
-    catch { throw new Error('问答模型未返回有效结果，当前显示检索证据') }
+    let body
+    try { body = await response.json() } catch { throw new Error('问答模型未返回有效结果，当前显示检索证据') }
+    const invocation = modelInvocation(body, { stage, requestedModel: config.model, secret: config.apiKey })
+    const text = body?.choices?.[0]?.message?.content
+    try {
+      const value = JSON.parse(text.replace(/^\s*```(?:json)?\s*/, '').replace(/\s*```\s*$/, ''))
+      if (!value || typeof value !== 'object' || Array.isArray(value)) throw new Error('invalid result')
+      return { ...value, invocation }
+    } catch {
+      const error = new Error('问答模型未返回有效结果，当前显示检索证据')
+      error.invocation = invocation
+      throw error
+    }
   }
 }

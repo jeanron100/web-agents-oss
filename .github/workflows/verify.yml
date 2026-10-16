@@ -52,6 +52,7 @@ jobs:
         with:
           node-version: 24
       - run: node scripts/container-smoke.mjs http://127.0.0.1:5188 /tmp/wa-setup-token
+      - run: node scripts/verify-assistant-metadata.mjs http://127.0.0.1:5188 /tmp/wa-setup-token.smoke-admin.json
       - run: docker compose --env-file .compose.env exec -T console node server/manage.mjs doctor
       - if: failure()
         run: docker compose --env-file .compose.env -f compose.yaml -f compose.runner.yaml logs --tail 100

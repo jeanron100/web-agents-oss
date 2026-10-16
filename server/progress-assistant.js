@@ -153,11 +153,21 @@ export function createProgressAssistant({ file, agents, retiredAgents = [], getS
         let job = answers.get(key)
         if (!job || (!options.questionId && job.done && now() - job.at > 600000)) {
           if ([...answers.values()].filter(j => !j.done).length < 3) {
-            job = { at: now(), done: false, status: 'planning', result: null }; answers.set(key, job)
+            job = { at: now(), done: false, status: 'planning', result: null, modelCalls: [] }; answers.set(key, job)
             const current = job
+            const invoke = async (stage, input) => {
+              try {
+                const output = await model(stage, input)
+                if (output.invocation) current.modelCalls.push(output.invocation)
+                return output
+              } catch (error) {
+                if (error.invocation) current.modelCalls.push(error.invocation)
+                throw error
+              }
+            }
             void (async () => {
               try {
-                const planned = await model('plan', { question: options.q, selectedProject: options.project || null, projects: known })
+                const planned = await invoke('plan', { question: options.q, selectedProject: options.project || null, projects: known })
                 const numeric = questionTerms(options.q, known).terms.filter(t => /^(?:[.。]?\d{2,3}|(?:\d{1,3}\.){3}\d{1,3})$/.test(t))
                 const modelTerms = Array.isArray(planned.terms) ? planned.terms.filter(t => typeof t === 'string' && t.trim() && t.length <= 30).slice(0, 6).map(t => t.toLowerCase()) : []
                 const originalTerms = questionTerms(options.q, known).terms
@@ -200,7 +210,7 @@ export function createProgressAssistant({ file, agents, retiredAgents = [], getS
                   }
                   return{...t,result,logSourceServerId:serverId,logSourceMeaning:'CLI日志的来源节点；业务操作目标须依据request/context/result，不能将来源节点作为目标的别名',at:readable(t.at),laterSources}
                 })
-                const output = emptyHistory ? {sections:[{text:`在${window.label}及已读取的执行历史范围内，未找到能回答当前问题的处理记录，尚无法确认结果。${plan.entities.length?'本次实时观测也未覆盖所问的特定对象。':''}未命中不表示任务未发生；可扩大时间范围或查看资料覆盖。`,sources:['SEARCH']}]} : await model('answer', { question: options.q, live: modelLive, tasks: modelTasks,
+                const output = emptyHistory ? {sections:[{text:`在${window.label}及已读取的执行历史范围内，未找到能回答当前问题的处理记录，尚无法确认结果。${plan.entities.length?'本次实时观测也未覆盖所问的特定对象。':''}未命中不表示任务未发生；可扩大时间范围或查看资料覆盖。`,sources:['SEARCH']}]} : await invoke('answer', { question: options.q, live: modelLive, tasks: modelTasks,
                   coverage: { source:'SEARCH', window: { label: window.label, from: readable(window.from), to: readable(window.to) }, historyExpanded: !!current.result.historyExpanded, candidateWindowTruncated: current.result.candidateWindowTruncated, providedTasks: taskSources.length, matchedTasks: current.result.total, imported: backfill?.status(), nativeHistory: nativeBackfill?.status(), currentSourceErrors: Object.values(sources).filter(s => s.error).length, deferredSessions, archive: archiveStatus(), knowledgeError } })
                 const valid = new Set(['LIVE','SEARCH', ...taskSources.map(t => t.source)])
                 let grounded = (Array.isArray(output.sections) ? output.sections : []).slice(0, 8).filter(s => typeof s.text === 'string' && s.text.trim() && Array.isArray(s.sources) && s.sources.length && s.sources.every(id => valid.has(id)))
@@ -270,7 +280,7 @@ export function createProgressAssistant({ file, agents, retiredAgents = [], getS
             })()
           } else analysis = { status: 'error', error: '小助理正在处理其他问题，请稍后重试；已显示检索证据' }
         }
-        if (job) { analysis = { status: job.status, error: job.error, observedAt: job.at }; if (job.result) result = job.result }
+        if (job) { analysis = { status: job.status, error: job.error, observedAt: job.at, modelCalls: job.modelCalls }; if (job.result) result = job.result }
       } else if (repository || searchArchives) {
         let job = answers.get(key)
         if (!job || (job.done && now()-job.at > 30000)) {

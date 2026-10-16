@@ -93,3 +93,19 @@ it('no evidence and transport errors are visible rather than a fabricated comple
     expect(host.querySelectorAll('.progress-task').length).toBe(0)
   } finally { await act(async () => root.unmount()); vi.unstubAllGlobals() }
 })
+
+
+it('shows gateway model, stage usage and ignored-parameter notices even when synthesis failed', async()=>{
+ vi.stubGlobal('IS_REACT_ACT_ENVIRONMENT',true)
+ const usage={inputTokens:1200,outputTokens:0,totalTokens:null,cachedInputTokens:null,cacheCreationTokens:null,reasoningTokens:null}
+ vi.stubGlobal('fetch',vi.fn().mockResolvedValue({ok:true,json:async()=>({...data,analysis:{status:'error',error:'回答无效，已保留证据',modelCalls:[{stage:'plan',observedAt:1,requestedModel:'auto',actualModel:'actual-model',provider:'codex',requestId:'req-1',usage,warnings:[{parameter:'max_tokens',policy:'IGNORED_WITH_WARNING',detail:'max_tokens was ignored'}]},{stage:'answer',observedAt:2,requestedModel:'auto',actualModel:null,provider:null,requestId:null,usage:{...usage,inputTokens:null,outputTokens:null},warnings:[]}]}})}))
+ const host=document.createElement('div'),root=createRoot(host)
+ try{
+  await act(async()=>root.render(<MemoryRouter><ProgressAssistant/></MemoryRouter>))
+  const info=host.querySelector('[aria-label="问答模型调用"]')!
+  expect(info.textContent).toContain('actual-model');expect(info.textContent).toContain('输入 1,200');expect(info.textContent).toContain('输出 0');expect(info.textContent).toContain('合计 未返回')
+  expect(info.querySelector('[role="note"]')?.textContent).toContain('max_tokens · 已忽略')
+  expect(info.querySelectorAll('article').length).toBe(2)
+  expect(host.querySelector('.progress-task__result')?.textContent).toContain('8.8G')
+ }finally{await act(async()=>root.unmount());vi.unstubAllGlobals()}
+})

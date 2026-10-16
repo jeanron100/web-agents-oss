@@ -117,6 +117,19 @@ function withLiveHint(res) {
   }
 }
 
+// Keep model telemetry in the full MCP byte budget, including its fallback response.
+function progressAnalysis(analysis) {
+  if (!analysis?.modelCalls) return analysis
+  const bounded = (value, size) => value == null ? null : clip(value, size)
+  return { ...analysis, modelCalls: analysis.modelCalls.slice(0, 2).map(call => ({
+    stage: call.stage, observedAt: call.observedAt, usage: call.usage,
+    requestedModel: bounded(call.requestedModel, 60), actualModel: bounded(call.actualModel, 60),
+    provider: bounded(call.provider, 40), requestId: bounded(call.requestId, 60),
+    warnings: (call.warnings || []).slice(0, 2).map(w => ({ code: clip(w.code, 40), parameter: clip(w.parameter, 40), policy: clip(w.policy, 30), detail: clip(w.detail, 80) })),
+    warningsTruncated: call.warningsTruncated || call.warnings?.length > 2,
+  })) }
+}
+
 export function createTools(client) {
   return {
     /** Same task evidence as the web assistant; no command execution or approvals. */
@@ -133,7 +146,8 @@ export function createTools(client) {
         previousMetadata=metadata
         return`[${s.sources.join(', ')}] ${body}`
       }).join('\n\n'):r.answer
-      const base = { available: !!r.updatedAt || r.live?.available === true, refreshing: r.refreshing, analysis: r.analysis, queryWindow:r.queryWindow, updatedAt: r.updatedAt, total: r.total, message: clip(citedAnswer, 1200), answerExcerptTruncated: (citedAnswer?.length || 0) > 1200,
+      const analysis = progressAnalysis(r.analysis)
+      const base = { available: !!r.updatedAt || r.live?.available === true, refreshing: r.refreshing, analysis, queryWindow:r.queryWindow, updatedAt: r.updatedAt, total: r.total, message: clip(citedAnswer, 1200), answerExcerptTruncated: (citedAnswer?.length || 0) > 1200,
         answerSources: r.answerSources?.filter(s => r.answerSections?.some(p => p.sources.includes(s.id))).slice(0, 8).map(s => ({ ...s, label: clip(s.label, 80) })), historyExpanded: r.historyExpanded,
         live: r.live ? { available: r.live.available, observedAt: r.live.observedAt, scope: r.live.scope, serverCount: r.live.serverCount, onlineCount: r.live.onlineCount, runningCount: r.live.runningCount, pendingCount: r.live.pendingCount, retiredAgents:r.live.retiredAgents?.slice(0,20),note: r.live.note } : undefined,
         error: r.error || undefined, view: r.view, sourceWindowTruncated: !!r.windowTruncated,
@@ -147,7 +161,7 @@ export function createTools(client) {
         base.answerSources = base.answerSources?.map(({ id, taskId, observedAt }) => ({ id, taskId, observedAt }))
         packed = fitResponse(base, 'tasks', rows.map(t => ({ ...t, request: clip(t.request,100), latestReportedResult: clip(t.latestReportedResult,300), risks:t.risks.slice(0,2).map(s => clip(s,80)), taskExcerptTruncated:true })), { offset })
       }
-      if (Buffer.byteLength(JSON.stringify(packed)) > MAX_BYTES) return { available: base.available, total: r.total, analysis:r.analysis, message:clip(citedAnswer,400),answerExcerptTruncated:true,
+      if (Buffer.byteLength(JSON.stringify(packed)) > MAX_BYTES) return { available: base.available, total: r.total, analysis, message:clip(citedAnswer,400),answerExcerptTruncated:true,
         tasks:rows.slice(offset,offset+1).map(t=>({taskId:t.taskId,project:clip(t.project,120),serverId:clip(t.serverId,64),status:t.status,updatedAt:t.updatedAt})),hasMore:offset+1<rows.length,nextOffset:offset+1,hint:'回答与任务已精简，请按taskId调用task_evidence，或缩小项目范围。' }
       return packed
     },

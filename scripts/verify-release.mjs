@@ -12,6 +12,9 @@ for(const file of ['server/package-lock.json','web/package-lock.json']){
   if(!entry.integrity)throw new Error(`Dependency integrity missing: ${file} ${name}`)
  }
 }
+const version=fs.readFileSync(path.join(root,'release/version'),'utf8').trim()
+const compiled=fs.readFileSync(path.join(root,'server/release-version.js'),'utf8').match(/export const RELEASE_VERSION = "([^"]+)"/)
+if(!compiled || `v${compiled[1]}`!==version)throw new Error('Runtime release version differs from release/version')
 const manifestFile=path.join(root,'SOURCE-MANIFEST.json')
 if(!fs.existsSync(manifestFile)){
  if(process.argv.includes('--artifact'))throw new Error('Missing public source manifest')

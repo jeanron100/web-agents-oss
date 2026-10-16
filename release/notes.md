@@ -1,14 +1,9 @@
-# Web Agents versioned desktop delivery candidate
+# Web Agents v0.1.0-rc.10 — release identity and model observability
 
-This candidate adds automatic per-tag GitHub Releases, stable/prerelease classification, published-version protection and direct versioned downloads on the repository homepage. Each version keeps its own packages, source, checksums and image tags.
+- `/api/health` now reports the exact release, including the RC suffix, plus the matching `releaseTag`. Release preflight and real container smoke tests reject mismatches.
+- The project assistant preserves actual gateway-resolved model/provider, reported input/output/total/cache/reasoning tokens, request IDs and compatibility warnings for planning and synthesis calls.
+- Ignored parameters such as `max_tokens` are visibly flagged. Missing usage remains unknown; failed structured answers retain completed-call information. Repeated polling does not duplicate calls.
+- Read-only MCP retains bounded model metadata within its full response byte budget. Raw gateway/config fields and credentials are excluded.
+- Adds actual-container adapter acceptance with an isolated mock gateway, plus backend/frontend regression checks. The existing Mac/Windows bundles and amd64/arm64 images remain available.
 
-Run the full Web Agents console on Linux, macOS (Intel / Apple Silicon) and Windows x64 through Docker Desktop Linux containers.
-
-- Native Linux amd64/arm64 console and runner images; Docker selects the matching manifest.
-- Download `web-agents-<version>-macos.zip` or `-windows.zip`, extract, and use the desktop launcher. Git and host Node/Python are not required.
-- Portable Bash bootstrap and Windows PowerShell 5.1+ startup, persistent credentials, Docker readiness checks, and architecture-specific SHA-256 verified fallback archives.
-- Windows/macOS hosted shell acceptance and real Compose initialization plus all three CLI version checks on both Linux architectures.
-
-Install and start Docker Desktop first (Windows: WSL 2 Linux containers). Open http://localhost:5188 and follow `docs/public/desktop.md` for the first administrator and vendor login. Existing remote Linux agents remain supported. Native Windows/macOS host CLI adoption and a standalone .app/.exe runtime are outside this delivery.
-
-Single-administrator/trusted-team candidate; vendor accounts remain your own. Runner replacement stops its internal CLI processes; preserve account/workspace volumes and reload conversations. Shell acceptance uses a mocked Docker/download contract; full Docker Desktop GUI/hardware validation is not claimed.
+Download the OS ZIP from this version, extract it, and run the desktop launcher with Docker Desktop started. Existing installations remain pinned; explicitly upgrade the images in `.compose.env`. Published older versions remain unchanged. Trusted single-administrator/team deployment; vendor accounts are your own. Physical desktop Docker Desktop GUI acceptance is not claimed.

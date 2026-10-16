@@ -6,13 +6,13 @@
 
 ## 版本下载
 
-当前预发布：**[v0.1.0-rc.9](https://github.com/jeanron100/web-agents-oss/releases/tag/v0.1.0-rc.9)**。所有版本独立保存在 [GitHub Releases](https://github.com/jeanron100/web-agents-oss/releases)，可按版本下载和核对更新说明。
+当前预发布：**[v0.1.0-rc.10](https://github.com/jeanron100/web-agents-oss/releases/tag/v0.1.0-rc.10)**。所有版本独立保存在 [GitHub Releases](https://github.com/jeanron100/web-agents-oss/releases)，可按版本下载和核对更新说明。
 
 | 系统 | 下载 | 解压后启动 |
 |---|---|---|
-| macOS Intel / Apple Silicon | [Mac 安装包](https://github.com/jeanron100/web-agents-oss/releases/download/v0.1.0-rc.9/web-agents-v0.1.0-rc.9-macos.zip) | `start-macos.command` |
-| Windows x64 | [Windows 安装包](https://github.com/jeanron100/web-agents-oss/releases/download/v0.1.0-rc.9/web-agents-v0.1.0-rc.9-windows.zip) | `start-windows.cmd` |
-| Linux amd64 / arm64 | [版本源码包](https://github.com/jeanron100/web-agents-oss/releases/download/v0.1.0-rc.9/web-agents-v0.1.0-rc.9.tar.gz) | `bash scripts/quickstart.sh --runner --pull` |
+| macOS Intel / Apple Silicon | [Mac 安装包](https://github.com/jeanron100/web-agents-oss/releases/download/v0.1.0-rc.10/web-agents-v0.1.0-rc.10-macos.zip) | `start-macos.command` |
+| Windows x64 | [Windows 安装包](https://github.com/jeanron100/web-agents-oss/releases/download/v0.1.0-rc.10/web-agents-v0.1.0-rc.10-windows.zip) | `start-windows.cmd` |
+| Linux amd64 / arm64 | [版本源码包](https://github.com/jeanron100/web-agents-oss/releases/download/v0.1.0-rc.10/web-agents-v0.1.0-rc.10.tar.gz) | `bash scripts/quickstart.sh --runner --pull` |
 
 需先安装并启动 Docker（Mac/Windows 使用 Docker Desktop，Windows 开启 WSL 2 Linux 容器）。Release 附有校验和及按架构区分的镜像包，启动时自动选择引擎架构。`-rc.*` 为预发布，`vX.Y.Z` 为正式版本。
 

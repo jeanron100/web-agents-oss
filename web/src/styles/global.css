@@ -1717,3 +1717,10 @@ body, .card, .panel, .btn, .chat-bubble, .tool-card { transition: background-col
 .server-manager h2, .detail-section > h2 { font-size: 18px; }
 .server-manager .todo-card { margin: 10px 0; }
 .engine-diagnostic { padding-top: 10px; }
+
+.assistant-model-calls { margin: 16px 0; padding: 14px 18px; border: 1px solid var(--border); border-radius: 12px; overflow-wrap: anywhere; }
+.assistant-model-calls h3 { font-size: 14px; margin: 0 0 10px; }
+.assistant-model-calls article + article { border-top: 1px solid var(--border); margin-top: 12px; padding-top: 12px; }
+.assistant-model-calls p { margin: 6px 0; font-size: 13px; line-height: 1.6; }
+.assistant-model-calls summary { font-size: 13px; cursor: pointer; min-height: 32px; padding-top: 6px; }
+.assistant-model-calls__warning { border-left: 3px solid #b45309; padding-left: 10px; color: #a34b0a; }
