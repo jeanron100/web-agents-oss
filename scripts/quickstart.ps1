@@ -67,7 +67,10 @@ try {
                 if ($checksumText -notmatch $pattern) { throw 'Invalid archive checksum file.' }
                 $expected = $Matches[1]
                 $archivePath = Join-Path $archiveDir $archive
-                $actual = (Get-FileHash -LiteralPath $archivePath -Algorithm SHA256).Hash.ToLowerInvariant()
+                $hashEngine = [Security.Cryptography.SHA256]::Create()
+                $archiveStream = [IO.File]::OpenRead($archivePath)
+                try { $actual = ([BitConverter]::ToString($hashEngine.ComputeHash($archiveStream))).Replace('-', '').ToLowerInvariant() }
+                finally { $archiveStream.Dispose(); $hashEngine.Dispose() }
                 if ($actual -ne $expected) { throw 'Release image archive checksum mismatch. Nothing loaded.' }
                 Invoke-Docker @('load', '--input', $archivePath)
             } finally { Remove-Item -LiteralPath $archiveDir -Recurse -Force }

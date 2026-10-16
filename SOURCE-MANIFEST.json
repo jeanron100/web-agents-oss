@@ -67,7 +67,7 @@
     },
     {
       "path": "docs/public/release-readiness.md",
-      "sha256": "67dda6df2c58648e14c8441fbbbafaa4e34f23432ee86f52285403a2d5d5ac10"
+      "sha256": "cdcd20ec42d4915681ee7ef0f525ad5043dec16c142abcb945630d4bca4c9a95"
     },
     {
       "path": "docs/public/third-party-notices.md",
@@ -83,7 +83,7 @@
     },
     {
       "path": "release/version",
-      "sha256": "bbd11b278efa14880f7407439e980af626fa320b6b6ef3eba39af0532e6a8a8d"
+      "sha256": "b319cce30317c643e62c03b97340e381e5c69332dc5f25c23cc350548c0ae9aa"
     },
     {
       "path": "scripts/backup.sh",
@@ -103,7 +103,7 @@
     },
     {
       "path": "scripts/quickstart.ps1",
-      "sha256": "2b35462e2a89c082532fc5abe9f64c442ecfdc625e705d015be9ee66754bbb9b"
+      "sha256": "df325d231073e4712ecf61fc1e06dcbdd236803b5bcaaf589779f7d9319e4ebd"
     },
     {
       "path": "scripts/quickstart.sh",
