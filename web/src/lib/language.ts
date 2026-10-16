@@ -3,9 +3,14 @@ import {useSyncExternalStore} from 'react'
 export type Language='zh'|'en'
 const key='agent-console-language'
 function initialLanguage():Language{
+  let requested:string|null=null
+  try{requested=new URLSearchParams(location.search).get('lang')}catch{/* Non-browser rendering. */}
+  if(requested==='en'||requested==='zh'){
+    try{localStorage.setItem(key,requested)}catch{/* The requested language still works without storage. */}
+    return requested
+  }
   try{
-    const requested=new URLSearchParams(location.search).get('lang'),saved=localStorage.getItem(key)
-    if(requested==='en'||requested==='zh')return requested
+    const saved=localStorage.getItem(key)
     if(saved==='en'||saved==='zh')return saved
   }catch{/* Storage may be unavailable. */}
   return typeof document!=='undefined'&&document.documentElement.lang.startsWith('en')?'en':'zh'
