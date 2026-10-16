@@ -1,6 +1,7 @@
 [CmdletBinding()]
 param([switch]$Runner, [switch]$Pull)
 $ErrorActionPreference = 'Stop'
+$ProgressPreference = 'SilentlyContinue' # Avoid per-byte Windows PowerShell progress overhead on large archives.
 Set-Location (Split-Path -Parent $PSScriptRoot)
 
 function Invoke-Docker([string[]]$DockerArguments) {

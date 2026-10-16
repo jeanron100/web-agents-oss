@@ -5,7 +5,8 @@ cd "$(dirname "$0")/.."
 backup=${1:?Usage: scripts/restore.sh /absolute/backup-directory --replace}
 [ "${2:-}" = --replace ] || { echo 'Restore replaces the target console/database. Supply --replace after checking the backup and target.' >&2; exit 2; }
 [[ "$backup" = /* ]] && [ "$(cat "$backup/format-version")" = 1 ] || exit 2
-( cd "$backup" && sha256sum --check SHA256SUMS )
+if command -v sha256sum >/dev/null 2>&1; then hash=(sha256sum); else hash=(shasum -a 256); fi
+( cd "$backup" && "${hash[@]}" --check SHA256SUMS )
 # Restore into an initialized installation: keep its database password, restore auth/config state.
 dc=(docker compose --env-file .compose.env -f compose.yaml)
 "${dc[@]}" stop console

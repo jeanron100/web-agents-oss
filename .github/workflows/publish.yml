@@ -109,6 +109,8 @@ jobs:
           sbom: true
       - name: Scan console image
         uses: aquasecurity/trivy-action@0.35.0
+        env:
+          TRIVY_PLATFORM: linux/${{ matrix.arch }}
         with:
           image-ref: ghcr.io/${{ env.IMAGE_NAMESPACE }}-console@${{ steps.console.outputs.digest }}
           severity: HIGH,CRITICAL
@@ -116,6 +118,8 @@ jobs:
           exit-code: '1'
       - name: Scan runner image
         uses: aquasecurity/trivy-action@0.35.0
+        env:
+          TRIVY_PLATFORM: linux/${{ matrix.arch }}
         with:
           image-ref: ghcr.io/${{ env.IMAGE_NAMESPACE }}-runner@${{ steps.runner.outputs.digest }}
           severity: HIGH,CRITICAL
@@ -150,9 +154,9 @@ jobs:
         with:
           name: images-${{ matrix.arch }}
           path: image-inventories/
-      - if: failure()
+      - if: failure() && hashFiles('.compose.env') != ''
         run: docker compose --env-file .compose.env -f compose.yaml -f compose.runner.yaml logs --tail 100
-      - if: always()
+      - if: always() && hashFiles('.compose.env') != ''
         run: docker compose --env-file .compose.env -f compose.yaml -f compose.runner.yaml down -v
 
   publish:

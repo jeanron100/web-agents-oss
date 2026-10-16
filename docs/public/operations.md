@@ -35,6 +35,8 @@ docker compose --env-file .compose.env logs --tail 80 console
 ./scripts/restore.sh /absolute/private-backup --replace
 ```
 
+Mac 可直接使用这些 Bash 脚本，校验兼容系统自带 `shasum`。Windows 的备份/恢复脚本在启用 Docker Desktop 集成的 WSL Linux shell 中运行，从 `/mnt/c/...` 进入同一安装目录；日常启动、停止与升级可直接在 PowerShell 完成。
+
 备份会短暂停控制台写者，导出 MySQL 和完整控制台卷，保存校验和；远程 CLI 不受影响。恢复校验文件后替换当前数据库内容和控制台卷，沿用目标安装的数据库密码。遇到错误时控制台保持停止，修复后再启动，避免带不完整状态对外工作。
 
 runner 的账号、JSONL 和项目代码在 `runner-home`、`runner-workspace` 两卷，**不包含在控制台备份中**。请另外备份，在没有活动写者时做一致快照；不自动停止正在进行的 CLI 任务。备份内有私人历史与令牌，需自行加密并限制访问。

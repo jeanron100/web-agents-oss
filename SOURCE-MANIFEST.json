@@ -11,7 +11,7 @@
     },
     {
       "path": ".github/workflows/publish.yml",
-      "sha256": "2e0406cc0dc11b02df12dad3d628aee09990253d0c5a862cc148943a3aa11a6f"
+      "sha256": "b5eb02c335269e604290462a650de5fea804404304d7aa4c4a379c98d1306d9f"
     },
     {
       "path": ".github/workflows/verify.yml",
@@ -63,11 +63,11 @@
     },
     {
       "path": "docs/public/operations.md",
-      "sha256": "4c72efe77d247e447de5c323a6755497c0d466b98f3f07401587697a0d4f4e33"
+      "sha256": "04aa26e1e6eb448091d34d8006e2e299f3f457b3921071e86a15d1883f549c04"
     },
     {
       "path": "docs/public/release-readiness.md",
-      "sha256": "cdcd20ec42d4915681ee7ef0f525ad5043dec16c142abcb945630d4bca4c9a95"
+      "sha256": "4657fd23a4f90bebdf4b83237ceb895d8ec499158e17e75ee3e32c9f3a713d58"
     },
     {
       "path": "docs/public/third-party-notices.md",
@@ -83,11 +83,11 @@
     },
     {
       "path": "release/version",
-      "sha256": "b319cce30317c643e62c03b97340e381e5c69332dc5f25c23cc350548c0ae9aa"
+      "sha256": "9adf48350af7ce8582574dfe3d938a0b4f913d3698e26f654e47da510e828aeb"
     },
     {
       "path": "scripts/backup.sh",
-      "sha256": "cc803c322a3f13a64efbd5ee5604f6367e3bc42533654ba38a1021e9e4346dd7"
+      "sha256": "2e5f75f333ca6ce671c2f3767bf9f81e027e831bd3b17e730cba16d5a593eea4"
     },
     {
       "path": "scripts/container-smoke.mjs",
@@ -103,7 +103,7 @@
     },
     {
       "path": "scripts/quickstart.ps1",
-      "sha256": "df325d231073e4712ecf61fc1e06dcbdd236803b5bcaaf589779f7d9319e4ebd"
+      "sha256": "96042e9f1fd3b116d3098a738c7c46ed2036993f9dc70ceb5ac3ddc7bec14c1b"
     },
     {
       "path": "scripts/quickstart.sh",
@@ -111,7 +111,7 @@
     },
     {
       "path": "scripts/restore.sh",
-      "sha256": "aea9a7b1625f97336bed410e7f8e43b5aed32a43665380e82c58a6d6c76891d5"
+      "sha256": "38fd642cd4ccbeafaa8de77f55bbd1c85d83ce62686bf94cce30be86e95c3107"
     },
     {
       "path": "scripts/scan-secrets.mjs",

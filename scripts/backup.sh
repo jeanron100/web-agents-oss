@@ -13,5 +13,6 @@ trap '"${dc[@]}" start console >/dev/null' EXIT
 cp .compose.env "$destination/compose.env"
 chmod 600 "$destination/"*
 printf '1\n' > "$destination/format-version"
-sha256sum "$destination/mysql.sql" "$destination/console.tgz" "$destination/compose.env" | sed "s|$destination/||" > "$destination/SHA256SUMS"
+if command -v sha256sum >/dev/null 2>&1; then hash=(sha256sum); else hash=(shasum -a 256); fi
+"${hash[@]}" "$destination/mysql.sql" "$destination/console.tgz" "$destination/compose.env" | sed "s|$destination/||" > "$destination/SHA256SUMS"
 echo 'Backup complete. Keep this directory private; it contains credentials and session history.'
