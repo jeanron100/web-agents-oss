@@ -1147,7 +1147,7 @@
     },
     {
       "path": "web/src/components/AuthGate.tsx",
-      "sha256": "b4e73e6efec4b7c26f5737a6bfa1cacd3c7ad0b6b2f48818a1a506f8a312980e"
+      "sha256": "b9e49335b02757dd6f6e084dd115c2499145554d9d3351de9aba67cc43bfd932"
     },
     {
       "path": "web/src/components/ChatMessage.images.test.ts",
@@ -1427,7 +1427,7 @@
     },
     {
       "path": "web/src/lib/language.ts",
-      "sha256": "2e95508513b6d7fe5454646f1323622ee47a9f7a5a119856ee8b5b6302a021e4"
+      "sha256": "2b86a11db49b9528ef679a3bb772eec3568cda475f22946974cca630f609c3ac"
     },
     {
       "path": "web/src/lib/models.ts",

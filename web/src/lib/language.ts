@@ -16,7 +16,6 @@ export const getLanguage=()=>language
 export function setLanguage(next:Language){
   language=next
   try{localStorage.setItem(key,next)}catch{/* Private browsing. */}
-  if(typeof document!=='undefined')document.documentElement.lang=next==='en'?'en':'zh-CN'
   for(const notify of listeners)notify()
 }
 export function useLanguage(){

@@ -57,7 +57,7 @@ export function AuthGate({children}:{children:ReactNode}){
   if((status?.authenticated&&!status.passwordChangeRequired)||status?.enabled===false)return <Operator.Provider value={status}>{children}</Operator.Provider>
   const changing=!!(status?.authenticated&&status.passwordChangeRequired)
   const toggleTheme=()=>{const next=theme==='light'?'default':'light';applyTheme(next);setTheme(next)}
-  return <main className="auth-page"><div className="auth-shell">
+  return <main className="auth-page" lang={language==='en'?'en':'zh-CN'}><div className="auth-shell">
     <header className="auth-brand"><span className="auth-brand__mark" aria-hidden="true">⌘</span><div><span className="auth-brand__name">Web Agents</span><p>{tr("多服务器 AI 编码代理管控台")}</p></div><button type="button" className="auth-language" lang={language==='zh'?'en':'zh-CN'} onClick={()=>changeLanguage(language==='zh'?'en':'zh')} aria-label={language==='zh'?'Switch to English':'切换为中文'}>{language==='zh'?'English':'中文'}</button><button type="button" className="auth-theme" onClick={toggleTheme} aria-label={theme==='light'?tr("切换深色主题"):tr("切换浅色主题")} title={theme==='light'?tr("切换深色主题"):tr("切换浅色主题")}><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="1.7" aria-hidden="true">{theme==='light'?<path d="M20.5 14A8.5 8.5 0 0 1 10 3.5 8.5 8.5 0 1 0 20.5 14Z"/>:<><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.5 1.5m11 11L19 19M5 19l1.5-1.5m11-11L19 5"/></>}</svg></button></header>
     <form className="auth-card" aria-labelledby="auth-title" aria-busy={busy} onSubmit={e=>{e.preventDefault();void submit()}}>
       <h1 id="auth-title">{!status?tr("连接控制台"):changing?tr("设置你的登录密码"):status.setupRequired?tr("初始化管理员"):tr("欢迎回来")}</h1>
@@ -77,12 +77,12 @@ export function AuthGate({children}:{children:ReactNode}){
 }
 
 export function AccountSettings(){
-  useLanguage()
+  const [language]=useLanguage()
   const status=useOperator(),[oldPassword,setOld]=useState(''),[password,setPassword]=useState(''),[msg,setMsg]=useState('')
   if(!status.enabled)return null
   const logout=async()=>{await fetch('/api/auth/logout',{method:'POST'});requestLogin()}
   const change=async()=>{
     try{const r=await fetch('/api/auth/password',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({oldPassword,password})});const d=await r.json();if(!r.ok)throw new Error(d.error);requestLogin()}catch(e){setMsg((e as Error).message)}
   }
-  return <section className="detail-section"><h2>{tr("账户")}</h2><div className="todo-card node-form"><p>{tr("当前用户：")}{status.user}</p><button className="btn" onClick={()=>void logout()}>{tr("退出登录")}</button><details><summary>{tr("修改密码")}</summary><label>{tr("原密码")}<input type="password" autoComplete="current-password" value={oldPassword} onChange={e=>setOld(e.target.value)}/></label><label>{tr("新密码（至少12字符）")}<input type="password" autoComplete="new-password" value={password} onChange={e=>setPassword(e.target.value)}/></label><button className="btn" onClick={()=>void change()}>{tr("保存并重新登录")}</button>{msg&&<p role="alert">{tr(msg)}</p>}</details></div></section>
+  return <section className="detail-section" lang={language==='en'?'en':'zh-CN'}><h2>{tr("账户")}</h2><div className="todo-card node-form"><p>{tr("当前用户：")}{status.user}</p><button className="btn" onClick={()=>void logout()}>{tr("退出登录")}</button><details><summary>{tr("修改密码")}</summary><label>{tr("原密码")}<input type="password" autoComplete="current-password" value={oldPassword} onChange={e=>setOld(e.target.value)}/></label><label>{tr("新密码（至少12字符）")}<input type="password" autoComplete="new-password" value={password} onChange={e=>setPassword(e.target.value)}/></label><button className="btn" onClick={()=>void change()}>{tr("保存并重新登录")}</button>{msg&&<p role="alert">{tr(msg)}</p>}</details></div></section>
 }
