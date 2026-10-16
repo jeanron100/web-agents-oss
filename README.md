@@ -29,7 +29,7 @@ docker compose --env-file .compose.env -f compose.yaml -f compose.runner.yaml ex
 # 在 shell 中创建项目：mkdir -p /workspace/my-project
 ```
 
-页面设置 → 服务器管理 → 检测，可以查看 CLI 版本和登录文件是否存在；文件存在不等于厂商认证成功。只需要控制台时使用 `./scripts/quickstart.sh --pull`，然后添加已部署的远程执行节点。省略 `--pull` 可从源码构建，需要访问 npm；构建不需要提供账号凭据。
+页面设置 → 服务器管理 → 检测，可以查看 CLI 版本和登录文件是否存在；文件存在不等于厂商认证成功。只需要控制台时使用 `./scripts/quickstart.sh --pull`，然后添加已部署的远程执行节点。预构建安装先尝试 GHCR；不可用时从公开 Release 下载并校验镜像包，需要 `curl` 和 `sha256sum`。省略 `--pull` 可从源码构建，需要访问 npm；构建不需要提供账号凭据。
 
 默认仅绑定回环地址。远程访问优先使用 SSH 转发：`ssh -L 5188:127.0.0.1:5188 your-server`。正式公网使用 HTTPS 反向代理，设置 `.compose.env` 的 `WA_PUBLIC_URL` 为实际域名后重建控制台。
 

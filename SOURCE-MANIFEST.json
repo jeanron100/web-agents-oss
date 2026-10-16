@@ -7,7 +7,7 @@
     },
     {
       "path": ".github/workflows/publish.yml",
-      "sha256": "ecc795e3e6398612c53a8468ea3245398f5719be8b734ff2e76ae6c0a7dc0f8b"
+      "sha256": "4a47fb7a008de4015bc2acbc600750b4a979da4c003b9061bb0157233f51725f"
     },
     {
       "path": ".github/workflows/verify.yml",
@@ -31,7 +31,7 @@
     },
     {
       "path": "README.md",
-      "sha256": "75e81059edba5310e095cf75c037a0ca603c46de65a6a2d6c513092c6276a4fe"
+      "sha256": "cfcf99d638a867ce420c296eac4fc7eb73ca28b9bacb9524c889eade4ec0872a"
     },
     {
       "path": "SECURITY.md",
@@ -70,6 +70,10 @@
       "sha256": "d6a60f1a2f76cf09ac52b6f48ef745f2315b1e4611bd1236e925d08fce44a62d"
     },
     {
+      "path": "release/notes.md",
+      "sha256": "8dd90d17e6664e4540820d915a661c976252b443dae0f35b106576b9e74883b6"
+    },
+    {
       "path": "release/version",
       "sha256": "6e7534322f4e161ebceda94214d3e95e28043ba64499f06c406c0ff38200546f"
     },
@@ -83,11 +87,11 @@
     },
     {
       "path": "scripts/export-public.mjs",
-      "sha256": "0159522827d94f1c909b7b833145704f64a89653d0baf2889751ab2eb5427a09"
+      "sha256": "8cf7eb2df69379f78dbf8a27b685d8afee3a5f08e9297f501764b40e01a701aa"
     },
     {
       "path": "scripts/quickstart.sh",
-      "sha256": "50681621e81e498ba1ff5dd16a373bcdff67b05ad00110dc611e061d2ecfdeb2"
+      "sha256": "a12315500f3d2fdf2f92f3b2666d4ed5e8ec3a0206fe754a146d62460650500e"
     },
     {
       "path": "scripts/restore.sh",

@@ -42,6 +42,9 @@ jobs:
   publish:
     needs: verify
     environment: release
+    permissions:
+      contents: write
+      packages: write
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -97,6 +100,30 @@ jobs:
         run: |
           mkdir -p image-inventories
           printf '%s\n' 'ghcr.io/${{ env.IMAGE_NAMESPACE }}-console@${{ steps.console.outputs.digest }}' 'ghcr.io/${{ env.IMAGE_NAMESPACE }}-runner@${{ steps.runner.outputs.digest }}' > image-inventories/images.txt
+      - uses: actions/download-artifact@v4
+        with:
+          name: dependency-inventories
+          path: image-inventories/
+      - name: Prepare verified prebuilt archives
+        env:
+          RELEASE_VERSION: ${{ inputs.version }}
+        run: |
+          docker pull "ghcr.io/$IMAGE_NAMESPACE-console:$RELEASE_VERSION"
+          docker pull "ghcr.io/$IMAGE_NAMESPACE-runner:$RELEASE_VERSION"
+          docker save "ghcr.io/$IMAGE_NAMESPACE-console:$RELEASE_VERSION" "ghcr.io/$IMAGE_NAMESPACE-runner:$RELEASE_VERSION" | gzip -1 > image-inventories/web-agents-images-linux-amd64.tar.gz
+          git archive --format=tar --prefix="web-agents-$RELEASE_VERSION/" HEAD | gzip > "image-inventories/web-agents-$RELEASE_VERSION.tar.gz"
+          (cd image-inventories && sha256sum web-agents-images-linux-amd64.tar.gz > web-agents-images-linux-amd64.tar.gz.sha256 && sha256sum "web-agents-$RELEASE_VERSION.tar.gz" > "web-agents-$RELEASE_VERSION.tar.gz.sha256")
+      - name: Stage release assets for final installation acceptance
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_VERSION: ${{ inputs.version }}
+        run: |
+          if gh release view "$RELEASE_VERSION" --json isDraft > /tmp/release-state.json 2>/dev/null; then
+            node -e 'if(!require("/tmp/release-state.json").isDraft)throw new Error("Refusing to replace a published release")'
+          else
+            gh release create "$RELEASE_VERSION" --draft --prerelease --title "Web Agents $RELEASE_VERSION" --notes-file release/notes.md
+          fi
+          gh release upload "$RELEASE_VERSION" image-inventories/* --clobber
       - uses: actions/upload-artifact@v4
         with:
           name: image-digests
