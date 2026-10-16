@@ -35,11 +35,11 @@
     },
     {
       "path": "README.en.md",
-      "sha256": "db3443512a41cb075db5294aa2dc4f2530aa49c70b05624ed46f056601dd5681"
+      "sha256": "5739ba1e2b765c4dff45620e7c8cb35de6e9e1ecd6d1126a761e08ff422f357d"
     },
     {
       "path": "README.md",
-      "sha256": "e248cbbb33c5c26b8c4014e683e7552cdbc601d1b14c097f6900381911f59dcc"
+      "sha256": "b862a8a20e02b93768fa1c1cb229d5ed6a938d225178dfe5c1816c68848b7991"
     },
     {
       "path": "SECURITY.md",
@@ -59,7 +59,7 @@
     },
     {
       "path": "docs/public/desktop.md",
-      "sha256": "6f4e8e038f27ad465106bc28807c5746ee7575cc79a61496fd0b5f61b7791dbc"
+      "sha256": "8d46ffd6d35caa43cef29404adaf95430f76db81cc24836fcce9818957233380"
     },
     {
       "path": "docs/public/en/comparison.md",
@@ -67,7 +67,7 @@
     },
     {
       "path": "docs/public/en/desktop.md",
-      "sha256": "271edfad4ff578aff776fcdd95749778384e11c01b4f0994c58836f537cf0fc6"
+      "sha256": "08b9589ca303a69998847fdf52a1fafa8acf06df22aa645e3d3ee9f9588926d0"
     },
     {
       "path": "docs/public/en/installation.md",
@@ -103,7 +103,7 @@
     },
     {
       "path": "docs/public/release-readiness.md",
-      "sha256": "6beac59e02de8259922dc00ad09c57e2de122fd3bf8ad4d6c96101d7356767d3"
+      "sha256": "1fb2a283805b4e63e1eb490f224ac0ab44bdac8fe49ec0fe389928a2226b5411"
     },
     {
       "path": "docs/public/third-party-notices.md",
@@ -115,11 +115,11 @@
     },
     {
       "path": "release/notes.md",
-      "sha256": "cb2db1e5b62a8a4cec837da3005e6801a3a8dc155450d36b068451400409959f"
+      "sha256": "ebdb405189550a173be414cc046698d844a3699f19e0610dd320c6fa919d2db7"
     },
     {
       "path": "release/version",
-      "sha256": "4be5c31504ee66e3ff141b1ec979dfda473da294aef5af291578d4e83f6c096f"
+      "sha256": "f4ca84f87f5a3b66de0ddcc1984b109d843df4b88a0b9baf1a564bc2aa32a4ff"
     },
     {
       "path": "scripts/backup.sh",
@@ -831,7 +831,7 @@
     },
     {
       "path": "server/release-version.js",
-      "sha256": "49dbcd230a766b4aaa1aca014372712692ecbe9375db840c96b1887962e526af"
+      "sha256": "355eb73010d4cdeec87298b205da37f5edb3b34af2b74a7d77d65576547db103"
     },
     {
       "path": "server/release-version.test.mjs",
@@ -1107,7 +1107,7 @@
     },
     {
       "path": "web/public/demo.en.html",
-      "sha256": "efc9b86d62e1149d84e929a8868cafd44a7acabdac4c312d69dddca45e570435"
+      "sha256": "2deaec245014f1bd4b0bfee6cd4293ea88c1b07a9c85394c306d06138ef7d660"
     },
     {
       "path": "web/public/demo.html",
@@ -1143,11 +1143,11 @@
     },
     {
       "path": "web/src/components/AuthGate.test.tsx",
-      "sha256": "b58a7fcf33a2994287d777b24e3121b45bd6ddf38ef799bf0267df4cc61e7eab"
+      "sha256": "bc43ca5c14aff0c6fbd24c1ece9d518770bf0aa49cf0fbfc34015e6796139ed4"
     },
     {
       "path": "web/src/components/AuthGate.tsx",
-      "sha256": "c22eca5816821abdd85d6f6d342014bbf0bfb23e9383e45a34f6b4288dc0375a"
+      "sha256": "b4e73e6efec4b7c26f5737a6bfa1cacd3c7ad0b6b2f48818a1a506f8a312980e"
     },
     {
       "path": "web/src/components/ChatMessage.images.test.ts",
@@ -1426,6 +1426,10 @@
       "sha256": "e4272a9a45db4f0f9e0d777d5f1b1be94af62ff671367f037c5f33a75ab264cd"
     },
     {
+      "path": "web/src/lib/language.ts",
+      "sha256": "2e95508513b6d7fe5454646f1323622ee47a9f7a5a119856ee8b5b6302a021e4"
+    },
+    {
       "path": "web/src/lib/models.ts",
       "sha256": "b31e3c7f4c082d31b769efc69e54234b47fbbca5de2e21f026494834fb859175"
     },
@@ -1567,7 +1571,7 @@
     },
     {
       "path": "web/src/styles/global.css",
-      "sha256": "fa736122e0dfb1fedc99c83c74012bd03d630702ce0cda2753d88ea604d7cfc5"
+      "sha256": "db0e4fc722c8970768642f1c22c4046818a7ac71970603dcdc23e2d29bdec938"
     },
     {
       "path": "web/src/styles/layout.test.ts",

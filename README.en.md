@@ -8,6 +8,8 @@ For a single administrator or trusted small team using Linux execution nodes. Th
 
 [Live demo — fictional data, no login](https://webagents.jeanron100.top/demo/) · [Product overview](https://webagents.jeanron100.top/demo.en.html) · [Features and alternatives](docs/public/en/comparison.md)
 
+Bilingual coverage includes the documentation, product pages, sign-in/setup and account-password screens. Use the **English / 中文** control on the sign-in page; the choice is saved locally. The main project console and demo still contain Chinese interface text. Agent conversations and project content remain in their original language.
+
 ## Why use it?
 
 When projects live on several servers and use different coding CLIs, it becomes difficult to answer simple questions: What is running? What needs my approval? Was yesterday's task actually resolved? What evidence supports the answer?
@@ -32,13 +34,13 @@ Agent capabilities differ. Claude inference has not been tested with a vendor ac
 
 ## Download a version
 
-Current prerelease: **[v0.1.0-rc.11](https://github.com/jeanron100/web-agents-oss/releases/tag/v0.1.0-rc.11)**. Previous versions and release notes remain available in [GitHub Releases](https://github.com/jeanron100/web-agents-oss/releases).
+Current prerelease: **[v0.1.0-rc.12](https://github.com/jeanron100/web-agents-oss/releases/tag/v0.1.0-rc.12)**. Previous versions and release notes remain available in [GitHub Releases](https://github.com/jeanron100/web-agents-oss/releases).
 
 | Platform | Download | Start after extracting |
 |---|---|---|
-| macOS Intel / Apple Silicon | [Mac ZIP](https://github.com/jeanron100/web-agents-oss/releases/download/v0.1.0-rc.11/web-agents-v0.1.0-rc.11-macos.zip) | `start-macos.command` |
-| Windows x64 | [Windows ZIP](https://github.com/jeanron100/web-agents-oss/releases/download/v0.1.0-rc.11/web-agents-v0.1.0-rc.11-windows.zip) | `start-windows.cmd` |
-| Linux amd64 / arm64 | [Versioned source archive](https://github.com/jeanron100/web-agents-oss/releases/download/v0.1.0-rc.11/web-agents-v0.1.0-rc.11.tar.gz) | `bash scripts/quickstart.sh --runner --pull` |
+| macOS Intel / Apple Silicon | [Mac ZIP](https://github.com/jeanron100/web-agents-oss/releases/download/v0.1.0-rc.12/web-agents-v0.1.0-rc.12-macos.zip) | `start-macos.command` |
+| Windows x64 | [Windows ZIP](https://github.com/jeanron100/web-agents-oss/releases/download/v0.1.0-rc.12/web-agents-v0.1.0-rc.12-windows.zip) | `start-windows.cmd` |
+| Linux amd64 / arm64 | [Versioned source archive](https://github.com/jeanron100/web-agents-oss/releases/download/v0.1.0-rc.12/web-agents-v0.1.0-rc.12.tar.gz) | `bash scripts/quickstart.sh --runner --pull` |
 
 Install and start Docker first. Mac/Windows use Docker Desktop; Windows requires WSL 2 and Linux containers. Downloads include checksums, with separate image archives for each architecture. Versions ending in `-rc.N` are release candidates; `vX.Y.Z` identifies a stable release.
 

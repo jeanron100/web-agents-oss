@@ -24,6 +24,8 @@ Allow Docker at least 4 GB of RAM and your computer at least 12 GB of free disk 
 3. Start Docker Desktop and wait for the engine. Double-click `start-macos.command` or `start-windows.cmd`. If your OS asks about a downloaded file, confirm its source rather than disabling system protection globally.
 4. Wait for healthy services, then open `http://localhost:5188`. **Initial username: `admin`. Temporary password: `admin123`.** Set a new password of at least 12 characters and sign in again. Existing accounts and unfinished token-based setup remain unchanged during upgrade.
 
+Choose **English** on the sign-in page for English setup, password and recovery instructions. The choice is saved locally. The main console/demo currently still includes Chinese interface text; the bilingual documentation does not imply every application screen has been translated.
+
 You can first explore the [fictional-data demo](https://webagents.jeanron100.top/demo/) without an account, or read the [product overview](https://webagents.jeanron100.top/demo.en.html).
 
 If macOS extraction did not preserve executable permissions, run this from the extracted directory:

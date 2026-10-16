@@ -24,6 +24,8 @@
 3. 启动 Docker Desktop，等待引擎就绪。Mac 双击 `start-macos.command`；Windows 双击 `start-windows.cmd`。如系统因下载来源要求确认，只在确认下载来源可信后允许该文件；不需要全局关闭系统保护。
 4. 等待服务 Healthy，打开 `http://localhost:5188`。**全新安装的初始用户名：`admin`；初始密码：`admin123`。** 首次登录必须设置至少 12 位的新密码，再重新登录使用。已有安装升级会保留原账户，不会覆盖密码；仍处于旧版令牌初始化阶段的安装也会保留原流程。
 
+登录页可切换 English / 中文，涵盖初始化、首次改密、错误及恢复说明，并保存本机语言选择；主控制台和 Demo 内部尚未全量英文化。
+
 可先在 [在线 Demo](https://webagents.jeanron100.top/demo/) 免登录体验虚构项目，或查看 [产品介绍](https://webagents.jeanron100.top/demo.html)。演示数据不连接真实服务器。
 
 macOS 如解压工具未保留执行权限，可在终端进入解压目录后运行：
