@@ -54,6 +54,9 @@ USER root
 RUN apt-get update && apt-get install -y --no-install-recommends git openssh-client tmux python3 python3-venv procps ca-certificates curl \
     && rm -rf /var/lib/apt/lists/* \
     && npm install -g --no-audit --no-fund @openai/codex@${CODEX_VERSION} @anthropic-ai/claude-code@${CLAUDE_VERSION} @moonshot-ai/kimi-code@${KIMI_VERSION} \
+    # npm's published bundle still carries vulnerable transitive versions; retain npm for project work.
+    && node -e 'const fs=require("node:fs"),f="/usr/local/lib/node_modules/npm/package.json",p=JSON.parse(fs.readFileSync(f));delete p.devDependencies;delete p.workspaces;p.dependencies["brace-expansion"]="5.0.11";p.dependencies.undici="6.28.1";fs.writeFileSync(f,JSON.stringify(p))' \
+    && npm install --prefix /usr/local/lib/node_modules/npm --ignore-scripts --omit=dev --no-audit --no-fund \
     && npm cache clean --force && rm -rf /home/node/.npm /root/.npm
 ENV KIMI_BIN=/usr/local/bin/kimi
 WORKDIR /app

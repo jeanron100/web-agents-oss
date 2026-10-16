@@ -23,7 +23,7 @@
     },
     {
       "path": "Dockerfile",
-      "sha256": "54a085820a3ba5a927ec3e112dbbf42def96a477ef25e5fc9fc3e45a8afc8f9b"
+      "sha256": "b186578fb38811d020edb199a473361acbc01f8f074adb857aad26e2c9461ab4"
     },
     {
       "path": "LICENSE",
@@ -75,7 +75,7 @@
     },
     {
       "path": "release/version",
-      "sha256": "1ef717028f84c874b8d2c40e617b82576e7599bd57b593e97690c5fd76f8aab0"
+      "sha256": "5ae98699a81167aea6bd88269d0fe2814ece9974d63f67ae59447ac728e35323"
     },
     {
       "path": "scripts/backup.sh",
