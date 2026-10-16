@@ -1,5 +1,7 @@
 # Mac / Windows 快速交付
 
+[简体中文](desktop.md) | [English](en/desktop.md)
+
 通过 Docker Desktop 在个人电脑启动完整控制台、数据库和执行节点；网页功能与 Linux 部署一致。代码和厂商登录态默认保存在 Docker 命名卷，免安装宿主机 Node、Git 或 Python。
 
 ## 平台与前提

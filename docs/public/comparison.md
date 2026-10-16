@@ -1,5 +1,7 @@
 # 为什么选择 Web Agents：功能亮点与竞品比较
 
+[简体中文](comparison.md) | [English](en/comparison.md)
+
 [返回首页](../../README.md) · [开始安装](installation.md) · [下载版本](https://github.com/jeanron100/web-agents-oss/releases) · [发布验证与计划](release-readiness.md)
 
 Web Agents 面向这样的日常工作：你在几台 Linux 服务器上维护多个项目，使用 Codex、Kimi 或 Claude 执行开发和运维任务；离开电脑后仍需掌握进展、补充信息、处理审批，并在几天后查清某个问题究竟如何解决。

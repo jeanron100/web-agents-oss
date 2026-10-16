@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Web Agents · One console for coding agents across your servers</title>
+<meta name="description" content="Self-hosted multi-server console for Codex, Kimi and Claude. Project dashboards, approvals, execution history, task evidence and read-only MCP. Versioned Mac, Windows and Linux downloads.">
+<meta property="og:title" content="Web Agents · Multi-server coding agent console">
+<meta property="og:description" content="Follow project progress, handle decisions and trace execution evidence from your desktop or phone.">
+<meta property="og:type" content="website">
+<style>
+  :root{
+    --bg:#0b1017; --panel:#111823; --panel-2:#0f151f; --border:#1e2836;
+    --t1:#e6edf6; --t2:#a7b4c6; --t3:#6b7a8f;
+    --claude:#c96442; --codex:#22d3ee; --ok:#4ade80; --warn:#f59e0b; --err:#f87171; --accent:#4f8cff;
+    --maxw:1080px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--bg); color:var(--t1);
+    font:16px/1.7 -apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",system-ui,sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:var(--accent);text-decoration:none}
+  a:hover{text-decoration:underline}
+  code,.mono{font-family:ui-monospace,SFMono-Regular,"SF Mono",Menlo,monospace}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 20px}
+  section{padding:72px 0;border-top:1px solid var(--border)}
+  h2{font-size:26px;letter-spacing:-.01em;margin-bottom:8px}
+  .sub{color:var(--t3);font-size:14.5px;margin-bottom:32px}
+
+  /* ── hero ── */
+  .hero{padding:84px 0 64px;background:
+    radial-gradient(1000px 420px at 15% -10%, rgba(201,100,66,.16), transparent 60%),
+    radial-gradient(800px 380px at 88% 0%, rgba(34,211,238,.10), transparent 60%);}
+  .hero__grid{display:grid;grid-template-columns:1.15fr .85fr;gap:48px;align-items:center}
+  .badge{display:inline-flex;align-items:center;gap:7px;padding:4px 11px;border:1px solid var(--border);
+    border-radius:999px;font-size:12.5px;color:var(--t2);background:var(--panel);margin-bottom:20px}
+  .badge b{color:var(--ok);font-weight:600}
+  h1{font-size:42px;line-height:1.25;letter-spacing:-.02em;margin-bottom:18px;text-wrap:balance}
+  h1 em{font-style:normal;background:linear-gradient(90deg,var(--claude),var(--codex));
+    -webkit-background-clip:text;background-clip:text;color:transparent}
+  .lede{font-size:17px;color:var(--t2);margin-bottom:28px;max-width:52ch}
+  .cta{display:flex;gap:12px;flex-wrap:wrap}
+  .btn{display:inline-flex;align-items:center;gap:8px;padding:11px 20px;border-radius:10px;
+    font-size:15px;font-weight:600;border:1px solid var(--border);transition:.15s}
+  .btn--pri{background:linear-gradient(135deg,var(--claude),#a34f33);color:#fff;border-color:transparent}
+  .btn--pri:hover{filter:brightness(1.12);text-decoration:none}
+  .btn--ghost{background:var(--panel);color:var(--t1)}
+  .btn--ghost:hover{border-color:var(--t3);text-decoration:none}
+  .cta__note{font-size:12.5px;color:var(--t3);margin-top:12px}
+  .phone{border:8px solid #1a2230;border-radius:28px;overflow:hidden;box-shadow:0 30px 70px rgba(0,0,0,.6);background:#000}
+  .phone img{display:block;width:100%}
+
+  /* ── 痛点 ── */
+  .pain{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+  .pain__item{padding:22px;border:1px solid var(--border);border-radius:12px;background:var(--panel-2)}
+  .pain__n{font-size:12px;color:var(--claude);font-weight:700;letter-spacing:.08em;margin-bottom:8px}
+  .pain__item p{color:var(--t2);font-size:14.5px;line-height:1.75}
+  .pain__item b{color:var(--t1)}
+
+  /* ── 能力卡 ── */
+  .feats{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+  .feat{padding:22px;border:1px solid var(--border);border-radius:12px;background:var(--panel-2)}
+  .feat h3{font-size:15.5px;margin-bottom:8px;display:flex;align-items:center;gap:8px}
+  .feat p{color:var(--t2);font-size:14px;line-height:1.7}
+  .feat code{font-size:12.5px;background:#0a0f16;border:1px solid var(--border);padding:1px 5px;border-radius:4px;color:var(--t2)}
+  .dot{width:8px;height:8px;border-radius:50%;flex:none}
+
+  /* ── 截图带 ── */
+  .shots{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:8px}
+  .shot{border:1px solid var(--border);border-radius:12px;overflow:hidden;background:#000}
+  .shot img{display:block;width:100%}
+  .shot figcaption{padding:10px 12px;font-size:12.5px;color:var(--t3);border-top:1px solid var(--border);background:var(--panel-2)}
+
+  /* ── 架构 ── */
+  .arch{border:1px solid var(--border);border-radius:14px;background:var(--panel-2);padding:28px;overflow-x:auto}
+  .arch svg{display:block;min-width:640px;margin:0 auto}
+  .arch__notes{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:26px}
+  .arch__notes div{font-size:13.5px;color:var(--t2);line-height:1.7}
+  .arch__notes b{color:var(--t1);display:block;margin-bottom:4px}
+
+  /* ── 踩坑（核心差异化）── */
+  .pit{border:1px solid var(--border);border-radius:12px;background:var(--panel-2);overflow:hidden;margin-bottom:14px}
+  .pit__head{display:flex;align-items:baseline;gap:10px;padding:16px 20px;flex-wrap:wrap}
+  .pit__sym{font-weight:650;font-size:15px;color:var(--err)}
+  .pit__tag{font-size:11px;color:var(--t3);border:1px solid var(--border);padding:1px 8px;border-radius:999px;margin-left:auto}
+  .pit__body{padding:0 20px 18px;display:grid;grid-template-columns:1fr 1fr;gap:18px}
+  .pit__body>div{font-size:13.8px;line-height:1.75;color:var(--t2)}
+  .pit__body b{color:var(--t1);display:block;margin-bottom:3px;font-size:12px;letter-spacing:.05em}
+  .pit__body em{font-style:normal;color:var(--ok)}
+
+  /* ── 上手 ── */
+  pre{background:#080c12;border:1px solid var(--border);border-radius:12px;padding:18px 20px;
+    overflow-x:auto;font-size:13.5px;line-height:1.9;color:var(--t2)}
+  pre .c{color:var(--t3)}
+  pre .k{color:var(--codex)}
+
+  footer{padding:44px 0 64px;color:var(--t3);font-size:13.5px;border-top:1px solid var(--border)}
+  footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+
+  @media(max-width:900px){
+    .hero__grid{grid-template-columns:1fr;gap:36px}
+    h1{font-size:32px}
+    .pain,.feats,.shots,.arch__notes,.pit__body{grid-template-columns:1fr}
+    .shots{grid-template-columns:1fr 1fr}
+    section{padding:56px 0}
+  }
+</style>
+</head>
+<body>
+<nav class="wrap" aria-label="Language" style="display:flex;justify-content:flex-end;gap:16px;padding-top:18px"><a href="/demo.html" lang="zh-CN">简体中文</a><span aria-current="page">English</span></nav>
+<div class="hero"><div class="wrap hero__grid"><div>
+<span class="badge"><span class="dot" style="background:var(--ok)"></span><b>Open source · Self-hosted</b> · Codex + Kimi + Claude</span>
+<h1>Your agents keep working.<br><em>Stay close to every project.</em></h1>
+<p class="lede">Several servers. Multiple coding agents. One place to see what is running, handle decisions and find out how a task was resolved — from your desktop or phone.</p>
+<div class="cta"><a class="btn btn--pri" href="/demo/?lang=en">Try the demo</a><a class="btn btn--ghost" href="https://github.com/jeanron100/web-agents-oss/releases">Download for Mac / Windows / Linux</a><a class="btn btn--ghost" href="https://github.com/jeanron100/web-agents-oss/blob/main/README.en.md">GitHub &amp; documentation ↗</a></div>
+<p class="cta__note">No login required for the demo. All projects and records are fictional; actions remain in your browser. Real terminals, vendor models and execution nodes require your own installation.</p>
+</div><div class="phone"><img src="/demo-shots/dash.png" alt="Example project dashboard with fictional server data" fetchpriority="high" decoding="async"></div></div></div>
+<section><div class="wrap"><h2>Why use Web Agents?</h2><p class="sub">For maintainers who work across remote projects and need both oversight and traceability.</p><div class="pain">
+<div class="pain__item"><div class="pain__n">01 · FIND WHAT NEEDS YOU</div><p>Approvals, questions and review requests can stop a task. A shared inbox helps you <b>find the pending decision</b> without checking each terminal.</p></div>
+<div class="pain__item"><div class="pain__n">02 · SEE ACROSS SERVERS</div><p>Follow project state from one dashboard, grouped by server or application. <b>Keep existing Linux projects and CLI accounts</b> while adding a browser control layer.</p></div>
+<div class="pain__item"><div class="pain__n">03 · UNDERSTAND WHAT HAPPENED</div><p>Go beyond the latest chat message. Retrieve <b>requests, reported results, methods and remaining risks</b> with source and coverage information.</p></div>
+</div></div></section>
+<section><div class="wrap"><h2>What you can do</h2><p class="sub">The demo shows the main interface; actual execution and external integrations need self-hosting.</p><div class="feats">
+<div class="feat"><h3><span class="dot" style="background:var(--ok)"></span>Multi-server dashboard</h3><p>See running, approval, input, idle, completed and error states. Add, test, disable or remove execution nodes in settings.</p></div>
+<div class="feat"><h3><span class="dot" style="background:var(--warn)"></span>A shared decision inbox</h3><p>Approvals, plans, questions and changes awaiting review in one place. Handle supported decisions from a mobile or desktop browser.</p></div>
+<div class="feat"><h3><span class="dot" style="background:var(--codex)"></span>Three CLIs, one console</h3><p>Codex, Kimi and Claude keep their own accounts and sessions. View conversations and tool events; capabilities depend on each CLI and driver.</p></div>
+<div class="feat"><h3><span class="dot" style="background:var(--codex)"></span>Supplement now, queue next</h3><p>Add context to an active Codex turn, or queue an independent follow-up. Supported recovery respects existing session writers.</p></div>
+<div class="feat"><h3><span class="dot" style="background:var(--accent)"></span>Terminals, files and images</h3><p>Inspect artifacts, screenshots and QR codes. Native and container lifecycles differ: replacing a runner stops its CLIs; preserve volumes and reload sessions.</p></div>
+<div class="feat"><h3><span class="dot" style="background:var(--err)"></span>Evidence-backed progress</h3><p>Retrieve what was assigned, what the record reports, how it was handled and what risks remain. Missing evidence is not treated as completion.</p></div>
+<div class="feat"><h3><span class="dot" style="background:var(--codex)"></span>Quota and consumption</h3><p>Track windows, reset times and sampled quota history separately from daily Token trends. Assistant calls retain reported model, usage and compatibility warnings.</p></div>
+<div class="feat"><h3><span class="dot" style="background:#a78bfa"></span>Read-only MCP</h3><p>Eight bounded tools share managed-node state, sessions, pending items and task evidence with trusted external assistants. No execution or approval permissions.</p></div>
+<div class="feat"><h3><span class="dot" style="background:var(--ok)"></span>Versioned downloads</h3><p>Linux amd64/arm64 images and Mac/Windows Docker Desktop launchers, with checksums and persistent storage. For one administrator or a trusted small team.</p></div>
+</div></div></section>
+<section><div class="wrap"><h2>Explore the interface</h2><p class="sub">Screenshots use fictional demo data. Open the demo to explore the current interface.</p><div class="shots">
+<figure class="shot"><img src="/demo-shots/inbox.png" alt="Fictional pending-work inbox" loading="lazy"><figcaption>Inbox · decisions in one place</figcaption></figure>
+<figure class="shot"><img src="/demo-shots/approval.png" alt="Example approval request" loading="lazy"><figcaption>Approval · inspect the request</figcaption></figure>
+<figure class="shot"><img src="/demo-shots/chat.png" alt="Example conversation and tool events" loading="lazy"><figcaption>Conversations · tools and text</figcaption></figure>
+<figure class="shot"><img src="/demo-shots/stats.png" alt="Fictional consumption statistics" loading="lazy"><figcaption>Consumption · follow past work</figcaption></figure>
+</div></div></section>
+<section><div class="wrap"><h2>Get started</h2><p class="sub">Install Docker first; use Docker Desktop on Mac/Windows. Download and extract the platform ZIP, or clone the public source:</p>
+<pre>git clone https://github.com/jeanron100/web-agents-oss.git
+cd web-agents-oss
+./scripts/quickstart.sh --runner --pull</pre>
+<p style="color:var(--t2);margin-top:20px">Open <code>http://localhost:5188</code>. Fresh container installations use <code>admin / admin123</code>. You must set a new password of at least 12 characters before project or terminal access. Upgrades preserve existing accounts. Sign into vendor CLIs with your own accounts.</p>
+<p style="margin-top:16px"><a href="https://github.com/jeanron100/web-agents-oss/releases">Releases &amp; checksums</a> · <a href="https://github.com/jeanron100/web-agents-oss/blob/main/docs/public/en/desktop.md">Mac/Windows guide</a> · <a href="https://github.com/jeanron100/web-agents-oss/blob/main/docs/public/en/comparison.md">Features &amp; alternatives</a></p>
+<p class="cta__note">Release candidate. No prerelease production-support SLA. No untrusted-tenant isolation or native Windows/macOS process adoption. Claude inference is outside the current public vendor-account validation; see the release documentation.</p>
+</div></section>
+<footer><div class="wrap"><span>Web Agents · Self-hosted multi-server coding agent console</span><span><a href="/demo/?lang=en">Try the demo →</a> · <a href="/demo.html" lang="zh-CN">简体中文</a></span></div></footer>
+</body></html>

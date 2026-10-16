@@ -4,7 +4,7 @@ import path from 'node:path'
 import crypto from 'node:crypto'
 const root=process.cwd(),out=path.resolve(process.argv[2]||'.release/web-agents')
 if(out===root||fs.existsSync(out))throw new Error('Choose a new, empty export directory')
-const names=['README.md','LICENSE','CONTRIBUTING.md','SECURITY.md','Dockerfile','.dockerignore','.gitattributes','compose.yaml','compose.runner.yaml','server/package.json','server/package-lock.json','server/hub-config.json','web/package.json','web/package-lock.json','web/index.html','web/tsconfig.json','web/vite.config.ts','release/export-manifest.json','.gitignore']
+const names=['README.md','README.en.md','LICENSE','CONTRIBUTING.md','SECURITY.md','Dockerfile','.dockerignore','.gitattributes','compose.yaml','compose.runner.yaml','server/package.json','server/package-lock.json','server/hub-config.json','web/package.json','web/package-lock.json','web/index.html','web/tsconfig.json','web/vite.config.ts','release/export-manifest.json','.gitignore']
 names.push('release/version','release/notes.md','start-macos.command','start-windows.cmd')
 const trees=['web/src','web/public','server/repositories','server/mcp','docs/public','.github/workflows']
 const exclude=new Set(['read-status.mjs','deploy-hub-deps.test.mjs','deploy-agent.test.mjs','nightly-restart.test.mjs'])

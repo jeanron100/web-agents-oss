@@ -1,5 +1,7 @@
 # 配置与运维
 
+[简体中文](operations.md) | [English](en/operations.md)
+
 ## 配置来源
 
 真实环境变量优先于 `server/.env`。容器不复制 `.env`。关键配置：

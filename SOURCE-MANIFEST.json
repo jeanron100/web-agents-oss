@@ -34,8 +34,12 @@
       "sha256": "4a23b0460d88f2d6ca79a0343f5a8e65120c6091570d52f12f987500957d0529"
     },
     {
+      "path": "README.en.md",
+      "sha256": "db3443512a41cb075db5294aa2dc4f2530aa49c70b05624ed46f056601dd5681"
+    },
+    {
       "path": "README.md",
-      "sha256": "7bee8d43e000407c41f4d9cd68bdc8d9738f139ff98696dd0343e8de28dfe5a7"
+      "sha256": "e248cbbb33c5c26b8c4014e683e7552cdbc601d1b14c097f6900381911f59dcc"
     },
     {
       "path": "SECURITY.md",
@@ -51,31 +55,59 @@
     },
     {
       "path": "docs/public/comparison.md",
-      "sha256": "b4649ff73ea412532f902678379648765fa56ce1cd9ef369e26d41fe128eb94e"
+      "sha256": "561e6887794173772bea5403a5d65f07d5494caab84438c97691212a9fff6164"
     },
     {
       "path": "docs/public/desktop.md",
-      "sha256": "f276b05228728873524d94210e9385ce0edac3dc44447e43635787ca012be3f2"
+      "sha256": "6f4e8e038f27ad465106bc28807c5746ee7575cc79a61496fd0b5f61b7791dbc"
+    },
+    {
+      "path": "docs/public/en/comparison.md",
+      "sha256": "ea6b413f3283efc1402381dacd599b82e246cde94bd1cc9245ee5835802dcfb2"
+    },
+    {
+      "path": "docs/public/en/desktop.md",
+      "sha256": "271edfad4ff578aff776fcdd95749778384e11c01b4f0994c58836f537cf0fc6"
+    },
+    {
+      "path": "docs/public/en/installation.md",
+      "sha256": "35544a349c2eb01491d0b13fd4461b52d282dea5822284bc330daf671366bb2d"
+    },
+    {
+      "path": "docs/public/en/mcp.md",
+      "sha256": "b21961d814f22e5c439522780138bf0100d2833352a55b5af2d44562cf0f1023"
+    },
+    {
+      "path": "docs/public/en/operations.md",
+      "sha256": "b5ec843b18484860412c22adfa1d239704af14b613f9ffd3b63114dc36153dfc"
+    },
+    {
+      "path": "docs/public/en/release-readiness.md",
+      "sha256": "271d8627651976d9c76df3655bb062b35bc74fbf4abed10d1ab775795a945f24"
+    },
+    {
+      "path": "docs/public/en/third-party-notices.md",
+      "sha256": "8067cfa848f0042e576d1167574720db19d65754d103ed18da27a3e9f5ff6776"
     },
     {
       "path": "docs/public/installation.md",
-      "sha256": "d94af6cfe11a2a185dc4fe5374e526d5b5b1e273d042f37d57afc5fe29660043"
+      "sha256": "acf306c36e8c1728a64c9b795966d8649c872ad1fd53dab2a28365720feafd3d"
     },
     {
       "path": "docs/public/mcp.md",
-      "sha256": "74c688900a56e7261481d03fda4854e6991ceb9b5e5195fc0fe86b43fd635139"
+      "sha256": "ea52359b8e962219a63a2d9ad14979717bfc1e8c762f827b65dde4080108b614"
     },
     {
       "path": "docs/public/operations.md",
-      "sha256": "64e1563ee7ec8191ff192456c7f177aa66c65bef90f76c51e09f12f2bff341a4"
+      "sha256": "9ec62bcc2f5f12bc1c5e494851c051b0ab6371f19d121c5015766dc84abc1065"
     },
     {
       "path": "docs/public/release-readiness.md",
-      "sha256": "787a1cfff207176aac864b50c37a27e55cf84ea10a6de7aff913e9fdca97e74d"
+      "sha256": "6beac59e02de8259922dc00ad09c57e2de122fd3bf8ad4d6c96101d7356767d3"
     },
     {
       "path": "docs/public/third-party-notices.md",
-      "sha256": "c23b51fd7a61a9b67f955ebeb896ac63654bd4fac3b3af8c9bdd46bb947b8a61"
+      "sha256": "8d61082f056c1974c0616156620d455fd13f1721da2d0ab40a21b1d31eb7d557"
     },
     {
       "path": "release/export-manifest.json",
@@ -99,7 +131,7 @@
     },
     {
       "path": "scripts/export-public.mjs",
-      "sha256": "99a50277ed20002ea99adb39741ed2b4637426809b61bfec2d2b0ee30311df7b"
+      "sha256": "2e3094ee2d78b3f1a7633ce0992e7e7c8bc1045a420990efa276326473839da3"
     },
     {
       "path": "scripts/package-release.py",
@@ -1074,8 +1106,12 @@
       "sha256": "f0e0f3242576ba270629cebe073ddaa783544736ee76704d51c7956b5b5c0ef5"
     },
     {
+      "path": "web/public/demo.en.html",
+      "sha256": "efc9b86d62e1149d84e929a8868cafd44a7acabdac4c312d69dddca45e570435"
+    },
+    {
       "path": "web/public/demo.html",
-      "sha256": "542c2aacaef412d3b07f6c86156cde96ac1273d9c2964172ebb14822316bfb41"
+      "sha256": "d3cf6f91a53ed40166921475dcd86517e47e2c6ffbddcbd39a183aa24d3eecc9"
     },
     {
       "path": "web/public/icon-192.png",

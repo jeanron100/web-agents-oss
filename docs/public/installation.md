@@ -1,5 +1,7 @@
 # 安装与远程执行节点
 
+[简体中文](installation.md) | [English](en/installation.md)
+
 控制台聚合状态，执行节点运行 CLI。每个节点有独立的项目根目录、CLI 账号和访问令牌。不能把宿主机已有 CLI 进程当成容器内的进程。
 
 ## 容器
