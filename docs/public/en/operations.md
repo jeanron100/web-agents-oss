@@ -26,7 +26,7 @@ Assistant `analysis.modelCalls` retains planning/synthesis stages, reported reso
 
 ## Initial account and password recovery
 
-Starting with v0.1.0-rc.11, fresh container installations provide **username `admin` and temporary password `admin123`**. The first sign-in permits password change or sign-out only. Server-side checks block project data, configuration, execution and terminals until a new password of at least 12 characters is saved. Existing sessions are then revoked; sign in with the new password. Complete this on the default loopback listener before exposing the console.
+Starting with v0.1.0-rc.11, fresh container installations provide **username `admin` and temporary password `admin123`**. The first sign-in permits password change or sign-out only. Server-side checks block project data, configuration, execution and terminals until a new password of at least 8 characters is saved. Existing sessions are then revoked; sign in with the new password. Complete this on the default loopback listener before exposing the console.
 
 An existing `auth.json` is never overwritten on upgrade, including unfinished manual setup. Native Hub installations use token-based setup by default. To choose this for a fresh container, set `WA_INITIAL_ACCOUNT=0` in `.compose.env` before first start, then run:
 

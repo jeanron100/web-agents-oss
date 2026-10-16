@@ -31,7 +31,10 @@ it('a limited authenticated session cannot expose project UI and mismatched conf
   try{
     await act(async()=>root.render(<AuthGate>private projects</AuthGate>))
     expect(host.textContent).toContain('设置你的登录密码');expect(host.textContent).not.toContain('private projects')
-    await input(host,'auth-password','my-new-long-password');await input(host,'auth-confirm-password','a-different-password');await submit(host)
+    expect(host.querySelector<HTMLInputElement>('#auth-password')!.minLength).toBe(8)
+    expect(host.querySelector<HTMLInputElement>('#auth-confirm-password')!.minLength).toBe(8)
+    expect(host.textContent).toContain('至少 8 个字符')
+    await input(host,'auth-password','12345678');await input(host,'auth-confirm-password','a-different-password');await submit(host)
     expect(host.querySelector('[role=alert]')?.textContent).toContain('不一致');expect(fetcher).toHaveBeenCalledTimes(1)
   }finally{await act(async()=>root.unmount())}
 })
@@ -44,7 +47,7 @@ it('saving the first password returns to login and does not grant access with th
   const host=document.createElement('div'),root=createRoot(host)
   try{
     await act(async()=>root.render(<AuthGate>private projects</AuthGate>))
-    await input(host,'auth-current-password','admin123');await input(host,'auth-password','my-new-long-password');await input(host,'auth-confirm-password','my-new-long-password');await submit(host)
+    await input(host,'auth-current-password','admin123');await input(host,'auth-password','12345678');await input(host,'auth-confirm-password','12345678');await submit(host)
     expect(changed).toBe(true);expect(host.textContent).toContain('密码已更新');expect(host.textContent).toContain('欢迎回来');expect(host.textContent).not.toContain('private projects')
     const call=fetcher.mock.calls.find(args=>String(args[0])==='/api/auth/password')
     expect(call).toBeDefined()

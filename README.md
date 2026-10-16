@@ -34,13 +34,13 @@
 
 ## 版本下载
 
-当前预发布：**[v0.1.0-rc.12](https://github.com/jeanron100/web-agents-oss/releases/tag/v0.1.0-rc.12)**。所有版本独立保存在 [GitHub Releases](https://github.com/jeanron100/web-agents-oss/releases)，可按版本下载和核对更新说明。
+当前预发布：**[v0.1.0-rc.13](https://github.com/jeanron100/web-agents-oss/releases/tag/v0.1.0-rc.13)**。所有版本独立保存在 [GitHub Releases](https://github.com/jeanron100/web-agents-oss/releases)，可按版本下载和核对更新说明。
 
 | 系统 | 下载 | 解压后启动 |
 |---|---|---|
-| macOS Intel / Apple Silicon | [Mac 安装包](https://github.com/jeanron100/web-agents-oss/releases/download/v0.1.0-rc.12/web-agents-v0.1.0-rc.12-macos.zip) | `start-macos.command` |
-| Windows x64 | [Windows 安装包](https://github.com/jeanron100/web-agents-oss/releases/download/v0.1.0-rc.12/web-agents-v0.1.0-rc.12-windows.zip) | `start-windows.cmd` |
-| Linux amd64 / arm64 | [版本源码包](https://github.com/jeanron100/web-agents-oss/releases/download/v0.1.0-rc.12/web-agents-v0.1.0-rc.12.tar.gz) | `bash scripts/quickstart.sh --runner --pull` |
+| macOS Intel / Apple Silicon | [Mac 安装包](https://github.com/jeanron100/web-agents-oss/releases/download/v0.1.0-rc.13/web-agents-v0.1.0-rc.13-macos.zip) | `start-macos.command` |
+| Windows x64 | [Windows 安装包](https://github.com/jeanron100/web-agents-oss/releases/download/v0.1.0-rc.13/web-agents-v0.1.0-rc.13-windows.zip) | `start-windows.cmd` |
+| Linux amd64 / arm64 | [版本源码包](https://github.com/jeanron100/web-agents-oss/releases/download/v0.1.0-rc.13/web-agents-v0.1.0-rc.13.tar.gz) | `bash scripts/quickstart.sh --runner --pull` |
 
 需先安装并启动 Docker（Mac/Windows 使用 Docker Desktop，Windows 开启 WSL 2 Linux 容器）。Release 附有校验和及按架构区分的镜像包，启动时自动选择引擎架构。`-rc.*` 为预发布，`vX.Y.Z` 为正式版本。
 
@@ -62,7 +62,7 @@ powershell -NoProfile -ExecutionPolicy Bypass -File .\scripts\quickstart.ps1 -Ru
 
 完整平台前提、下载校验和停止/升级方法见 [Mac/Windows 快速交付](docs/public/desktop.md)。
 
-打开 `http://localhost:5188`。**全新容器安装的初始用户名为 `admin`，初始密码为 `admin123`。** 首次登录后，必须设置至少 12 位的新密码，再重新登录，才能访问项目、终端和设置。升级保留已有账号和密码，不会重置为初始密码。
+打开 `http://localhost:5188`。**全新容器安装的初始用户名为 `admin`，初始密码为 `admin123`。** 首次登录后，必须设置至少 8 位的新密码，再重新登录，才能访问项目、终端和设置。升级保留已有账号和密码，不会重置为初始密码。
 
 忘记已有密码时，在安装目录执行：
 

@@ -35,11 +35,11 @@
     },
     {
       "path": "README.en.md",
-      "sha256": "5739ba1e2b765c4dff45620e7c8cb35de6e9e1ecd6d1126a761e08ff422f357d"
+      "sha256": "bf00a5e897f2201eacee24940f39381e1ce15e45a9f1c49c8488e94ec24461ff"
     },
     {
       "path": "README.md",
-      "sha256": "b862a8a20e02b93768fa1c1cb229d5ed6a938d225178dfe5c1816c68848b7991"
+      "sha256": "45bfb0c6e5abf11d1662812379dd3f4710caa7c19bf6f53dd0ed6e4cfb3a38a0"
     },
     {
       "path": "SECURITY.md",
@@ -59,7 +59,7 @@
     },
     {
       "path": "docs/public/desktop.md",
-      "sha256": "8d46ffd6d35caa43cef29404adaf95430f76db81cc24836fcce9818957233380"
+      "sha256": "3d0ab042955e932f94ad102f7112c8a67011f1210630603730ea5ec73156e832"
     },
     {
       "path": "docs/public/en/comparison.md",
@@ -67,7 +67,7 @@
     },
     {
       "path": "docs/public/en/desktop.md",
-      "sha256": "08b9589ca303a69998847fdf52a1fafa8acf06df22aa645e3d3ee9f9588926d0"
+      "sha256": "785cf1bf0085034d6f64ebc308b316aa810f5cd3edd7c1b140f8230ba1cad4e6"
     },
     {
       "path": "docs/public/en/installation.md",
@@ -79,11 +79,11 @@
     },
     {
       "path": "docs/public/en/operations.md",
-      "sha256": "b5ec843b18484860412c22adfa1d239704af14b613f9ffd3b63114dc36153dfc"
+      "sha256": "61ec6a2e14a5bbcb4200dcb95ea2f7e9a6bee70327a950b7e04bb9b3282c29fc"
     },
     {
       "path": "docs/public/en/release-readiness.md",
-      "sha256": "271d8627651976d9c76df3655bb062b35bc74fbf4abed10d1ab775795a945f24"
+      "sha256": "92f69ac970b37091652d103e2a896e9d7afe8f7bd3c1ab775914a9f4be32f94d"
     },
     {
       "path": "docs/public/en/third-party-notices.md",
@@ -99,11 +99,11 @@
     },
     {
       "path": "docs/public/operations.md",
-      "sha256": "9ec62bcc2f5f12bc1c5e494851c051b0ab6371f19d121c5015766dc84abc1065"
+      "sha256": "4bac6473873fa79417d5308af69ffa6450525caa7050bdb35a48687723e6a20a"
     },
     {
       "path": "docs/public/release-readiness.md",
-      "sha256": "1fb2a283805b4e63e1eb490f224ac0ab44bdac8fe49ec0fe389928a2226b5411"
+      "sha256": "251eef00ad4899c229aa7373fdc4cdfde658e3c1a61cb503ec5faf4305354802"
     },
     {
       "path": "docs/public/third-party-notices.md",
@@ -115,11 +115,11 @@
     },
     {
       "path": "release/notes.md",
-      "sha256": "ebdb405189550a173be414cc046698d844a3699f19e0610dd320c6fa919d2db7"
+      "sha256": "7617b3ee5da75ebb4c016127c0f096d1d49f866b9378b1f25a154b2e8f2c7b7d"
     },
     {
       "path": "release/version",
-      "sha256": "f4ca84f87f5a3b66de0ddcc1984b109d843df4b88a0b9baf1a564bc2aa32a4ff"
+      "sha256": "1f1faa9c2ea8534ec720797426d79d8e291aaf77e7fbe806d1f12907fc79f3ae"
     },
     {
       "path": "scripts/backup.sh",
@@ -711,11 +711,11 @@
     },
     {
       "path": "server/operator-auth.js",
-      "sha256": "e1de6c3601c4f194db743c79f1eeec023d34d977dff4d29010259918e48c8106"
+      "sha256": "65324cebc36ba12f6eb5ea6de69c779dcb3192342dbc4401874aad70f4f6d032"
     },
     {
       "path": "server/operator-auth.test.mjs",
-      "sha256": "b7488605e4e89d36dfb637b9a95459da4763a76ebad466e575407f465224cba1"
+      "sha256": "641be3f8277a69579cb242d5300109d0e3fa2ab1f71c635b26805a6983f2a073"
     },
     {
       "path": "server/package-lock.json",
@@ -831,7 +831,7 @@
     },
     {
       "path": "server/release-version.js",
-      "sha256": "355eb73010d4cdeec87298b205da37f5edb3b34af2b74a7d77d65576547db103"
+      "sha256": "dbba316e9955a61e6e1335f2c3ab5085ec09de54652329170c27c96d04be8102"
     },
     {
       "path": "server/release-version.test.mjs",
@@ -1143,11 +1143,11 @@
     },
     {
       "path": "web/src/components/AuthGate.test.tsx",
-      "sha256": "bc43ca5c14aff0c6fbd24c1ece9d518770bf0aa49cf0fbfc34015e6796139ed4"
+      "sha256": "59e7dc6f63ca6e9ba921546a85a9d20ffbfe9f35cfd72578e91849a0be9bb333"
     },
     {
       "path": "web/src/components/AuthGate.tsx",
-      "sha256": "b9e49335b02757dd6f6e084dd115c2499145554d9d3351de9aba67cc43bfd932"
+      "sha256": "4697997f28bc1f91afe9fba70bda078c1afde626dea8530ad403109e05b9cee6"
     },
     {
       "path": "web/src/components/ChatMessage.images.test.ts",
@@ -1427,7 +1427,7 @@
     },
     {
       "path": "web/src/lib/language.ts",
-      "sha256": "2b86a11db49b9528ef679a3bb772eec3568cda475f22946974cca630f609c3ac"
+      "sha256": "2119531078db300c77467b717138fc831da76da27e9f1a8ac4dd2fe841dda391"
     },
     {
       "path": "web/src/lib/models.ts",

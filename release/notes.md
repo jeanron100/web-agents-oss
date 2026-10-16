@@ -1,9 +1,10 @@
-# Web Agents v0.1.0-rc.12 — bilingual onboarding and public documentation
+# Web Agents v0.1.0-rc.13 — simpler password setup / 更轻松的密码设置
 
-- Adds English and Chinese README entry points and seven English guides covering installation, desktop delivery, operations, initial credentials/recovery, MCP, features/alternatives, validation and third-party notices.
-- Adds an English product page alongside the Chinese page, with language navigation, versioned downloads and live-demo links. Public static pages are accessible without a console account.
-- Sign-in, manual setup, mandatory initial-password change and account-password screens support English / Chinese with a saved local preference. Credentials and protocol values are unchanged; server-reported authentication errors are translated for display.
-- Clarifies localization scope: the main project console and demo still contain Chinese UI copy. Agent transcripts, evidence and project content are not automatically translated. Full-console localization is not claimed by this release.
-- Retains the previous release's theme/contrast corrections, default **admin / admin123** temporary account for fresh containers, server-enforced password change and existing-account preservation.
+- New passwords now require **8–256 characters**, reduced from 12. No uppercase, number or special-symbol combinations are required. Manual setup, mandatory initial-password change and account settings use the same backend rule.
+- Chinese and English form hints, validation errors and installation guides match the new minimum.
+- Fresh installations still start with **admin / admin123**. Choose a different password at first sign-in; the temporary password cannot be reused to bypass setup. Existing accounts, passwords and project data are preserved.
+- Includes the previous bilingual onboarding, theme/contrast fixes and English documentation.
 
-Mac/Windows require Docker Desktop. Download and completely extract the matching ZIP, start the launcher, then select English on the sign-in page. Set a password of at least 12 characters and sign in again. Existing installations keep their credentials and pinned images; upgrade image references explicitly. Published older versions remain unchanged.
+新密码最低长度由 12 位调整为 **8 位**，不强制大小写、数字或特殊符号组合。前后端校验、中英文提示和文档同步更新。首次登录仍需更换临时密码，升级保留已有账号、密码和项目数据。
+
+Mac/Windows require Docker Desktop. Existing installations keep pinned images: update the console image reference to **v0.1.0-rc.13**, pull it and recreate only the console. This password change does not require a runner upgrade or deletion of any data volume. Published older versions remain unchanged.

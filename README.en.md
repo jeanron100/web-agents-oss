@@ -34,13 +34,13 @@ Agent capabilities differ. Claude inference has not been tested with a vendor ac
 
 ## Download a version
 
-Current prerelease: **[v0.1.0-rc.12](https://github.com/jeanron100/web-agents-oss/releases/tag/v0.1.0-rc.12)**. Previous versions and release notes remain available in [GitHub Releases](https://github.com/jeanron100/web-agents-oss/releases).
+Current prerelease: **[v0.1.0-rc.13](https://github.com/jeanron100/web-agents-oss/releases/tag/v0.1.0-rc.13)**. Previous versions and release notes remain available in [GitHub Releases](https://github.com/jeanron100/web-agents-oss/releases).
 
 | Platform | Download | Start after extracting |
 |---|---|---|
-| macOS Intel / Apple Silicon | [Mac ZIP](https://github.com/jeanron100/web-agents-oss/releases/download/v0.1.0-rc.12/web-agents-v0.1.0-rc.12-macos.zip) | `start-macos.command` |
-| Windows x64 | [Windows ZIP](https://github.com/jeanron100/web-agents-oss/releases/download/v0.1.0-rc.12/web-agents-v0.1.0-rc.12-windows.zip) | `start-windows.cmd` |
-| Linux amd64 / arm64 | [Versioned source archive](https://github.com/jeanron100/web-agents-oss/releases/download/v0.1.0-rc.12/web-agents-v0.1.0-rc.12.tar.gz) | `bash scripts/quickstart.sh --runner --pull` |
+| macOS Intel / Apple Silicon | [Mac ZIP](https://github.com/jeanron100/web-agents-oss/releases/download/v0.1.0-rc.13/web-agents-v0.1.0-rc.13-macos.zip) | `start-macos.command` |
+| Windows x64 | [Windows ZIP](https://github.com/jeanron100/web-agents-oss/releases/download/v0.1.0-rc.13/web-agents-v0.1.0-rc.13-windows.zip) | `start-windows.cmd` |
+| Linux amd64 / arm64 | [Versioned source archive](https://github.com/jeanron100/web-agents-oss/releases/download/v0.1.0-rc.13/web-agents-v0.1.0-rc.13.tar.gz) | `bash scripts/quickstart.sh --runner --pull` |
 
 Install and start Docker first. Mac/Windows use Docker Desktop; Windows requires WSL 2 and Linux containers. Downloads include checksums, with separate image archives for each architecture. Versions ending in `-rc.N` are release candidates; `vX.Y.Z` identifies a stable release.
 
@@ -56,7 +56,7 @@ cd web-agents-oss
 
 On Mac/Windows, you can instead download the ZIP, extract it completely to a writable directory and run the launcher. Host Git, Node.js and Python are not required. See the [desktop guide](docs/public/en/desktop.md).
 
-Open `http://localhost:5188`. **Fresh container installations use username `admin` and temporary password `admin123`.** You must set a new password of at least 12 characters, then sign in again before accessing projects, settings or terminals. Upgrades preserve existing credentials.
+Open `http://localhost:5188`. **Fresh container installations use username `admin` and temporary password `admin123`.** You must set a new password of at least 8 characters, then sign in again before accessing projects, settings or terminals. Upgrades preserve existing credentials.
 
 If you forget an existing password, run these commands from the installation directory:
 

@@ -22,7 +22,7 @@
 1. 从 [Release](https://github.com/jeanron100/web-agents-oss/releases) 下载对应 `web-agents-<版本>-macos.zip` 或 `-windows.zip` 及 `.sha256`。这些是安装配置包；第一次启动会下载适合引擎架构的镜像。
 2. 校验后**完整解压**到用户可写目录，例如 `~/Applications/Web Agents` 或 `%USERPROFILE%\Web Agents`。不要在 ZIP 预览中运行，也不要放共享目录或云盘同步目录。
 3. 启动 Docker Desktop，等待引擎就绪。Mac 双击 `start-macos.command`；Windows 双击 `start-windows.cmd`。如系统因下载来源要求确认，只在确认下载来源可信后允许该文件；不需要全局关闭系统保护。
-4. 等待服务 Healthy，打开 `http://localhost:5188`。**全新安装的初始用户名：`admin`；初始密码：`admin123`。** 首次登录必须设置至少 12 位的新密码，再重新登录使用。已有安装升级会保留原账户，不会覆盖密码；仍处于旧版令牌初始化阶段的安装也会保留原流程。
+4. 等待服务 Healthy，打开 `http://localhost:5188`。**全新安装的初始用户名：`admin`；初始密码：`admin123`。** 首次登录必须设置至少 8 位的新密码，再重新登录使用。已有安装升级会保留原账户，不会覆盖密码；仍处于旧版令牌初始化阶段的安装也会保留原流程。
 
 登录页可切换 English / 中文，涵盖初始化、首次改密、错误及恢复说明，并保存本机语言选择；主控制台和 Demo 内部尚未全量英文化。
 

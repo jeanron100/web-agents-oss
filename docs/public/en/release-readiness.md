@@ -19,6 +19,8 @@ The product targets one administrator or a trusted small team managing Linux exe
 
 v0.1.0-rc.11 redesigns login/setup across themes, adds temporary initial credentials for fresh containers and server-enforced password change, and updates the fictional-data public demo. Later documentation changes do not rewrite already published version archives.
 
+v0.1.0-rc.13 lowers the new-password minimum to eight characters for manual setup, initial password change and account settings, without requiring uppercase letters or special symbols. The temporary password must still be replaced. Existing credentials and data are preserved.
+
 ## Validation scope
 
 - The release workflow runs backend/frontend tests, TypeScript/build checks, architecture-specific image builds, actual Compose initialization and isolated gateway-metadata acceptance. Use the workflow linked to a release for that release's result.

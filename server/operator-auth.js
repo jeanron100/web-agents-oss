@@ -64,7 +64,7 @@ export function createOperatorAuth({enabled=process.env.WA_AUTH_ENABLED==='1',in
     if(attempts.size>1024)attempts.delete(attempts.keys().next().value)
     return true
   }
-  const passwordOK=p=>typeof p==='string'&&p.length>=12&&p.length<=256
+  const passwordOK=p=>typeof p==='string'&&p.length>=8&&p.length<=256
   return{enabled:true,setupFile,mcpFile,authorize,async handle(req,res){
     const p=new URL(req.url,'http://local').pathname
     if(p==='/api/auth/status'&&req.method==='GET'){
@@ -82,7 +82,7 @@ export function createOperatorAuth({enabled=process.env.WA_AUTH_ENABLED==='1',in
       if(p==='/api/auth/setup'){
         if(state.user){send(res,409,{error:'管理员已初始化'});return true}
         if(typeof body.setupToken!=='string'||!equalSecret(digest(body.setupToken),state.setupHash)){send(res,403,{error:'初始化令牌无效'});return true}
-        if(!/^[a-zA-Z0-9_.-]{2,64}$/.test(body.user||'')||!passwordOK(body.password)){send(res,400,{error:'用户名2至64字符；密码至少12字符，最多256字符'});return true}
+        if(!/^[a-zA-Z0-9_.-]{2,64}$/.test(body.user||'')||!passwordOK(body.password)){send(res,400,{error:'用户名2至64字符；密码至少8字符，最多256字符'});return true}
         const passwordHash=await hash(body.password)
         // Another setup may have completed while scrypt was running.
         if(state.user){send(res,409,{error:'管理员已初始化'});return true}
@@ -91,9 +91,10 @@ export function createOperatorAuth({enabled=process.env.WA_AUTH_ENABLED==='1',in
       }
       if(p==='/api/auth/password'){
         const a=authorize(req);if(!a.ok){send(res,a.status,{error:a.error});return true}
-        if(typeof body.oldPassword!=='string'||body.oldPassword.length>256||!passwordOK(body.password)){send(res,400,{error:'请输入原密码和至少12字符的新密码'});return true}
+        if(typeof body.oldPassword!=='string'||body.oldPassword.length>256||!passwordOK(body.password)){send(res,400,{error:'请输入原密码和至少8字符的新密码'});return true}
         const salt=state.passwordHash.split('.')[0]
         if(!equalSecret(await hash(body.oldPassword,salt),state.passwordHash)){send(res,403,{error:'原密码错误'});return true}
+        if(state.passwordChangeRequired&&equalSecret(body.password,body.oldPassword)){send(res,400,{error:'新密码不能与临时密码相同'});return true}
         const nextHash=await hash(body.password)
         // Do not let a concurrent password change overwrite a newer credential.
         if(state.passwordHash.split('.')[0]!==salt){send(res,409,{error:'密码已更新，请重新登录'});return true}

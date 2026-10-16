@@ -22,7 +22,7 @@ Allow Docker at least 4 GB of RAM and your computer at least 12 GB of free disk 
 1. Download the matching `web-agents-<version>-macos.zip` or `-windows.zip` and `.sha256` from [GitHub Releases](https://github.com/jeanron100/web-agents-oss/releases). These contain launchers and configuration; the first start downloads the matching architecture's images.
 2. Verify the checksum and extract the entire ZIP to a writable location, such as `~/Applications/Web Agents` or `%USERPROFILE%\Web Agents`. Do not launch from a ZIP preview or a shared/cloud-synchronized directory.
 3. Start Docker Desktop and wait for the engine. Double-click `start-macos.command` or `start-windows.cmd`. If your OS asks about a downloaded file, confirm its source rather than disabling system protection globally.
-4. Wait for healthy services, then open `http://localhost:5188`. **Initial username: `admin`. Temporary password: `admin123`.** Set a new password of at least 12 characters and sign in again. Existing accounts and unfinished token-based setup remain unchanged during upgrade.
+4. Wait for healthy services, then open `http://localhost:5188`. **Initial username: `admin`. Temporary password: `admin123`.** Set a new password of at least 8 characters and sign in again. Existing accounts and unfinished token-based setup remain unchanged during upgrade.
 
 Choose **English** on the sign-in page for English setup, password and recovery instructions. The choice is saved locally. The main console/demo currently still includes Chinese interface text; the bilingual documentation does not imply every application screen has been translated.
 
