@@ -24,6 +24,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 24
+      - run: node scripts/verify-release.mjs . --artifact
       - run: npm ci && npm test && npm audit --omit=dev --audit-level=high
         working-directory: server
       - run: npm ci && npm test && npm run build && npm audit --audit-level=high
