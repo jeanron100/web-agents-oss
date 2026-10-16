@@ -11,6 +11,14 @@ for option in "$@"; do
     *) echo 'Usage: scripts/quickstart.sh [--runner] [--pull]' >&2; exit 2 ;;
   esac
 done
+command -v docker >/dev/null 2>&1 || { echo 'Install and start Docker Desktop (Linux containers) or Docker Engine + Compose v2.' >&2; exit 1; }
+docker compose version >/dev/null 2>&1 || { echo 'Docker Compose v2 is required. Start or update Docker Desktop.' >&2; exit 1; }
+daemon=$(docker info --format '{{.OSType}}/{{.Architecture}}') || { echo 'Docker is not ready. Start Docker Desktop and wait for the engine.' >&2; exit 1; }
+case "$daemon" in
+  linux/x86_64|linux/amd64) architecture=amd64 ;;
+  linux/aarch64|linux/arm64) architecture=arm64 ;;
+  *) echo "Unsupported Docker engine: $daemon. Select Linux containers (amd64 or arm64)." >&2; exit 1 ;;
+esac
 if [ ! -f .compose.env ]; then
   # Shell-safe hex values; never print database secrets.
   db_password=$(od -An -N32 -tx1 /dev/urandom | tr -d ' \n')
@@ -43,14 +51,22 @@ if [ "$prebuilt" = 1 ]; then
     done
     archive_dir=$(mktemp -d /tmp/web-agents-images.XXXXXX)
     trap 'rm -rf "$archive_dir"' EXIT
-    archive=web-agents-images-linux-amd64.tar.gz
+    archive="web-agents-images-linux-${architecture}.tar.gz"
     release_url="https://github.com/jeanron100/web-agents-oss/releases/download/${version}"
     echo 'Using the verified public Release image archive…'
+    command -v curl >/dev/null 2>&1 || { echo 'curl is required for Release archive fallback.' >&2; exit 1; }
     curl -fL --retry 3 "$release_url/$archive" -o "$archive_dir/$archive"
     curl -fL --retry 3 "$release_url/$archive.sha256" -o "$archive_dir/checksum"
     checksum=$(awk -v name="$archive" '$2==name && length($1)==64 && $1 !~ /[^a-f0-9]/ {print $1}' "$archive_dir/checksum")
     [ -n "$checksum" ] || { echo 'Invalid archive checksum file' >&2; exit 1; }
-    printf '%s  %s\n' "$checksum" "$archive_dir/$archive" | sha256sum -c -
+    if command -v sha256sum >/dev/null 2>&1; then
+      actual=$(sha256sum "$archive_dir/$archive" | awk '{print $1}')
+    elif command -v shasum >/dev/null 2>&1; then
+      actual=$(shasum -a 256 "$archive_dir/$archive" | awk '{print $1}')
+    else
+      echo 'sha256sum or shasum is required for archive verification.' >&2; exit 1
+    fi
+    [ "$actual" = "$checksum" ] || { echo 'Release image archive checksum mismatch. Nothing loaded.' >&2; exit 1; }
     docker load --input "$archive_dir/$archive"
     rm -rf "$archive_dir"
     trap - EXIT

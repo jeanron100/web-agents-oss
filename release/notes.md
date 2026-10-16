@@ -1,14 +1,12 @@
-# Web Agents 0.1 release candidate
+# Web Agents desktop delivery candidate
 
-Self-hosted, single-administrator console for Codex, Kimi and Claude across multiple Linux servers.
+Run the full Web Agents console on Linux, macOS (Intel / Apple Silicon) and Windows x64 through Docker Desktop Linux containers.
 
-- First-run login, persistent server management and authenticated node connections.
-- Mobile conversation streams, approvals, Codex immediate supplements and separate queued tasks.
-- Execution history, evidence-backed project progress and a read-only MCP interface.
-- Token/usage trends, quota reset windows, image preview and Web terminal.
-- Console/MySQL Compose delivery and an optional non-root execution container.
-- Public source checksums, versioned images, dependency inventories and a verified prebuilt image archive.
+- Native Linux amd64/arm64 console and runner images; Docker selects the matching manifest.
+- Download `web-agents-<version>-macos.zip` or `-windows.zip`, extract, and use the desktop launcher. Git and host Node/Python are not required.
+- Portable Bash bootstrap and Windows PowerShell 5.1+ startup, persistent credentials, Docker readiness checks, and architecture-specific SHA-256 verified fallback archives.
+- Windows/macOS hosted shell acceptance and real Compose initialization plus all three CLI version checks on both Linux architectures.
 
-Start with `./scripts/quickstart.sh --runner --pull`. The installer tries GHCR first, then the checksum-verified public Release archive. Source builds remain available without `--pull`.
+Install and start Docker Desktop first (Windows: WSL 2 Linux containers). Open http://localhost:5188 and follow `docs/public/desktop.md` for the first administrator and vendor login. Existing remote Linux agents remain supported. Native Windows/macOS host CLI adoption and a standalone .app/.exe runtime are outside this delivery.
 
-Linux amd64 is the verified platform. Users authenticate their own vendor accounts. This candidate is for trusted administrators, with no multi-tenant security boundary. Replacing a runner container stops its CLI processes; persist its account/workspace volumes and resume conversations after replacement. See README, SECURITY.md and docs/public/ for setup and operational limits.
+Single-administrator/trusted-team candidate; vendor accounts remain your own. Runner replacement stops its internal CLI processes; preserve account/workspace volumes and reload conversations. Shell acceptance uses a mocked Docker/download contract; full Docker Desktop GUI/hardware validation is not claimed.

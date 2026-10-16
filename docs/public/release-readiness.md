@@ -1,14 +1,14 @@
-# v0.1.0-rc.5 发布验证与后续计划
+# v0.1.0-rc.6 发布验证与后续计划
 
-[公开仓库](https://github.com/jeanron100/web-agents-oss) · [候选版与交付附件](https://github.com/jeanron100/web-agents-oss/releases/tag/v0.1.0-rc.5) · [发布工作流](https://github.com/jeanron100/web-agents-oss/actions/runs/38834999760)
+[公开仓库](https://github.com/jeanron100/web-agents-oss) · [候选版与交付附件](https://github.com/jeanron100/web-agents-oss/releases/tag/v0.1.0-rc.6) · [发布工作流](https://github.com/jeanron100/web-agents-oss/actions/workflows/publish.yml)
 
-定位为单管理员或可信小团队的 Linux 管控台，当前验收平台为 Linux amd64。现有原生部署可以独立升级控制台，不需要迁入容器。
+定位为单管理员或可信小团队的 Linux 管控台，容器交付扩展到 Linux amd64/arm64，以及 Docker Desktop 下的 Mac Intel/Apple Silicon 和 Windows x64（WSL 2）。各平台实测范围见 [桌面说明](desktop.md)。现有原生部署可以独立升级控制台，不需要迁入容器。
 
 ## 已交付
 
 | 范围 | 内容 |
 |---|---|
-| 安装 | Compose 控制台/MySQL、可选非 root runner；公开版本镜像及带校验和的镜像包 |
+| 安装 | Compose 控制台/MySQL、可选非 root runner；amd64/arm64 镜像、带校验和的架构镜像包、Mac/Windows ZIP 与启动入口 |
 | 首次使用 | 初始化管理员、登录退出、密码修改；空环境引导，无自动演示数据回退 |
 | 多服务器 | 页面添加、编辑、检测、禁用、移除；独立令牌，配置即时生效 |
 | 执行体验 | Codex 即时补充/独立任务排队；多引擎对话、图片、终端及会话恢复 |
@@ -30,7 +30,7 @@
 
 ## 使用边界
 
-控制台重启不终止远程原生 CLI；runner 替换会停止其内部进程，需保留卷并恢复会话。控制台备份不包含 runner 账号与工作区卷。尚未验证 arm64、Windows 原生节点或不可信用户之间的隔离，不能据此宣称多租户安全。
+控制台重启不终止远程原生 CLI；runner 替换会停止其内部进程，需保留卷并恢复会话。控制台备份不包含 runner 账号与工作区卷。未提供 Windows/macOS 原生进程接管，也未验证不可信用户之间的隔离，不能据此宣称多租户安全。
 
 ## 后续优先级
 

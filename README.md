@@ -6,13 +6,21 @@
 
 ## 容器快速开始
 
-需要 Docker Engine、Compose v2+。建议至少 4 GB 内存和 12 GB 空闲磁盘。当前验收平台为 Linux amd64。容器 runner 使用 Docker 外层隔离，详见安装文档；只用于可信项目。
+需要 Docker Engine、Compose v2+。建议至少 4 GB 内存和 12 GB 空闲磁盘。支持 Linux amd64/arm64，以及安装 Docker Desktop 的 macOS（Intel/Apple Silicon）和 Windows（WSL 2 Linux 容器）。容器 runner 使用 Docker 外层隔离，详见安装文档；只用于可信项目。
 
 ```bash
 git clone https://github.com/jeanron100/web-agents-oss.git
 cd web-agents-oss
 ./scripts/quickstart.sh --runner --pull
 ```
+
+Mac/Windows 可直接从 [Release](https://github.com/jeanron100/web-agents-oss/releases) 下载对应的 `macos.zip` / `windows.zip`，完整解压到用户目录后启动 `start-macos.command` / `start-windows.cmd`。不需要安装 Git 或 Node；先安装并启动 Docker Desktop。Windows 命令行入口：
+
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File .\scripts\quickstart.ps1 -Runner -Pull
+```
+
+完整平台前提、下载校验和停止/升级方法见 [Mac/Windows 快速交付](docs/public/desktop.md)。
 
 打开 `http://localhost:5188`，获取初始化令牌：
 
@@ -29,7 +37,7 @@ docker compose --env-file .compose.env -f compose.yaml -f compose.runner.yaml ex
 # 在 shell 中创建项目：mkdir -p /workspace/my-project
 ```
 
-页面设置 → 服务器管理 → 检测，可以查看 CLI 版本和登录文件是否存在；文件存在不等于厂商认证成功。只需要控制台时使用 `./scripts/quickstart.sh --pull`，然后添加已部署的远程执行节点。预构建安装先尝试 GHCR；不可用时从公开 Release 下载并校验镜像包，需要 `curl` 和 `sha256sum`。省略 `--pull` 可从源码构建，需要访问 npm；构建不需要提供账号凭据。
+页面设置 → 服务器管理 → 检测，可以查看 CLI 版本和登录文件是否存在；文件存在不等于厂商认证成功。只需要控制台时使用 `./scripts/quickstart.sh --pull`，然后添加已部署的远程执行节点。预构建安装先尝试 GHCR；不可用时从公开 Release 下载并校验镜像包，Bash 入口需要 `curl` 和 `sha256sum` 或 `shasum`，Windows 使用 PowerShell 内置下载与校验。省略 `--pull` 可从源码构建，需要访问 npm；构建不需要提供账号凭据。
 
 默认仅绑定回环地址。远程访问优先使用 SSH 转发：`ssh -L 5188:127.0.0.1:5188 your-server`。正式公网使用 HTTPS 反向代理，设置 `.compose.env` 的 `WA_PUBLIC_URL` 为实际域名后重建控制台。
 

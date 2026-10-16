@@ -6,12 +6,16 @@
       "sha256": "4f19e3691416e5bf2c852f7e2458a243659652ac665857eb6f30f5e31ff23454"
     },
     {
+      "path": ".gitattributes",
+      "sha256": "2ca461f647d42d3dad5f3453e20e3b6143184ad99e83732025e042ac8d5e1d26"
+    },
+    {
       "path": ".github/workflows/publish.yml",
-      "sha256": "3b43493be8f559ed70df2e4bcd5c8124a1432d277ad413399a25765f7187c4d8"
+      "sha256": "2e0406cc0dc11b02df12dad3d628aee09990253d0c5a862cc148943a3aa11a6f"
     },
     {
       "path": ".github/workflows/verify.yml",
-      "sha256": "961a27d3a73b743cd805534bea3dd32340e69cbe63dc0f5a12976300be9e4be8"
+      "sha256": "28ffe9a1cb45b6d78df1911e9e63c20f8efe3bec883c96426c1fae5747cef5cc"
     },
     {
       "path": ".gitignore",
@@ -31,7 +35,7 @@
     },
     {
       "path": "README.md",
-      "sha256": "fc223804c66154dcf25847af3c2bcc6c2542bf5bc550fb64b29162b61a8de237"
+      "sha256": "12e3322be5faf40522e33f1c455ae0749137cbfc6e6956cd6ad86f66704c2554"
     },
     {
       "path": "SECURITY.md",
@@ -46,8 +50,12 @@
       "sha256": "a2d2dc73b3ddad42749c8def85214a96853b67a17187d0730f96e5029045ff06"
     },
     {
+      "path": "docs/public/desktop.md",
+      "sha256": "61e77f1e05bc2f7304347c7ec5b5e56a4bf369d7b74b469054fbf571552fbed8"
+    },
+    {
       "path": "docs/public/installation.md",
-      "sha256": "39fe9bf4b6e2dc858742c853564b7b984a9f8d8d592580818df18945adf5bec2"
+      "sha256": "d94af6cfe11a2a185dc4fe5374e526d5b5b1e273d042f37d57afc5fe29660043"
     },
     {
       "path": "docs/public/mcp.md",
@@ -59,7 +67,7 @@
     },
     {
       "path": "docs/public/release-readiness.md",
-      "sha256": "09f3cb71ce71711da2e4536e2515aafbe83039cc7a61d34903a00483741b4e6b"
+      "sha256": "67dda6df2c58648e14c8441fbbbafaa4e34f23432ee86f52285403a2d5d5ac10"
     },
     {
       "path": "docs/public/third-party-notices.md",
@@ -71,11 +79,11 @@
     },
     {
       "path": "release/notes.md",
-      "sha256": "8dd90d17e6664e4540820d915a661c976252b443dae0f35b106576b9e74883b6"
+      "sha256": "ed658c7c2cb119fa2a4aaf16b95932e49b7753d30aa3e5fd847ba14abe570112"
     },
     {
       "path": "release/version",
-      "sha256": "47040cf2e38398415586e8975b6c800242fbd6c2dd1744b5106b438fd939c1cc"
+      "sha256": "bbd11b278efa14880f7407439e980af626fa320b6b6ef3eba39af0532e6a8a8d"
     },
     {
       "path": "scripts/backup.sh",
@@ -87,11 +95,19 @@
     },
     {
       "path": "scripts/export-public.mjs",
-      "sha256": "8cf7eb2df69379f78dbf8a27b685d8afee3a5f08e9297f501764b40e01a701aa"
+      "sha256": "0f416bc880a275760f1b45a34aa3c096895a6e13df43e6bb3499c90dc0ab309f"
+    },
+    {
+      "path": "scripts/package-release.py",
+      "sha256": "efeca788c78bb7f0f83d9627282ff5e194c53662d8b52ca957df72eacc8f40ef"
+    },
+    {
+      "path": "scripts/quickstart.ps1",
+      "sha256": "2b35462e2a89c082532fc5abe9f64c442ecfdc625e705d015be9ee66754bbb9b"
     },
     {
       "path": "scripts/quickstart.sh",
-      "sha256": "a12315500f3d2fdf2f92f3b2666d4ed5e8ec3a0206fe754a146d62460650500e"
+      "sha256": "367a32a936197e2773db5220dc35ff2828f5ae4c8d27303ffa2cb7cd851a4c65"
     },
     {
       "path": "scripts/restore.sh",
@@ -104,6 +120,10 @@
     {
       "path": "scripts/verify-first-use.mjs",
       "sha256": "c26720599f91a7403eaaa6d247a219c40143a06bb781fe175114874ffb5c2229"
+    },
+    {
+      "path": "scripts/verify-launchers.py",
+      "sha256": "2039c9a88717ffd5e146d4d6d5cf152e9ef85457412024d7ecc6fa82c08b8df9"
     },
     {
       "path": "scripts/verify-provider-tasks.mjs",
@@ -980,6 +1000,14 @@
     {
       "path": "server/verify-codex-send.mjs",
       "sha256": "8a11cd53986eadf7d8d2d92a665db888e83680fcf841a26c4e5f9710172449b5"
+    },
+    {
+      "path": "start-macos.command",
+      "sha256": "dfe174f2e3871f21425346d0b72b7f9ecaebcbe6862283219e68ad3d4b1093fe"
+    },
+    {
+      "path": "start-windows.cmd",
+      "sha256": "5685f8c833940d73cf4add9be156dcc14ffdd943badd26309af3a231bb3bd93a"
     },
     {
       "path": "web/index.html",

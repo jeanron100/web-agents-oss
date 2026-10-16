@@ -4,7 +4,7 @@
 
 ## 容器
 
-参见根 README 的 quickstart。所有命令使用同一份 `.compose.env`；修改配置后运行相同 Compose 文件组合的 `up -d --build`。默认无 MySQL 或节点端口暴露到宿主机。控制台默认仅在 `127.0.0.1:5188` 访问。
+Mac（Intel/Apple Silicon）、Windows（WSL 2）见 [桌面快速交付](desktop.md)，通过 Docker Desktop 使用 Linux 容器。Linux amd64/arm64 参见根 README 的 quickstart。所有命令使用同一份 `.compose.env`；修改配置后运行相同 Compose 文件组合的 `up -d --build`。默认无 MySQL 或节点端口暴露到宿主机。控制台默认仅在 `127.0.0.1:5188` 访问。
 
 单独控制台可接任意多个原生节点。使用 runner 时，控制台与 runner 共用的只有单独令牌卷；两者的状态和账号目录完全分开。不要挂载 `/root`、整个 `/` 或 Docker socket。项目代码可保存在默认 workspace 卷，也可自行挂载专用目录并设置 UID/GID 1000 的权限。
 
