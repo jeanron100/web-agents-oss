@@ -13,12 +13,15 @@ import { stateLabel } from '../components/StatusDot'
 import type { SessionState } from '../types'
 import { orderServers } from '../lib/server-order'
 import { withPendingApprovals } from '../lib/pending-approvals'
+import {useLanguage} from '../lib/language'
 
 const RECENT_MS = 7 * 86_400_000 // 默认只看近 7 天活跃，砍掉久未动的影子噪声
 const VALID_STATES = new Set<SessionState>(['running', 'waiting_input', 'waiting_approval', 'done', 'idle', 'error'])
 
 export default function Dashboard() {
   const navigate = useNavigate()
+  const [language]=useLanguage()
+  const t=(zh:string,en:string)=>language==='en'?en:zh
   const [searchParams, setSearchParams] = useSearchParams()
   const stateParamRaw = searchParams.get('state')
   const stateFilter: SessionState | null =
@@ -128,7 +131,7 @@ export default function Dashboard() {
         )}
       </header>
 
-      {source==='live'&&servers.length===0&&<div className="todo-card"><h2>接入第一台服务器</h2><p>添加本机或远程执行节点，检测CLI并完成登录后，即可开始真实对话。</p><button className="btn btn--primary" onClick={()=>navigate('/settings')}>配置执行节点</button></div>}
+      {source==='live'&&bootstrapped&&rawSessions.length===0&&<div className="todo-card setup-welcome"><h2>{t('连接服务器，开始管理你的项目','Connect a server and start managing your projects')}</h2><p>{t('本地安装的是管控台。把远程服务器接进来，即可在一处查看进展、发送补充信息和处理审批；代码与 CLI 继续在执行节点上运行。','This installation is a console. Connect remote servers to follow progress, send messages and handle approvals in one place. Code and CLIs stay on the execution nodes.')}</p><div className="node-actions"><button className="btn btn--primary" onClick={()=>navigate('/getting-started')}>{t('连接远程服务器 · 推荐','Connect a remote server · Recommended')}</button><button className="btn" onClick={()=>navigate('/getting-started?mode=local')}>{t('本地容器体验','Try a local container')}</button></div></div>}
 
       <StatChips projects={projectHeads} />
       <UsageRow />

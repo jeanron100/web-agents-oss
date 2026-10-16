@@ -35,11 +35,11 @@
     },
     {
       "path": "README.en.md",
-      "sha256": "4e06a8d548876abe2e2d38aa6c6b3dd06397e32575f086c2949c56e828bb0faa"
+      "sha256": "5dccbe0c3b2dc047775a4d3e2fa315b45eddbf841975eac913224d02d80ac94c"
     },
     {
       "path": "README.md",
-      "sha256": "f8646d48b4e347cf0af15e2bab61c97ba2ce91cac9970d5859adf1e86aaea156"
+      "sha256": "a953e13392af9f1a6043ba35329bc721c43bfcb8aba150a3b6055eda519e3c82"
     },
     {
       "path": "SECURITY.md",
@@ -51,27 +51,35 @@
     },
     {
       "path": "compose.yaml",
-      "sha256": "b0440f1e7901f47215fb78a2269b36f1d15b159c0d1308d68774dd99b7f5bba2"
+      "sha256": "137c24b4d146b8ec8df6fc39fd7bf8ea79849df08a91e0a67e9113bd49430c42"
     },
     {
       "path": "docs/public/comparison.md",
       "sha256": "561e6887794173772bea5403a5d65f07d5494caab84438c97691212a9fff6164"
     },
     {
+      "path": "docs/public/data-storage.md",
+      "sha256": "0367bd197bfc7eac53f8aca2db31910d390985992d4de4f6146a8c64fdb1e029"
+    },
+    {
       "path": "docs/public/desktop.md",
-      "sha256": "3d0ab042955e932f94ad102f7112c8a67011f1210630603730ea5ec73156e832"
+      "sha256": "555de86651a7451849d49b1fe802bfeacb3c2d611b0473429cea9c83eedfb651"
     },
     {
       "path": "docs/public/en/comparison.md",
       "sha256": "ea6b413f3283efc1402381dacd599b82e246cde94bd1cc9245ee5835802dcfb2"
     },
     {
+      "path": "docs/public/en/data-storage.md",
+      "sha256": "b5b1a0453c49f61b4b630f7812e0283173ee7de863b559f1634893c94e4aa5e6"
+    },
+    {
       "path": "docs/public/en/desktop.md",
-      "sha256": "785cf1bf0085034d6f64ebc308b316aa810f5cd3edd7c1b140f8230ba1cad4e6"
+      "sha256": "a7500ceaa80b9fe4b460322113c7c3fd7435ba506f67df218f0f7fb3c3cb6667"
     },
     {
       "path": "docs/public/en/installation.md",
-      "sha256": "35544a349c2eb01491d0b13fd4461b52d282dea5822284bc330daf671366bb2d"
+      "sha256": "a6c6ca3b5d1c234d33257f8944f121002b0ab030359a4578cd383536b95633d2"
     },
     {
       "path": "docs/public/en/mcp.md",
@@ -83,7 +91,11 @@
     },
     {
       "path": "docs/public/en/release-readiness.md",
-      "sha256": "b9a53008e5bdbfbe7b20954f511434c8de6a6616218be1027ac99e25369fcaf4"
+      "sha256": "e34f3d9bd6c6a734d15a44e347c4d6e60b3a0dbdbfdcf592f88417932c59926d"
+    },
+    {
+      "path": "docs/public/en/remote-setup.md",
+      "sha256": "7b14b9dd93aa5936e87f5b44d6e08aad4475d0d85ac549c90af392befeca0511"
     },
     {
       "path": "docs/public/en/third-party-notices.md",
@@ -91,7 +103,7 @@
     },
     {
       "path": "docs/public/installation.md",
-      "sha256": "acf306c36e8c1728a64c9b795966d8649c872ad1fd53dab2a28365720feafd3d"
+      "sha256": "18fb93a9572d92e2b34d5b9e2172576751cb471911e17ae743891912adf637b9"
     },
     {
       "path": "docs/public/mcp.md",
@@ -103,7 +115,11 @@
     },
     {
       "path": "docs/public/release-readiness.md",
-      "sha256": "64fdb2dc7936ee490f5bdbfcff4cda5713b886e508876fe6e0da297774161b3f"
+      "sha256": "fc81ae067032bad8ad8f85412c179ec5fe34fe85807b78fd820e817e7e8b6d5c"
+    },
+    {
+      "path": "docs/public/remote-setup.md",
+      "sha256": "899eec855a2bcd00256c10a97a66c1721ea1c1771e256e56c181df8c69bb81cb"
     },
     {
       "path": "docs/public/third-party-notices.md",
@@ -115,11 +131,11 @@
     },
     {
       "path": "release/notes.md",
-      "sha256": "95b8baeb6f31aec8cd997b6b405d5831a5f8fd48eede339ff0ac23ac7d78c60e"
+      "sha256": "1646595899b0a664f14ae311faa107d50edf9937b865d16410e2a6b008ab5d63"
     },
     {
       "path": "release/version",
-      "sha256": "acea66c039613a9529c118bdc92d36c094c03fdd1a90b47e684e98ea74e3cb26"
+      "sha256": "ee0a464891a5ffd7e63df21ef7cfea0af6067b2cf19376b7c02c67100aeb8409"
     },
     {
       "path": "scripts/backup.sh",
@@ -139,11 +155,11 @@
     },
     {
       "path": "scripts/quickstart.ps1",
-      "sha256": "524ae9455df07fbba00bcdc9528cef0182c47ae05c9568393a273b9d8ed40541"
+      "sha256": "35f7961d695d69ebcd42bcc2cc5f88f7d152092bf30b9a1907fa19fd706af979"
     },
     {
       "path": "scripts/quickstart.sh",
-      "sha256": "24a7bb1e314dcd52140474d331202387079b3191cc7860b0e3e80b8e4f1faae1"
+      "sha256": "5a1c0cb102f568905e7b441adce0c18c452dabeeb0df5b7dd9781825a168e3f7"
     },
     {
       "path": "scripts/release-policy.mjs",
@@ -171,7 +187,7 @@
     },
     {
       "path": "scripts/verify-launchers.py",
-      "sha256": "2039c9a88717ffd5e146d4d6d5cf152e9ef85457412024d7ecc6fa82c08b8df9"
+      "sha256": "001a1cefa91b5ad17b86c81ad2a68ae681df498c963174c3aed04b7ee799c998"
     },
     {
       "path": "scripts/verify-provider-tasks.mjs",
@@ -831,7 +847,7 @@
     },
     {
       "path": "server/release-version.js",
-      "sha256": "a2acdfa766ca0c789de1b70413aa3f830989fdc1e04b33e09666578374c86627"
+      "sha256": "97d06e490739a7e461bf5d6281c0636998ab1700599da61dba00b7a3af0b10ba"
     },
     {
       "path": "server/release-version.test.mjs",
@@ -1067,11 +1083,11 @@
     },
     {
       "path": "start-macos.command",
-      "sha256": "dfe174f2e3871f21425346d0b72b7f9ecaebcbe6862283219e68ad3d4b1093fe"
+      "sha256": "e20b552e5fa46da91c295a21685c3292fba44c10f85eda5f71c7c67b4e64171b"
     },
     {
       "path": "start-windows.cmd",
-      "sha256": "5685f8c833940d73cf4add9be156dcc14ffdd943badd26309af3a231bb3bd93a"
+      "sha256": "5e9c9c22c2a4cd8e126e1fec7b11ad50c08d8a32424d4838ca36e6dbdc1c0047"
     },
     {
       "path": "web/index.html",
@@ -1179,7 +1195,7 @@
     },
     {
       "path": "web/src/components/DataLayerPanel.tsx",
-      "sha256": "a690c6fd38bd6235623f1638ec49006dea7b6ff5d313d0e8089b5780d25d52f0"
+      "sha256": "e2a55707b002ce175c2f9d9637865972b616681f7b569a8afec0f923335be635"
     },
     {
       "path": "web/src/components/DiffView.tsx",
@@ -1263,7 +1279,7 @@
     },
     {
       "path": "web/src/components/ReleaseSetup.test.tsx",
-      "sha256": "eb9d0daefb39ec86fd775b1994ab8e7a1c471df6ce0b291450df298562661f40"
+      "sha256": "ded31c556a8e9e0b7de1f4e79b6fb990dc8e1fbbda22a4defdccb19f2f57468a"
     },
     {
       "path": "web/src/components/RestartIncidents.tsx",
@@ -1275,7 +1291,7 @@
     },
     {
       "path": "web/src/components/ServerManager.tsx",
-      "sha256": "af406367d0dd180f2f75b0c86aaa945ff0787726ceba9119d5b4cfec22290513"
+      "sha256": "4bdc039d7f692bd4e4b4cd6274409958d2eae588a3a6cb49b80a665116bd7ffc"
     },
     {
       "path": "web/src/components/SessionCard.tsx",
@@ -1499,7 +1515,7 @@
     },
     {
       "path": "web/src/main.tsx",
-      "sha256": "6346aa83c99109a69382497c370cc1faf18bb97814279533c29732a07f2317f4"
+      "sha256": "c6325aa6cbd07979e0235b20db589175ed867c468ad349459f8e1cddfb82e89d"
     },
     {
       "path": "web/src/mock/seed.ts",
@@ -1515,7 +1531,11 @@
     },
     {
       "path": "web/src/pages/Dashboard.tsx",
-      "sha256": "de47731b8e409d3b14dde6d4dd16282475d9ce4cd3f6851886e6163c15d24593"
+      "sha256": "85caeac3b5b6289bff80b75ca70f37f7722d944b4563485f7ac42cbf36c91fa8"
+    },
+    {
+      "path": "web/src/pages/GettingStarted.tsx",
+      "sha256": "8905bbc012e4c8db27f115a0c5840a061c982b09b3385f9517351e0b7c437425"
     },
     {
       "path": "web/src/pages/Inbox.tsx",
@@ -1523,7 +1543,7 @@
     },
     {
       "path": "web/src/pages/NewSession.tsx",
-      "sha256": "fef502fcf9aea97cc99f6428a9a77467082aef2667453085dab2dd8ac3397b12"
+      "sha256": "7897825f1b36ff873cdb713efd951c13e794251893de76f21102a1ae12a283ef"
     },
     {
       "path": "web/src/pages/Ops.tsx",
@@ -1571,7 +1591,7 @@
     },
     {
       "path": "web/src/styles/global.css",
-      "sha256": "db0e4fc722c8970768642f1c22c4046818a7ac71970603dcdc23e2d29bdec938"
+      "sha256": "735336b68c9a8c27f0e8f6424e8c2b167aade0b34c471decb6b462ce2a9178d7"
     },
     {
       "path": "web/src/styles/layout.test.ts",

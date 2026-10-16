@@ -21,6 +21,7 @@ import Stats from './pages/Stats'
 import Review from './pages/Review'
 import Terminal from './pages/Terminal'
 import Ops from './pages/Ops'
+import GettingStarted from './pages/GettingStarted'
 import './styles/global.css'
 import { AuthGate } from './components/AuthGate'
 
@@ -37,6 +38,7 @@ const router = createBrowserRouter([
       { path: '/inbox/:actionId', element: <ApprovalDetail /> },
       { path: '/session/:sessionId', element: <SessionDetail /> },
       { path: '/new', element: <NewSession /> },
+      { path: '/getting-started', element: <GettingStarted /> },
       { path: '/search', element: <Search /> },
       { path: '/archive', element: <Archive /> },
       { path: '/stats', element: <Stats /> },

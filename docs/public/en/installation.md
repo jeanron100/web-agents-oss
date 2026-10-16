@@ -4,6 +4,8 @@
 
 The console aggregates state; execution nodes run coding CLIs. Each node has its own project root, vendor credentials and access token. Existing host CLI processes are not processes inside a container.
 
+Start with the [remote setup guide](remote-setup.md) and `/getting-started` for node preparation, project directories, CLI sign-in and live readiness checks.
+
 ## Containers
 
 See the [desktop guide](desktop.md) for Mac/Windows, or the root README for Linux amd64/arm64. Use the same `.compose.env` and Compose file combination for subsequent operations. The default installation exposes neither MySQL nor node ports to the host; the console listens at `127.0.0.1:5188`.

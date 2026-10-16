@@ -4,6 +4,8 @@
 
 控制台聚合状态，执行节点运行 CLI。每个节点有独立的项目根目录、CLI 账号和访问令牌。不能把宿主机已有 CLI 进程当成容器内的进程。
 
+首次使用推荐从 [远程接入指南](remote-setup.md) 开始；管控台页面 `/getting-started` 会逐步说明准备节点、项目目录和 CLI 登录，并检查真实状态。
+
 ## 容器
 
 Mac（Intel/Apple Silicon）、Windows（WSL 2）见 [桌面快速交付](desktop.md)，通过 Docker Desktop 使用 Linux 容器。Linux amd64/arm64 参见根 README 的 quickstart。所有命令使用同一份 `.compose.env`；修改配置后运行相同 Compose 文件组合的 `up -d --build`。默认无 MySQL 或节点端口暴露到宿主机。控制台默认仅在 `127.0.0.1:5188` 访问。
@@ -37,6 +39,8 @@ node agent.js
 通过 SSH 将节点回环端口转发到控制台可达的位置；或监听私有网卡并设置防火墙只允许 Hub。公网跨机器直连需要可信 HTTPS 终结。设置 → 服务器管理中填写稳定 ID、Hub 视角地址和该节点令牌，先检测再保存。
 
 禁用停止采集与路由；移除只移除纳管配置，保留历史，不停止远程 CLI。ID 代表历史归属，不能在编辑时改名；地址与显示名称可修改。重新添加相同 ID 将恢复该节点当前归属。
+
+首次使用推荐从 [远程接入指南](remote-setup.md) 开始；管控台页面 `/getting-started` 会逐步说明准备节点、项目目录和 CLI 登录，并检查真实状态。
 
 ## 容器内 Codex 的沙箱
 

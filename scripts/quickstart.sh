@@ -4,11 +4,13 @@ cd "$(dirname "$0")/.."
 umask 077
 runner=0
 prebuilt=0
+desktop=0
 for option in "$@"; do
   case "$option" in
     --runner) runner=1 ;;
     --pull) prebuilt=1 ;;
-    *) echo 'Usage: scripts/quickstart.sh [--runner] [--pull]' >&2; exit 2 ;;
+    --desktop) desktop=1 ;;
+    *) echo 'Usage: scripts/quickstart.sh [--runner] [--pull] [--desktop]' >&2; exit 2 ;;
   esac
 done
 command -v docker >/dev/null 2>&1 || { echo 'Install and start Docker Desktop (Linux containers) or Docker Engine + Compose v2.' >&2; exit 1; }
@@ -19,11 +21,28 @@ case "$daemon" in
   linux/aarch64|linux/arm64) architecture=arm64 ;;
   *) echo "Unsupported Docker engine: $daemon. Select Linux containers (amd64 or arm64)." >&2; exit 1 ;;
 esac
+# New desktop installs are remote-management consoles. Preserve legacy local installs.
+if [ "$desktop" = 1 ] && [ "$runner" = 0 ] && [ -f .compose.env ]; then
+  if grep -q '^WA_INSTALL_MODE=local$' .compose.env; then
+    runner=1
+  elif ! grep -q '^WA_INSTALL_MODE=remote$' .compose.env; then
+    existing_services=$(docker compose --env-file .compose.env -f compose.yaml -f compose.runner.yaml ps --all --services)
+    if printf '%s\n' "$existing_services" | grep -qx runner; then runner=1; fi
+  fi
+fi
+install_mode=remote
+if [ "$runner" = 1 ]; then install_mode=local; fi
 if [ ! -f .compose.env ]; then
   # Shell-safe hex values; never print database secrets.
   db_password=$(od -An -N32 -tx1 /dev/urandom | tr -d ' \n')
   root_password=$(od -An -N32 -tx1 /dev/urandom | tr -d ' \n')
-  printf 'WA_DB_PASSWORD=%s\nWA_DB_ROOT_PASSWORD=%s\nWA_PORT=5188\nWA_PUBLIC_URL=http://localhost:5188\n' "$db_password" "$root_password" > .compose.env
+  printf 'WA_DB_PASSWORD=%s\nWA_DB_ROOT_PASSWORD=%s\nWA_PORT=5188\nWA_PUBLIC_URL=http://localhost:5188\nWA_INSTALL_MODE=%s\n' "$db_password" "$root_password" "$install_mode" > .compose.env
+fi
+# Explicit --runner enables the local mode without replacing secrets or image pins.
+if [ "$runner" = 1 ] && grep -q '^WA_INSTALL_MODE=remote$' .compose.env; then
+  mode_file=$(mktemp .compose.env.mode.XXXXXX)
+  sed 's/^WA_INSTALL_MODE=remote$/WA_INSTALL_MODE=local/' .compose.env > "$mode_file"
+  mv "$mode_file" .compose.env
 fi
 if [ "$prebuilt" = 1 ]; then
   version=$(cat release/version)
@@ -75,6 +94,7 @@ if [ "$prebuilt" = 1 ]; then
 else
   docker compose --env-file .compose.env "${args[@]}" up -d --build --wait --wait-timeout 240
 fi
+echo 'Start at /getting-started to connect a remote execution node and prepare a project.'
 echo 'Console ready. Fresh installations: admin / admin123; set a new password after signing in.'
 echo 'Existing accounts and passwords are preserved. If WA_INITIAL_ACCOUNT=0, use manage.mjs setup-token.'
 echo 'Open the WA_PUBLIC_URL configured in .compose.env (default http://localhost:5188).'

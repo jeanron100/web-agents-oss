@@ -34,15 +34,19 @@ Agent capabilities differ. Claude inference has not been tested with a vendor ac
 
 ## Download a version
 
-Current prerelease: **[v0.1.0-rc.14](https://github.com/jeanron100/web-agents-oss/releases/tag/v0.1.0-rc.14)**. Previous versions and release notes remain available in [GitHub Releases](https://github.com/jeanron100/web-agents-oss/releases).
+Current prerelease: **[v0.1.0-rc.15](https://github.com/jeanron100/web-agents-oss/releases/tag/v0.1.0-rc.15)**. Previous versions and release notes remain available in [GitHub Releases](https://github.com/jeanron100/web-agents-oss/releases).
 
 | Platform | Download | Start after extracting |
 |---|---|---|
-| macOS Intel / Apple Silicon | [Mac ZIP](https://github.com/jeanron100/web-agents-oss/releases/download/v0.1.0-rc.14/web-agents-v0.1.0-rc.14-macos.zip) | `start-macos.command` |
-| Windows x64 | [Windows ZIP](https://github.com/jeanron100/web-agents-oss/releases/download/v0.1.0-rc.14/web-agents-v0.1.0-rc.14-windows.zip) | `start-windows.cmd` |
-| Linux amd64 / arm64 | [Versioned source archive](https://github.com/jeanron100/web-agents-oss/releases/download/v0.1.0-rc.14/web-agents-v0.1.0-rc.14.tar.gz) | `bash scripts/quickstart.sh --runner --pull` |
+| macOS Intel / Apple Silicon | [Mac ZIP](https://github.com/jeanron100/web-agents-oss/releases/download/v0.1.0-rc.15/web-agents-v0.1.0-rc.15-macos.zip) | `start-macos.command` |
+| Windows x64 | [Windows ZIP](https://github.com/jeanron100/web-agents-oss/releases/download/v0.1.0-rc.15/web-agents-v0.1.0-rc.15-windows.zip) | `start-windows.cmd` |
+| Linux amd64 / arm64 | [Versioned source archive](https://github.com/jeanron100/web-agents-oss/releases/download/v0.1.0-rc.15/web-agents-v0.1.0-rc.15.tar.gz) | `bash scripts/quickstart.sh --pull` |
 
 Install and start Docker first. Mac/Windows use Docker Desktop; Windows requires WSL 2 and Linux containers. Downloads include checksums, with separate image archives for each architecture. Versions ending in `-rc.N` are release candidates; `vX.Y.Z` identifies a stable release.
+
+## First use: connect remote servers
+
+The local installation is a console; projects and CLIs run on execution nodes. Follow [remote setup](docs/public/en/remote-setup.md): prepare a node, test its connection, check project folders and CLI sign-in, then run a first task. The `/getting-started` page offers the same English/Chinese guidance and live node diagnostics.
 
 ## Quick start
 
@@ -51,7 +55,7 @@ Use Docker Engine with Compose v2, or Docker Desktop. Allow at least 4 GB of mem
 ```bash
 git clone https://github.com/jeanron100/web-agents-oss.git
 cd web-agents-oss
-./scripts/quickstart.sh --runner --pull
+./scripts/quickstart.sh --pull
 ```
 
 On Mac/Windows, you can instead download the ZIP, extract it completely to a writable directory and run the launcher. Host Git, Node.js and Python are not required. See the [desktop guide](docs/public/en/desktop.md).
@@ -67,7 +71,7 @@ docker compose --env-file .compose.env restart console
 
 This preserves the username, resets the temporary password to `admin123` and revokes old login sessions when the console loads the reset state. You must set a new password again. To use token-based manual account setup instead, set `WA_INITIAL_ACCOUNT=0` before first start; see [operations](docs/public/en/operations.md).
 
-The optional runner registers as a local container node. Sign into the vendor CLIs you want to use:
+Fresh Mac/Windows desktop launches start the console and MySQL for remote management. Existing installations retain their mode. For an optional local trial, first run `bash scripts/quickstart.sh --runner --pull` (Windows: `-Runner -Pull`), then sign into its CLIs:
 
 ```bash
 docker compose --env-file .compose.env -f compose.yaml -f compose.runner.yaml exec runner codex login --device-auth
@@ -77,7 +81,7 @@ docker compose --env-file .compose.env -f compose.yaml -f compose.runner.yaml ex
 mkdir -p /workspace/my-project
 ```
 
-Node diagnostics show CLI versions and credential-file presence; a file's presence does not prove authentication succeeds. Use `./scripts/quickstart.sh --pull` without a runner to connect existing remote Linux nodes instead.
+Node diagnostics show CLI versions and credential-file presence; a file's presence does not prove authentication succeeds. The runner workspace is `/workspace`, not an arbitrary host folder. If enabled after console-only initialization, register it using the [remote/local setup guide](docs/public/en/remote-setup.md).
 
 The launcher first tries GHCR. If unavailable, it downloads the matching public Release image archive and verifies its SHA-256 checksum. Omit `--pull` to build from source; this requires npm network access, but no vendor credentials during the build.
 

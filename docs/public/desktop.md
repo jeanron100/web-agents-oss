@@ -24,6 +24,8 @@
 3. 启动 Docker Desktop，等待引擎就绪。Mac 双击 `start-macos.command`；Windows 双击 `start-windows.cmd`。如系统因下载来源要求确认，只在确认下载来源可信后允许该文件；不需要全局关闭系统保护。
 4. 等待服务 Healthy，打开 `http://localhost:5188`。**全新安装的初始用户名：`admin`；初始密码：`admin123`。** 首次登录必须设置至少 8 位的新密码，再重新登录使用。已有安装升级会保留原账户，不会覆盖密码；仍处于旧版令牌初始化阶段的安装也会保留原流程。
 
+rc.15 起，全新双击安装默认启动远程管控台与 MySQL，不自动创建本地执行节点。登录后从看板进入 [远程服务器接入流程](remote-setup.md)，或打开 `/getting-started`；已有安装保留原模式与配置。
+
 登录页可切换 English / 中文，涵盖初始化、首次改密、错误及恢复说明，并保存本机语言选择；主控制台和 Demo 内部尚未全量英文化。
 
 可先在 [在线 Demo](https://webagents.jeanron100.top/demo/) 免登录体验虚构项目，或查看 [产品介绍](https://webagents.jeanron100.top/demo.html)。演示数据不连接真实服务器。
@@ -31,20 +33,20 @@
 macOS 如解压工具未保留执行权限，可在终端进入解压目录后运行：
 
 ```bash
-bash scripts/quickstart.sh --runner --pull
+bash scripts/quickstart.sh --desktop --pull
 ```
 
 Windows 可在解压目录打开 PowerShell：
 
 ```powershell
-powershell -NoProfile -ExecutionPolicy Bypass -File .\scripts\quickstart.ps1 -Runner -Pull
+powershell -NoProfile -ExecutionPolicy Bypass -File .\scripts\quickstart.ps1 -Desktop -Pull
 ```
 
-此 Bypass 仅限该次进程，不修改持久系统策略。只需管理远程服务器时去掉 `--runner` / `-Runner`。首次生成 `.compose.env`，之后启动保留原有密码和镜像配置。端口默认只监听回环；网络公开配置见 [运维说明](operations.md)。
+此 Bypass 仅限该次进程，不修改持久系统策略。`--desktop` / `-Desktop` 以远程管理为首次默认，已有安装按记录的模式或已有 runner 服务启动。首次生成 `.compose.env`，之后启动保留原有密码和镜像配置。端口默认只监听回环；网络公开配置见 [运维说明](operations.md)。
 
 ## CLI 登录和项目
 
-在终端从解压目录执行（各平台相同）：
+需要本地容器体验时，先运行 `bash scripts/quickstart.sh --runner --pull`，Windows PowerShell 使用 `.\scripts\quickstart.ps1 -Runner -Pull`。从控制台先行安装切换到本地时，按 [接入指南](remote-setup.md) 登记节点。随后在终端从解压目录执行（各平台相同）：
 
 ```bash
 docker compose --env-file .compose.env -f compose.yaml -f compose.runner.yaml exec runner codex login --device-auth
@@ -64,7 +66,8 @@ Mac 校验 ZIP：`shasum -a 256 web-agents-<版本>-macos.zip`。Windows：`Get-
 停止服务而保留数据（各平台相同）：
 
 ```bash
-docker compose --env-file .compose.env -f compose.yaml -f compose.runner.yaml down
+docker compose --env-file .compose.env -f compose.yaml down
+# 本地容器模式：追加 -f compose.runner.yaml 后再 down
 ```
 
 再次启动运行原来的入口文件。不要加 `-v`，该参数会删除数据库、CLI 账号和项目卷。不要删除 Docker Desktop 的数据盘。备份及升级步骤见 [运维说明](operations.md)；升级时保留旧 `.compose.env`，显式更新其中两个镜像版本，沿用同一 Compose project/卷。不要同时从不同目录启动两个指向同一端口的安装。

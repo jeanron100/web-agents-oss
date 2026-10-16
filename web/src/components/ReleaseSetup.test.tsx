@@ -1,6 +1,7 @@
 // @vitest-environment jsdom
 import {act} from 'react'
 import {createRoot} from 'react-dom/client'
+import {MemoryRouter} from 'react-router-dom'
 import {it,expect,vi} from 'vitest'
 vi.mock('../hub/client',()=>({IS_DEMO:false,refreshNow:vi.fn(async()=>{})}))
 import {AuthGate} from './AuthGate'
@@ -23,10 +24,10 @@ it('node management explains an empty install and keeps existing tokens out of t
  vi.stubGlobal('fetch',vi.fn(async()=>response({agents:nodes})))
  const host=document.createElement('div'),root=createRoot(host)
  try{
-  await act(async()=>root.render(<ServerManager/>));expect(host.textContent).toContain('接入第一台执行节点')
+  await act(async()=>root.render(<MemoryRouter><ServerManager/></MemoryRouter>));expect(host.textContent).toContain('接入第一台执行节点')
   await act(async()=>root.unmount());const next=createRoot(host)
   nodes=[{id:'n1',name:'remote',url:'http://runner:8788',hasToken:true,enabled:true,transport:'direct'}]
-  await act(async()=>next.render(<ServerManager/>));await act(async()=>Array.from(host.querySelectorAll('button')).find(b=>b.textContent==='编辑')!.click())
+  await act(async()=>next.render(<MemoryRouter><ServerManager/></MemoryRouter>));await act(async()=>Array.from(host.querySelectorAll('button')).find(b=>b.textContent==='编辑')!.click())
   expect((host.querySelector('input[type=password]') as HTMLInputElement).value).toBe('');expect(host.textContent).toContain('编辑服务器');await act(async()=>next.unmount())
  }finally{vi.unstubAllGlobals()}
 })

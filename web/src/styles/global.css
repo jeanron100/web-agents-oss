@@ -1762,3 +1762,28 @@ body, .card, .panel, .btn, .chat-bubble, .tool-card { transition: background-col
 .assistant-model-calls p { margin: 6px 0; font-size: 13px; line-height: 1.6; }
 .assistant-model-calls summary { font-size: 13px; cursor: pointer; min-height: 32px; padding-top: 6px; }
 .assistant-model-calls__warning { border-left: 3px solid #b45309; padding-left: 10px; color: #a34b0a; }
+
+/* First-use guidance keeps the remote execution context visible before task creation. */
+.setup-guide { max-width: 960px; }
+.setup-intro { color: var(--text-2); line-height: 1.7; margin: 0 0 22px; }
+.setup-modes { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 14px; margin-bottom: 22px; }
+.setup-mode { text-align: left; color: var(--text); font: inherit; cursor: pointer; margin: 0; }
+.setup-mode strong, .setup-mode span { display: block; }
+.setup-mode span { color: var(--text-2); margin-top: 8px; line-height: 1.6; }
+.setup-mode--active { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent); }
+.setup-steps { padding: 0; list-style: none; }
+.setup-steps h2, .setup-welcome h2 { font-size: 18px; margin: 0 0 12px; }
+.setup-steps p, .setup-welcome p, .setup-server-help { line-height: 1.7; }
+.setup-command { white-space: pre-wrap; overflow-wrap: anywhere; background: var(--panel-2); padding: 14px; border-radius: 10px; font-size: 13px; }
+.setup-checks { margin: 14px 0; overflow-wrap: anywhere; }
+.setup-server-help { margin: 10px 0 18px; color: var(--text-2); }
+.setup-guide .node-actions, .setup-welcome .node-actions { flex-wrap: wrap; }
+.setup-guide a.btn { text-decoration: none; }
+@media(max-width:600px) { .setup-modes { grid-template-columns: 1fr; } }
+.storage-panel > h2 { font-size: 18px; margin-bottom: 12px; }
+.storage-panel > p, .storage-feature p { line-height: 1.7; }
+.storage-feature { border-bottom: 1px solid var(--border); padding: 8px 0 16px; }
+.storage-feature p { color: var(--text-2); margin: 10px 0; }
+.storage-feature details { margin: 12px 0 0; }
+.storage-feature summary { cursor: pointer; color: var(--accent); min-height: 32px; }
+.storage-panel .dl-row { flex-wrap: wrap; }

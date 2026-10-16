@@ -23,6 +23,8 @@ if args[0]=='info':
  print(os.environ.get('WA_TEST_ENGINE','linux/aarch64'));sys.exit(0)
 if args[0]=='load':sys.exit(0)
 if 'version' in args:sys.exit(0)
+if 'ps' in args:
+ print('runner' if os.environ.get('WA_TEST_EXISTING_RUNNER') else '');sys.exit(0)
 if 'pull' in args:sys.exit(int(os.environ.get('WA_TEST_PULL_FAIL','0')))
 if 'config' in args:
  for line in pathlib.Path('.compose.env').read_text().splitlines():
@@ -101,4 +103,25 @@ if ($Uri.EndsWith('.sha256')) {
     (work/'.compose.env').write_text(config.replace('ghcr.io/jeanron100/web-agents-oss-console:', 'private.example/console:'))
     logs=run(flags,False,WA_TEST_PULL_FAIL='1')
     assert not any(x[0]=='load' or 'up' in x for x in logs)
-    print(json.dumps({'shell':launcher,'extractedBundle':True,'checks':['prerequisites','engine-architecture','first-install','persistent-secrets','verified-fallback','checksum-rejection','custom-reference-preservation','docker-failure','source-console-only']}))
+    # Fresh desktop installs are remote-first; legacy installs keep their actual services.
+    desktop_flags=['-Desktop','-Pull'] if os.name=='nt' else ['--desktop','--pull']
+    (work/'.compose.env').unlink()
+    logs=run(desktop_flags)
+    remote_config=(work/'.compose.env').read_bytes()
+    assert b'WA_INSTALL_MODE=remote' in remote_config
+    assert not any('up' in x and 'compose.runner.yaml' in x for x in logs)
+    logs=run(desktop_flags)
+    assert (work/'.compose.env').read_bytes()==remote_config
+    assert not any('up' in x and 'compose.runner.yaml' in x for x in logs)
+    logs=run(flags)
+    assert b'WA_INSTALL_MODE=local' in (work/'.compose.env').read_bytes()
+    logs=run(desktop_flags)
+    assert any('up' in x and 'compose.runner.yaml' in x for x in logs)
+    legacy_config=config.replace('WA_INSTALL_MODE=local\n','')
+    (work/'.compose.env').write_text(legacy_config)
+    logs=run(desktop_flags,WA_TEST_EXISTING_RUNNER='1')
+    assert (work/'.compose.env').read_text()==legacy_config
+    assert any('up' in x and 'compose.runner.yaml' in x for x in logs)
+    logs=run(desktop_flags)
+    assert not any('up' in x and 'compose.runner.yaml' in x for x in logs)
+    print(json.dumps({'shell':launcher,'extractedBundle':True,'checks':['prerequisites','engine-architecture','first-install','persistent-secrets','verified-fallback','checksum-rejection','custom-reference-preservation','docker-failure','source-console-only','desktop-remote-first','explicit-local-opt-in','legacy-mode-preservation']}))

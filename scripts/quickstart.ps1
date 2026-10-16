@@ -1,5 +1,5 @@
 [CmdletBinding()]
-param([switch]$Runner, [switch]$Pull)
+param([switch]$Runner, [switch]$Pull, [switch]$Desktop)
 $ErrorActionPreference = 'Stop'
 $ProgressPreference = 'SilentlyContinue' # Avoid per-byte Windows PowerShell progress overhead on large archives.
 Set-Location (Split-Path -Parent $PSScriptRoot)
@@ -26,9 +26,23 @@ try {
         default { throw "Unsupported Docker engine: $daemon. Select Linux containers (amd64 or arm64)." }
     }
     $envFile = Join-Path (Get-Location) '.compose.env'
+    # New desktop installs start console-only. Existing installs without a mode retain their runner.
+    if ($Desktop -and -not $Runner -and (Test-Path -LiteralPath $envFile)) {
+        if (Select-String -LiteralPath $envFile -Pattern '^WA_INSTALL_MODE=local$' -Quiet) { $Runner = $true }
+        elseif (-not (Select-String -LiteralPath $envFile -Pattern '^WA_INSTALL_MODE=remote$' -Quiet)) {
+            $existingServices = @(& docker compose --env-file .compose.env -f compose.yaml -f compose.runner.yaml ps --all --services)
+            if ($LASTEXITCODE -ne 0) { throw 'Cannot inspect existing services. Nothing was recreated.' }
+            if ($existingServices -contains 'runner') { $Runner = $true }
+        }
+    }
+    $installMode = if ($Runner) { 'local' } else { 'remote' }
     if (-not (Test-Path -LiteralPath $envFile)) {
-        $initial = "WA_DB_PASSWORD=$(New-Secret)`nWA_DB_ROOT_PASSWORD=$(New-Secret)`nWA_PORT=5188`nWA_PUBLIC_URL=http://localhost:5188`n"
+        $initial = "WA_DB_PASSWORD=$(New-Secret)`nWA_DB_ROOT_PASSWORD=$(New-Secret)`nWA_PORT=5188`nWA_PUBLIC_URL=http://localhost:5188`nWA_INSTALL_MODE=$installMode`n"
         [IO.File]::WriteAllText($envFile, $initial, [Text.Encoding]::ASCII)
+    }
+    if ($Runner -and (Select-String -LiteralPath $envFile -Pattern '^WA_INSTALL_MODE=remote$' -Quiet)) {
+        $modeConfig = (Get-Content -LiteralPath $envFile -Raw) -replace '(?m)^WA_INSTALL_MODE=remote\r?$', 'WA_INSTALL_MODE=local'
+        [IO.File]::WriteAllText($envFile, $modeConfig, [Text.Encoding]::ASCII)
     }
     if ($Pull) {
         $version = (Get-Content -LiteralPath 'release/version' -Raw).Trim()
@@ -80,7 +94,7 @@ try {
     } else {
         Invoke-Docker ($composeArgs + @('up', '-d', '--build', '--wait', '--wait-timeout', '240'))
     }
-    Write-Host 'Console ready.'
+    Write-Host 'Console ready. Start at /getting-started to connect a remote execution node and prepare a project.'
     Write-Host 'Fresh installations: admin / admin123; set a new password after signing in.'
     Write-Host 'Existing accounts and passwords are preserved. If WA_INITIAL_ACCOUNT=0, use manage.mjs setup-token.'
     Write-Host 'Open WA_PUBLIC_URL configured in .compose.env (default http://localhost:5188).'

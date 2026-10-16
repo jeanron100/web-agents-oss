@@ -24,6 +24,8 @@ Allow Docker at least 4 GB of RAM and your computer at least 12 GB of free disk 
 3. Start Docker Desktop and wait for the engine. Double-click `start-macos.command` or `start-windows.cmd`. If your OS asks about a downloaded file, confirm its source rather than disabling system protection globally.
 4. Wait for healthy services, then open `http://localhost:5188`. **Initial username: `admin`. Temporary password: `admin123`.** Set a new password of at least 8 characters and sign in again. Existing accounts and unfinished token-based setup remain unchanged during upgrade.
 
+Starting with rc.15, fresh desktop launches start the console and MySQL for remote management, without a local runner. Existing installations retain their mode. Open `/getting-started` and follow the [remote setup guide](remote-setup.md).
+
 Choose **English** on the sign-in page for English setup, password and recovery instructions. The choice is saved locally. The main console/demo currently still includes Chinese interface text; the bilingual documentation does not imply every application screen has been translated.
 
 You can first explore the [fictional-data demo](https://webagents.jeanron100.top/demo/) without an account, or read the [product overview](https://webagents.jeanron100.top/demo.en.html).
@@ -31,20 +33,22 @@ You can first explore the [fictional-data demo](https://webagents.jeanron100.top
 If macOS extraction did not preserve executable permissions, run this from the extracted directory:
 
 ```bash
-bash scripts/quickstart.sh --runner --pull
+bash scripts/quickstart.sh --desktop --pull
 ```
 
 Windows PowerShell entry point:
 
 ```powershell
-powershell -NoProfile -ExecutionPolicy Bypass -File .\scripts\quickstart.ps1 -Runner -Pull
+powershell -NoProfile -ExecutionPolicy Bypass -File .\scripts\quickstart.ps1 -Desktop -Pull
 ```
 
-The execution-policy override applies only to that process. Omit `--runner` / `-Runner` to manage existing remote nodes. `.compose.env` is created on first start and preserved thereafter, including image references and passwords. Listening is restricted to loopback by default.
+The execution-policy override applies only to that process. `--desktop` / `-Desktop` starts fresh installations in remote-management mode and preserves an existing recorded mode or runner. `.compose.env` is created on first start and preserved thereafter, including image references and passwords. Listening is restricted to loopback by default.
 
 ## Vendor accounts and projects
 
 From the installation directory:
+
+For a local trial first run `bash scripts/quickstart.sh --runner --pull` or `.\scripts\quickstart.ps1 -Runner -Pull`. Register a later-added runner using [remote/local setup](remote-setup.md).
 
 ```bash
 docker compose --env-file .compose.env -f compose.yaml -f compose.runner.yaml exec runner codex login --device-auth
@@ -65,7 +69,8 @@ Mac: `shasum -a 256 web-agents-<version>-macos.zip`. Windows: `Get-FileHash .\we
 Stop services without removing data:
 
 ```bash
-docker compose --env-file .compose.env -f compose.yaml -f compose.runner.yaml down
+docker compose --env-file .compose.env -f compose.yaml down
+# Local mode: include -f compose.runner.yaml before down
 ```
 
 Start again with the same launcher. Do not add `-v` or delete Docker Desktop's data disk: that removes database, account and workspace volumes. For upgrades, preserve `.compose.env`, explicitly update its two image references, and use the same Compose project and volumes. See [operations](operations.md) for backups, password recovery and lifecycle boundaries.

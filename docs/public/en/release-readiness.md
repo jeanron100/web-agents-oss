@@ -21,6 +21,8 @@ v0.1.0-rc.11 redesigns login/setup across themes, adds temporary initial credent
 
 v0.1.0-rc.14 lowers the new-password minimum to eight characters for manual setup, initial password change and account settings, without requiring uppercase letters or special symbols. The temporary password must still be replaced. Existing credentials and data are preserved.
 
+v0.1.0-rc.15 adds bilingual first-use guidance and real node/project readiness checks. Fresh desktop installs default to remote management with an optional local runner; existing modes are preserved. Project paths are node-derived, and empty listings differ from failed requests. Settings explain implemented optional-storage benefits, configuration and backup boundaries. See [remote setup](remote-setup.md) and [data storage](data-storage.md).
+
 ## Validation scope
 
 - The release workflow runs backend/frontend tests, TypeScript/build checks, architecture-specific image builds, actual Compose initialization and isolated gateway-metadata acceptance. Use the workflow linked to a release for that release's result.

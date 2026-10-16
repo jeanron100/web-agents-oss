@@ -34,15 +34,19 @@
 
 ## 版本下载
 
-当前预发布：**[v0.1.0-rc.14](https://github.com/jeanron100/web-agents-oss/releases/tag/v0.1.0-rc.14)**。所有版本独立保存在 [GitHub Releases](https://github.com/jeanron100/web-agents-oss/releases)，可按版本下载和核对更新说明。
+当前预发布：**[v0.1.0-rc.15](https://github.com/jeanron100/web-agents-oss/releases/tag/v0.1.0-rc.15)**。所有版本独立保存在 [GitHub Releases](https://github.com/jeanron100/web-agents-oss/releases)，可按版本下载和核对更新说明。
 
 | 系统 | 下载 | 解压后启动 |
 |---|---|---|
-| macOS Intel / Apple Silicon | [Mac 安装包](https://github.com/jeanron100/web-agents-oss/releases/download/v0.1.0-rc.14/web-agents-v0.1.0-rc.14-macos.zip) | `start-macos.command` |
-| Windows x64 | [Windows 安装包](https://github.com/jeanron100/web-agents-oss/releases/download/v0.1.0-rc.14/web-agents-v0.1.0-rc.14-windows.zip) | `start-windows.cmd` |
-| Linux amd64 / arm64 | [版本源码包](https://github.com/jeanron100/web-agents-oss/releases/download/v0.1.0-rc.14/web-agents-v0.1.0-rc.14.tar.gz) | `bash scripts/quickstart.sh --runner --pull` |
+| macOS Intel / Apple Silicon | [Mac 安装包](https://github.com/jeanron100/web-agents-oss/releases/download/v0.1.0-rc.15/web-agents-v0.1.0-rc.15-macos.zip) | `start-macos.command` |
+| Windows x64 | [Windows 安装包](https://github.com/jeanron100/web-agents-oss/releases/download/v0.1.0-rc.15/web-agents-v0.1.0-rc.15-windows.zip) | `start-windows.cmd` |
+| Linux amd64 / arm64 | [版本源码包](https://github.com/jeanron100/web-agents-oss/releases/download/v0.1.0-rc.15/web-agents-v0.1.0-rc.15.tar.gz) | `bash scripts/quickstart.sh --pull` |
 
 需先安装并启动 Docker（Mac/Windows 使用 Docker Desktop，Windows 开启 WSL 2 Linux 容器）。Release 附有校验和及按架构区分的镜像包，启动时自动选择引擎架构。`-rc.*` 为预发布，`vX.Y.Z` 为正式版本。
+
+## 第一次使用：优先连接远程服务器
+
+本地安装的是管控台，代码与 CLI 继续在执行节点运行。新用户先看 [连接远程服务器](docs/public/remote-setup.md)，按“准备节点 → 连接检测 → 确认项目目录与 CLI 登录 → 第一个任务”完成接入。登录后的 `/getting-started` 提供相同的中英文引导与真实节点检测。
 
 ## 容器快速开始
 
@@ -51,13 +55,13 @@
 ```bash
 git clone https://github.com/jeanron100/web-agents-oss.git
 cd web-agents-oss
-./scripts/quickstart.sh --runner --pull
+./scripts/quickstart.sh --pull
 ```
 
 Mac/Windows 可直接从 [Release](https://github.com/jeanron100/web-agents-oss/releases) 下载对应的 `macos.zip` / `windows.zip`，完整解压到用户目录后启动 `start-macos.command` / `start-windows.cmd`。不需要安装 Git 或 Node；先安装并启动 Docker Desktop。Windows 命令行入口：
 
 ```powershell
-powershell -NoProfile -ExecutionPolicy Bypass -File .\scripts\quickstart.ps1 -Runner -Pull
+powershell -NoProfile -ExecutionPolicy Bypass -File .\scripts\quickstart.ps1 -Desktop -Pull
 ```
 
 完整平台前提、下载校验和停止/升级方法见 [Mac/Windows 快速交付](docs/public/desktop.md)。
@@ -73,7 +77,7 @@ docker compose --env-file .compose.env restart console
 
 此命令保留原用户名、将临时密码重置为 `admin123` 并撤销旧会话；重启控制台后需重新设密。可在首次启动前设置 `WA_INITIAL_ACCOUNT=0` 使用一次性令牌手动创建管理员，详见 [运维说明](docs/public/operations.md)。
 
-执行容器已自动注册为“本机容器节点”。先在执行容器登录需要使用的 CLI：
+全新 Mac/Windows 双击安装默认只启动管控台与 MySQL；先从看板进入“连接远程服务器”。已有安装保留原模式。若需要本地容器体验，先运行 `bash scripts/quickstart.sh --runner --pull`（Windows 使用 `-Runner -Pull`），再在执行容器登录 CLI：
 
 ```bash
 docker compose --env-file .compose.env -f compose.yaml -f compose.runner.yaml exec runner codex login --device-auth
@@ -82,9 +86,11 @@ docker compose --env-file .compose.env -f compose.yaml -f compose.runner.yaml ex
 # 在 shell 中创建项目：mkdir -p /workspace/my-project
 ```
 
-页面设置 → 服务器管理 → 检测，可以查看 CLI 版本和登录文件是否存在；文件存在不等于厂商认证成功。只需要控制台时使用 `./scripts/quickstart.sh --pull`，然后添加已部署的远程执行节点。预构建安装先尝试 GHCR；不可用时从公开 Release 下载并校验镜像包，Bash 入口需要 `curl` 和 `sha256sum` 或 `shasum`，Windows 使用 PowerShell 内置下载与校验。省略 `--pull` 可从源码构建，需要访问 npm；构建不需要提供账号凭据。
+页面设置 → 服务器管理 → 检测，可以查看 CLI 版本和登录文件是否存在；文件存在不等于厂商认证成功。本地容器项目默认在 `/workspace`，不是电脑上的任意目录。首次只装控制台、后来开启 runner 时按 [接入指南](docs/public/remote-setup.md) 登记本地节点。预构建安装先尝试 GHCR；不可用时从公开 Release 下载并校验镜像包，Bash 入口需要 `curl` 和 `sha256sum` 或 `shasum`，Windows 使用 PowerShell 内置下载与校验。省略 `--pull` 可从源码构建，需要访问 npm；构建不需要提供账号凭据。
 
 默认仅绑定回环地址。远程访问优先使用 SSH 转发：`ssh -L 5188:127.0.0.1:5188 your-server`。正式公网使用 HTTPS 反向代理，设置 `.compose.env` 的 `WA_PUBLIC_URL` 为实际域名后重建控制台。
+
+可选 Redis / MongoDB 的能力收益、配置与验证见 [数据存储说明](docs/public/data-storage.md)，首次使用不必开启全部组件。
 
 ## 运行边界
 

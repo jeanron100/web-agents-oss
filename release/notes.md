@@ -1,11 +1,11 @@
-# Web Agents v0.1.0-rc.14 — simpler setup and optional monitoring / 简化初始化与可选监控
+# Web Agents v0.1.0-rc.15 — remote-first onboarding / 远程管理首次使用引导
 
-- New passwords now require **8–256 characters**, reduced from 12. No uppercase, number or special-symbol combinations are required. Manual setup, mandatory initial-password change and account settings use the same backend rule.
-- Chinese and English form hints, validation errors and installation guides match the new minimum.
-- Fresh installations still start with **admin / admin123**. Choose a different password at first sign-in; the temporary password cannot be reused to bypass setup. Existing accounts, passwords and project data are preserved.
-- Hides Monitoring from both desktop and mobile navigation when no external monitoring URL is configured. Saving or clearing the URL in settings updates navigation immediately.
-- Includes the previous bilingual onboarding, theme/contrast fixes and English documentation.
+- Fresh Mac/Windows desktop launches start the console and MySQL for remote management. Optional local execution can be enabled explicitly. Existing mode, accounts, image pins and project data are preserved; legacy installations are inspected for an existing runner.
+- Adds an English/Chinese first-use guide: prepare a Linux execution node, connect/test it, check real project roots and CLI readiness, and run a first task. The empty dashboard links directly to remote connection or a local trial.
+- New Session shows the selected node’s actual project root rather than a fixed `/data` label. Loading, failed requests and genuinely empty folders are distinct; folder refresh, setup links and CLI-install/login hints provide next actions. Older nodes without diagnostics remain usable.
+- Settings explain default MySQL persistence and implemented optional Redis/MongoDB benefits, configuration, verification, retention and backup boundaries. Compose forwards their opt-in environment variables but does not deploy the optional services automatically.
+- Adds English/Chinese remote setup and data-storage guides. Retains rc.14’s eight-character password minimum and hidden unconfigured Monitoring navigation.
 
-新密码最低长度由 12 位调整为 **8 位**，不强制大小写、数字或特殊符号组合。前后端校验、中英文提示和文档同步更新。未配置外部监控时隐藏桌面和手机的监控入口，保存或清空配置后即时更新。首次登录仍需更换临时密码，升级保留已有账号、密码和项目数据。
+全新桌面安装默认优先远程管理；已有安装保留原模式和数据。新增中英文接入向导与真实准备状态检测；项目路径来自执行节点，空列表和读取失败分别给出下一步。Redis/MongoDB 说明实际收益、启用配置、验证与备份边界，不把可选项当成首次使用必备。
 
-Mac/Windows require Docker Desktop. Existing installations keep pinned images: update the console image reference to **v0.1.0-rc.14**, pull it and recreate only the console. This password change does not require a runner upgrade or deletion of any data volume. Published older versions remain unchanged.
+Mac/Windows require Docker Desktop. Existing installations keep their image references: explicitly update the console image to **v0.1.0-rc.15**, use the new Compose file and recreate only the console. These UI/guidance changes do not require updating a remote agent or replacing an existing runner. Published older releases remain unchanged.

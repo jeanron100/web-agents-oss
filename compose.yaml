@@ -31,6 +31,14 @@ services:
     environment:
       WA_PUBLIC_URL: ${WA_PUBLIC_URL:-http://localhost:5188}
       WA_INITIAL_ACCOUNT: ${WA_INITIAL_ACCOUNT:-1}
+      # Optional external services: deploying and authenticating them is an explicit operator step.
+      WA_REDIS_ENABLED: ${WA_REDIS_ENABLED:-0}
+      WA_REDIS_URL: ${WA_REDIS_URL:-redis://redis:6379}
+      WA_REDIS_PASS: ${WA_REDIS_PASS:-}
+      WA_MONGO_ENABLED: ${WA_MONGO_ENABLED:-0}
+      WA_MONGO_URI: ${WA_MONGO_URI:-mongodb://mongo:27017/webagents_v2}
+      WA_MONGO_DB: ${WA_MONGO_DB:-webagents_v2}
+      WA_EVENT_SHADOW_WRITE: ${WA_EVENT_SHADOW_WRITE:-0}
       WA_MYSQL_HOST: mysql
       WA_MYSQL_DATABASE: web_agents
       WA_MYSQL_USER: web_agents
