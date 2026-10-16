@@ -31,7 +31,7 @@
     },
     {
       "path": "README.md",
-      "sha256": "cfcf99d638a867ce420c296eac4fc7eb73ca28b9bacb9524c889eade4ec0872a"
+      "sha256": "fc223804c66154dcf25847af3c2bcc6c2542bf5bc550fb64b29162b61a8de237"
     },
     {
       "path": "SECURITY.md",
@@ -55,11 +55,11 @@
     },
     {
       "path": "docs/public/operations.md",
-      "sha256": "4a46c2ecd62620cf4136e02192639a56426b514a74696394a188fbdc06bd44f8"
+      "sha256": "4c72efe77d247e447de5c323a6755497c0d466b98f3f07401587697a0d4f4e33"
     },
     {
       "path": "docs/public/release-readiness.md",
-      "sha256": "118f0f9ce7a7d99f20f74bcdc912f00f047e1ad1b7eaa7b973a277a46171c167"
+      "sha256": "09f3cb71ce71711da2e4536e2515aafbe83039cc7a61d34903a00483741b4e6b"
     },
     {
       "path": "docs/public/third-party-notices.md",

@@ -46,7 +46,7 @@ docker compose --env-file .compose.env -f compose.yaml -f compose.runner.yaml ex
 
 ## 文档与开发
 
-- [交付进度与发布门槛](docs/public/release-readiness.md)
+- [发布验证与后续计划](docs/public/release-readiness.md)
 - [安装与远程节点](docs/public/installation.md)
 - [配置、升级、备份与恢复](docs/public/operations.md)
 - [MCP 接入](docs/public/mcp.md)
@@ -61,9 +61,9 @@ cd ../web && npm ci && npm test && npm run build
 
 默认不存在真实服务器、账号或演示数据；只有显式 `VITE_DEMO=1` 构建展示虚构数据。
 
-## 发布准备
+## 公开源码维护
 
-本仓库曾用于私人部署。公开发行必须从可核查的干净导出目录建立新仓库，不应直接公开原有 Git 历史：
+项目最初用于私人部署；公开版由干净导出建立，未包含原私人 Git 历史。维护者同步公开源码时继续使用可核查的导出：
 
 ```bash
 node scripts/export-public.mjs /absolute/new-export
