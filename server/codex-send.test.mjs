@@ -129,7 +129,11 @@ test('lost native acknowledgement remains unknown and is never replayed automati
 })
 test('steering while assistant text streams preserves chunks without repeating the whole completed answer', () => {
   for (const scenario of ['stream', 'stream-final']) run(scenario, `
+    for(let i=0;i<100&&!driver.getEvents(record.id).events.some(e=>e.type==='assistant'&&e.text==='before');i++)await pause(5);
+    assert(driver.getEvents(record.id).events.some(e=>e.type==='assistant'&&e.text==='before'));
     assert.equal((await driver.submitMessage(record.id,'supplement')).delivery,'steered');
+    for(let i=0;i<100&&driver.getEvents(record.id).events.filter(e=>e.type==='assistant').length<2;i++)await pause(5);
+    await pause(10);
     const events=driver.getEvents(record.id).events;
     assert.deepEqual(events.filter(e=>e.type==='assistant').map(e=>e.text),['before',' after']);
     assert.deepEqual(events.map(e=>e.type),['user','assistant','user','assistant']);

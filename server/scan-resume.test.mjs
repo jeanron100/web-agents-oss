@@ -12,7 +12,7 @@
 // 最阴的用例在 case 3：**追加半行**（模拟正在写入的那一瞬）。若续扫把半行吃进去并推进 offset，
 // 下一轮就会把该行后半截当成新行解析 → 事件与 seq 全乱。故 safeEnd 必须卡在最后一个换行符之后。
 
-import { test } from 'node:test'
+import { test, after } from 'node:test'
 import assert from 'node:assert/strict'
 import { spawn } from 'node:child_process'
 import fs from 'node:fs'
@@ -20,7 +20,10 @@ import os from 'node:os'
 import path from 'node:path'
 
 const UUID = '00000000-1111-2222-3333-444444444444'
-const CWD = '/data/web_agents' // 需是真实存在的 /data 项目：discoverProjects 从 /data 出发（JSONL 在 fake HOME 里，碰不到真数据）
+const ROOT = fs.mkdtempSync(path.join(os.tmpdir(), 'wa-scan-workspaces-'))
+const CWD = path.join(ROOT, 'project')
+fs.mkdirSync(CWD)
+after(() => fs.rmSync(ROOT, { recursive: true, force: true }))
 const AGENT = new URL('./agent.js', import.meta.url).pathname
 
 const iso = (n) => new Date(1783000000000 + n * 60_000).toISOString()
@@ -51,7 +54,7 @@ function lines(from, to) {
 /** 起一个隔离 agent（fake HOME + 独立端口），返回 { stop, get }。 */
 async function boot(home, port) {
   const p = spawn(process.execPath, [AGENT], {
-    env: { ...process.env, HOME: home, WA_AGENT_PORT: String(port), WA_REDIS_ENABLED: '0', WA_MONGO_ENABLED: '0' },
+    env: { ...process.env, HOME: home, WA_PROJECT_ROOT: ROOT, WA_AGENT_PORT: String(port), WA_REDIS_ENABLED: '0', WA_MONGO_ENABLED: '0' },
     stdio: 'ignore',
   })
   const get = async (p2) => {

@@ -295,7 +295,7 @@
     },
     {
       "path": "server/codex-send.test.mjs",
-      "sha256": "1396efedcb8c9581e643f01bcd25275a6a4c358f0853e940c0eba3d0b20d0436"
+      "sha256": "4ea0ebdd8f6e0c7fdb0bc2ff9a2c35dd52d38b82a604e2cc55722b0f3e2ebe06"
     },
     {
       "path": "server/codex-transcript.js",
@@ -431,7 +431,7 @@
     },
     {
       "path": "server/hidden-projects-scan.test.mjs",
-      "sha256": "48e276b82afc89a9e6a3a5512259eb90acb38e8e28b216a5e0df95ff63632417"
+      "sha256": "021749fd3eb82a5898b41a088d85b47dd6a08a1eb6099f7a5c725613f59673cb"
     },
     {
       "path": "server/hidden-projects.js",
@@ -491,7 +491,7 @@
     },
     {
       "path": "server/kimi-driver.test.mjs",
-      "sha256": "4a1e98d64dc0cb64a271a697a70990565b32192f602d6d9e00fed696ef38b472"
+      "sha256": "5c1861767b3f171f049e7f5fbd5ec8bf7d75efa0460a9e7feaae60c0323e1803"
     },
     {
       "path": "server/kimi-resume.test.mjs",
@@ -795,7 +795,7 @@
     },
     {
       "path": "server/scan-resume.test.mjs",
-      "sha256": "441c6641a0d4ed777dbe9826fa9dcc049d7caeadf42af3265b6315cf6b309ee9"
+      "sha256": "744e91c6a064b0f09e89103001a9df778ee5410f11f13c582c4f2e29f6217cc8"
     },
     {
       "path": "server/server-management.js",
@@ -935,7 +935,7 @@
     },
     {
       "path": "server/usage-dedupe-scan.test.mjs",
-      "sha256": "e9a0ca8100ccf2bd275657e765abf411c58fe8912d4adb8da25b06b6b0ebf0b9"
+      "sha256": "1ad6b831e53e5e742c77bd38d57bb7be804cecf88e1d2aee3cef225f4c11dad0"
     },
     {
       "path": "server/usage-dedupe.js",

@@ -15,15 +15,15 @@ import os from 'node:os'
 import path from 'node:path'
 
 const AGENT = new URL('./agent.js', import.meta.url).pathname
-// discoverProjects 要求 /data/<name> 真实存在，所以只能拿真目录当项目名（JSONL 在 fake HOME 里）
+// Both the workspaces and JSONL live in the fixture; no operator directories are needed.
 const KEEP = 'web_agents'
 const HIDE = 'claude_manager'
 const iso = (n) => new Date(1783000000000 + n * 60_000).toISOString()
 
-const lines = (tag) => [
-  JSON.stringify({ type: 'user', uuid: `u-${tag}`, timestamp: iso(0), cwd: `/data/${tag}`, gitBranch: 'main',
+const lines = (tag, cwd) => [
+  JSON.stringify({ type: 'user', uuid: `u-${tag}`, timestamp: iso(0), cwd, gitBranch: 'main',
     message: { role: 'user', content: [{ type: 'text', text: `在 ${tag} 里干点什么` }] } }),
-  JSON.stringify({ type: 'assistant', uuid: `a-${tag}`, timestamp: iso(1), cwd: `/data/${tag}`, gitBranch: 'main',
+  JSON.stringify({ type: 'assistant', uuid: `a-${tag}`, timestamp: iso(1), cwd, gitBranch: 'main',
     message: { id: `m-${tag}`, model: 'claude-opus-4-8', role: 'assistant', type: 'message',
       content: [{ type: 'text', text: '好的' }],
       usage: { input_tokens: 10, output_tokens: 20, cache_read_input_tokens: 0, cache_creation_input_tokens: 0 } } }),
@@ -32,16 +32,18 @@ const lines = (tag) => [
 function fixture() {
   const home = fs.mkdtempSync(path.join(os.tmpdir(), 'wa-hide-'))
   for (const p of [KEEP, HIDE]) {
-    const dir = path.join(home, '.claude', 'projects', `/data/${p}`.replace(/[^a-zA-Z0-9]/g, '-'))
+    const cwd = path.join(home, 'workspaces', p)
+    fs.mkdirSync(cwd, { recursive: true })
+    const dir = path.join(home, '.claude', 'projects', cwd.replace(/[^a-zA-Z0-9]/g, '-'))
     fs.mkdirSync(dir, { recursive: true })
-    fs.writeFileSync(path.join(dir, `0000000${p.length}-1111-2222-3333-44444444444${p.length}.jsonl`), lines(p))
+    fs.writeFileSync(path.join(dir, `0000000${p.length}-1111-2222-3333-44444444444${p.length}.jsonl`), lines(p, cwd))
   }
   return home
 }
 
 async function boot(home, port) {
   const p = spawn(process.execPath, [AGENT], {
-    env: { ...process.env, HOME: home, WA_AGENT_PORT: String(port), WA_REDIS_ENABLED: '0', WA_MONGO_ENABLED: '0' },
+    env: { ...process.env, HOME: home, WA_PROJECT_ROOT: path.join(home, 'workspaces'), WA_AGENT_PORT: String(port), WA_REDIS_ENABLED: '0', WA_MONGO_ENABLED: '0' },
     stdio: 'ignore',
   })
   const get = async (u) => (await fetch(`http://127.0.0.1:${port}${u}`)).json()

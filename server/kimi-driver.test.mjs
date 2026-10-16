@@ -1,9 +1,23 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
+import fs from 'node:fs'
+import os from 'node:os'
+import path from 'node:path'
 import { findKimi, mapModeValue, mapModelValue, selectPermissionOption } from './kimi-driver.js'
 
 test('Kimi 安装发现：识别官方 ~/.kimi-code/bin 路径', () => {
-  assert.match(findKimi() ?? '', /\/\.kimi-code\/bin\/kimi$/)
+  const home = fs.mkdtempSync(path.join(os.tmpdir(), 'wa-kimi-discovery-'))
+  const oldHome = process.env.HOME, oldBin = process.env.KIMI_BIN
+  try {
+    const bin = path.join(home, '.kimi-code', 'bin', 'kimi')
+    fs.mkdirSync(path.dirname(bin), { recursive: true }); fs.writeFileSync(bin, '#!/bin/sh\n', { mode: 0o700 })
+    process.env.HOME = home; delete process.env.KIMI_BIN
+    assert.equal(findKimi(), bin)
+  } finally {
+    if (oldHome === undefined) delete process.env.HOME; else process.env.HOME = oldHome
+    if (oldBin === undefined) delete process.env.KIMI_BIN; else process.env.KIMI_BIN = oldBin
+    fs.rmSync(home, { recursive: true, force: true })
+  }
 })
 
 test('Kimi 审批：按 Web resolution 选择对应 ACP option', () => {

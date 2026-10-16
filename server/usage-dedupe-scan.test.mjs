@@ -11,7 +11,7 @@
 //   而活跃会话每 300ms 就续扫一次，等于把 bug 原样装回去。
 //   CLAUDE.md 的老账：「checkpoint 必须含跨行累积量，只存字节 offset 等于没存」。
 
-import { test } from 'node:test'
+import { test, after } from 'node:test'
 import assert from 'node:assert/strict'
 import { spawn } from 'node:child_process'
 import fs from 'node:fs'
@@ -19,7 +19,10 @@ import os from 'node:os'
 import path from 'node:path'
 
 const UUID = '00000000-1111-2222-3333-555555555555'
-const CWD = '/data/web_agents'
+const ROOT = fs.mkdtempSync(path.join(os.tmpdir(), 'wa-usage-workspaces-'))
+const CWD = path.join(ROOT, 'project')
+fs.mkdirSync(CWD)
+after(() => fs.rmSync(ROOT, { recursive: true, force: true }))
 const AGENT = new URL('./agent.js', import.meta.url).pathname
 const iso = (n) => new Date(1783000000000 + n * 60_000).toISOString()
 
@@ -47,7 +50,7 @@ const L3 = () => blockLine(3, U3, { type: 'tool_use', id: 't2', name: 'Bash', in
 
 async function boot(home, port) {
   const p = spawn(process.execPath, [AGENT], {
-    env: { ...process.env, HOME: home, WA_AGENT_PORT: String(port), WA_REDIS_ENABLED: '0', WA_MONGO_ENABLED: '0' },
+    env: { ...process.env, HOME: home, WA_PROJECT_ROOT: ROOT, WA_AGENT_PORT: String(port), WA_REDIS_ENABLED: '0', WA_MONGO_ENABLED: '0' },
     stdio: 'ignore',
   })
   const get = async (u) => (await fetch(`http://127.0.0.1:${port}${u}`)).json()
